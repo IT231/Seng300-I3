@@ -80,6 +80,24 @@ public class PayByCard {
 			card = new Card(data.getType(), data.getNumber(), data.getCardholder(), null);
 			getTransactionFromBank(card);
 		}
+
+		@Override
+		public void aCardHasBeenInserted() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void theCardHasBeenRemoved() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void aCardHasBeenTapped() {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	
