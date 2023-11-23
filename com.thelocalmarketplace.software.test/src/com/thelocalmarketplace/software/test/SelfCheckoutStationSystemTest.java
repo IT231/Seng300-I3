@@ -329,7 +329,7 @@ public class SelfCheckoutStationSystemTest {
 	public void testPayWithCredit() throws CashOverloadException, NoCashAvailableException, DisabledException, IOException {
 		CardIssuer ci1 = new CardIssuer(SupportedCardIssuers.ONE.getIssuer(), 1);
 		CardIssuerDatabase.CARD_ISSUER_DATABASE.put(SupportedCardIssuers.ONE.getIssuer(), ci1);
-		Card creditCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "5299334598001547", "Brandon Chan", "666");
+		Card creditCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "5299334598001547", "Brandon Chan", "666", null, false, false);
 		
 		Calendar exp = Calendar.getInstance();
 		exp.set(Calendar.YEAR, 2099);
@@ -364,7 +364,7 @@ public class SelfCheckoutStationSystemTest {
 	public void testPayWithDebit() throws CashOverloadException, NoCashAvailableException, DisabledException, IOException {
 		CardIssuer ci1 = new CardIssuer(SupportedCardIssuers.ONE.getIssuer(), 1);
 		CardIssuerDatabase.CARD_ISSUER_DATABASE.put(SupportedCardIssuers.ONE.getIssuer(), ci1);
-		Card debitCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "5299334598001547", "Brandon Chan", "666");
+		Card debitCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "5299334598001547", "Brandon Chan", "666", null, false, false);
 		
 		Calendar exp = Calendar.getInstance();
 		exp.set(Calendar.YEAR, 2099);

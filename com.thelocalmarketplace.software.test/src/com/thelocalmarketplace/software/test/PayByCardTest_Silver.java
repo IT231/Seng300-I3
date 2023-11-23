@@ -110,10 +110,10 @@ public class PayByCardTest_Silver {
 			index ++;
 		}
 		
-		disCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "5299334598001547", "Cindy Wiggins", "489");
-		viva = new Card(SupportedCardIssuers.TWO.getIssuer(), "9999999999999999", "MONEY BAGS", "777");
-		cdnDep = new Card(SupportedCardIssuers.THREE.getIssuer(), "7892457826750349", "James McGill", "123");
-		debit = new Card(SupportedCardIssuers.FOUR.getIssuer(), "5160617843321186", "Mark Klaassen", "111");
+		disCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "5299334598001547", "Cindy Wiggins", "489", null, false, false);
+		viva = new Card(SupportedCardIssuers.TWO.getIssuer(), "9999999999999999", "MONEY BAGS", "777", null, false, false);
+		cdnDep = new Card(SupportedCardIssuers.THREE.getIssuer(), "7892457826750349", "James McGill", "123", null, false, false);
+		debit = new Card(SupportedCardIssuers.FOUR.getIssuer(), "5160617843321186", "Mark Klaassen", "111", null, false, false);
 		
 		Calendar exp = Calendar.getInstance();
 		exp.set(Calendar.YEAR, 2099);

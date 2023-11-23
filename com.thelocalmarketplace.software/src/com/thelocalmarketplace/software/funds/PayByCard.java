@@ -77,7 +77,7 @@ public class PayByCard {
 
 		@Override
 		public void theDataFromACardHasBeenRead(CardData data) {	
-			card = new Card(data.getType(), data.getNumber(), data.getCardholder(), null);
+			card = new Card(data.getType(), data.getNumber(), data.getCardholder(), null, null, false, false);
 			getTransactionFromBank(card);
 		}
 

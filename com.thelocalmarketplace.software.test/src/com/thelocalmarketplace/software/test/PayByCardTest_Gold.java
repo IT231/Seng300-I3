@@ -110,10 +110,10 @@ public class PayByCardTest_Gold {
 			index ++;
 		}
 		
-		disCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "0000000000000000", "NO ONE", "000");
-		viva = new Card(SupportedCardIssuers.TWO.getIssuer(), "4504389022574000", "Stan Bozik", "343");
-		cdnDep = new Card(SupportedCardIssuers.THREE.getIssuer(), "5299445733248855", "Zach Ly", "999");
-		debit = new Card(SupportedCardIssuers.FOUR.getIssuer(), "5160617843321186", "Edmond Mark", "111");
+		disCard = new Card(SupportedCardIssuers.ONE.getIssuer(), "0000000000000000", "NO ONE", "000", null, false, false);
+		viva = new Card(SupportedCardIssuers.TWO.getIssuer(), "4504389022574000", "Stan Bozik", "343", null, false, false);
+		cdnDep = new Card(SupportedCardIssuers.THREE.getIssuer(), "5299445733248855", "Zach Ly", "999", null, false, false);
+		debit = new Card(SupportedCardIssuers.FOUR.getIssuer(), "5160617843321186", "Edmond Mark", "111", null, false, false);
 		
 		Calendar exp = Calendar.getInstance();
 		exp.set(Calendar.YEAR, 2099);
