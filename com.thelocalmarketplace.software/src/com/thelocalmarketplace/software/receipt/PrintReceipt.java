@@ -9,15 +9,19 @@ import com.jjjwelectronics.OverloadedDevice;
 import com.jjjwelectronics.printer.IReceiptPrinter;
 import com.jjjwelectronics.printer.ReceiptPrinterListener;
 import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
-/*
+
+/**
  * 
- * 
+ * @author 
+ *
  */
 public class PrintReceipt {
 	
-	public ArrayList<PrintReceiptListener> listeners = new ArrayList<>();
+	public ArrayList<ReceiptPrinterListener> listeners = new ArrayList<>();
 	private boolean isOutOfPaper = false; //Flag for running out of paper, set to false in default
 	private boolean isOutOfInk = false; //Flag for running out of ink, set to false in default
+	private boolean isLowOnPaper = false; //Flag for running low on paper, set to false in default
+	private boolean isLowOnInk = false; //Flag for running low on ink, set to false in default
 	private boolean duplicateNeeded = false; //Flag for if the receipt was not printed out fully and a duplicate is needed.
 	private String receipt; //The receipt that should be printed
 	private IReceiptPrinter printer; //The printer associated with the session;
@@ -81,8 +85,8 @@ public class PrintReceipt {
 		@Override
 		public void paperHasBeenAddedToThePrinter() {
 			isOutOfPaper = false;
-			for(PrintReceiptListener l : listeners) {
-				l.notifiyPaperRefilled();
+			for(ReceiptPrinterListener l : listeners) {
+				l.paperHasBeenAddedToThePrinter();
 			}
 			if (duplicateNeeded) {
 				// start printing duplicate copy of the receipt again if one is needed
@@ -93,8 +97,8 @@ public class PrintReceipt {
 		@Override
 		public void inkHasBeenAddedToThePrinter() {
 			isOutOfInk = false;
-			for(PrintReceiptListener l : listeners) {
-				l.notifiyInkRefilled();
+			for(ReceiptPrinterListener l : listeners) {
+				l.inkHasBeenAddedToThePrinter();
 			}
 			if (duplicateNeeded) {
 				// start printing duplicate copy of the receipt again if one is needed
@@ -114,14 +118,26 @@ public class PrintReceipt {
         	for (int i = 0, n = receipt.length() ; i < n ; i++) {
         		// Notify and break out of the printing loop if out of paper or ink
         		if (isOutOfPaper) {
-        			for(PrintReceiptListener l : listeners) {
-        				l.notifiyOutOfPaper();
+        			for(ReceiptPrinterListener l : listeners) {
+        				l.thePrinterIsOutOfPaper();
         			}
         			throw new EmptyDevice("Out of Paper");
         		}
         		if (isOutOfInk) {
-        			for(PrintReceiptListener l : listeners) {
-        				l.notifiyOutOfInk();
+        			for(ReceiptPrinterListener l : listeners) {
+        				l.thePrinterIsOutOfInk();
+        			}
+        			throw new EmptyDevice("Out of Ink");
+        		}
+        		if (isLowOnPaper) {
+        			for(ReceiptPrinterListener l : listeners) {
+        				l.thePrinterHasLowPaper();
+        			}
+        			throw new EmptyDevice("Out of Paper");
+        		}
+        		if (isLowOnInk) {
+        			for(ReceiptPrinterListener l : listeners) {
+        				l.thePrinterHasLowInk();
         			}
         			throw new EmptyDevice("Out of Ink");
         		}
@@ -129,10 +145,6 @@ public class PrintReceipt {
     			printer.print(receipt.charAt(i));
         	}
         	
-        	// If the condition is passed, then all characters were successfully printed to the receipt
-        		for(PrintReceiptListener l : listeners) {
-    				l.notifiyReceiptPrinted();
-    			}
         // The empty device exception is thrown within the loop when the printer is out of paper or ink
     	} catch (EmptyDevice e) {
 			System.err.println("There is either no ink or no paper in the printer");
@@ -146,7 +158,7 @@ public class PrintReceipt {
     /**
      * Methods for adding listeners to the PrintReceipt
      */
-	public synchronized boolean deregister(PrintReceiptListener listener) {
+	public synchronized boolean deregister(ReceiptPrinterListener listener) {
 		return listeners.remove(listener);
 	}
 
@@ -154,7 +166,7 @@ public class PrintReceipt {
 		listeners.clear();
 	}
 
-	public final synchronized void register(PrintReceiptListener listener) {
+	public final synchronized void register(ReceiptPrinterListener listener) {
 		listeners.add(listener);
 	}
 }

@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jjjwelectronics.IDevice;
+import com.jjjwelectronics.IDeviceListener;
 import com.jjjwelectronics.Mass;
+import com.jjjwelectronics.printer.ReceiptPrinterListener;
 import com.jjjwelectronics.scanner.BarcodedItem;
 import com.tdc.CashOverloadException;
 import com.tdc.DisabledException;
@@ -16,7 +19,6 @@ import com.thelocalmarketplace.software.exceptions.ProductNotFoundException;
 import com.thelocalmarketplace.software.funds.Funds;
 import com.thelocalmarketplace.software.funds.FundsListener;
 import com.thelocalmarketplace.software.receipt.PrintReceipt;
-import com.thelocalmarketplace.software.receipt.PrintReceiptListener;
 import com.thelocalmarketplace.software.weight.Weight;
 import com.thelocalmarketplace.software.weight.WeightListener;
 
@@ -92,32 +94,65 @@ public class Session {
 	}
 	
 	// Code added
-	private class PrinterListener implements PrintReceiptListener {
-
+	private class PrinterListener implements ReceiptPrinterListener {
 		@Override
-		public void notifiyOutOfPaper() {
-			block();
-		}
-
-		@Override
-		public void notifiyOutOfInk() {
-			block();
-		}
-
-		@Override
-		public void notifiyPaperRefilled() {
-			resume();
-		}
-
-		@Override
-		public void notifiyInkRefilled() {
-			resume();
-		}
-
-		@Override
-		public void notifiyReceiptPrinted() {
-			// Should notifyPaid() not wait until receipt is successfully printed to change to PRE_SESSION?
+		public void aDeviceHasBeenEnabled(IDevice<? extends IDeviceListener> device) {
 			sessionState = SessionState.PRE_SESSION;
+			
+		}
+
+		@Override
+		public void aDeviceHasBeenDisabled(IDevice<? extends IDeviceListener> device) {
+			sessionState = SessionState.BLOCKED;
+			
+		}
+
+		@Override
+		public void aDeviceHasBeenTurnedOn(IDevice<? extends IDeviceListener> device) {
+			sessionState = SessionState.PRE_SESSION;
+			
+		}
+
+		@Override
+		public void aDeviceHasBeenTurnedOff(IDevice<? extends IDeviceListener> device) {
+			sessionState = SessionState.BLOCKED;
+			
+		}
+
+		@Override
+		public void thePrinterIsOutOfPaper() {
+			block();
+			
+		}
+
+		@Override
+		public void thePrinterIsOutOfInk() {
+			block();
+			
+		}
+
+		@Override
+		public void thePrinterHasLowInk() {
+			resume();
+			
+		}
+
+		@Override
+		public void thePrinterHasLowPaper() {
+			resume();
+			
+		}
+
+		@Override
+		public void paperHasBeenAddedToThePrinter() {
+			resume();
+			
+		}
+
+		@Override
+		public void inkHasBeenAddedToThePrinter() {
+			resume();
+			
 		}
 		
 	}
