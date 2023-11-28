@@ -48,6 +48,12 @@ import managers.interfaces.IOrderManagerNotify;
 import observers.order.BarcodeScannerObserver;
 import observers.order.ScaleObserver;
 
+/**
+ * 
+ * 
+ * @author 
+ *
+ */
 public class OrderManager implements IOrderManager, IOrderManagerNotify {
 
 	// hardware references

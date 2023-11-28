@@ -71,6 +71,8 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	protected String signature;
 	protected boolean hasPaper = false;
 	protected boolean hasInk = false;
+	protected boolean lowPaper = false;
+	protected boolean lowInk = false;
 
 	/**
 	 * This controls everything relating to customer payment.
@@ -472,18 +474,31 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		sm.notifyAttendant(reason);
 	}
 
+	/**
+	 * 
+	 * @param hasPaper
+	 * @param lowPaper
+	 */
 	@Override
-	public void notifyPaper(boolean hasPaper) {
+	public void maintainPaper(boolean hasPaper, boolean lowPaper) {
 		this.hasPaper = hasPaper;
+		this.lowPaper = lowPaper;
 	}
 
+	/**
+	 * 
+	 * @param hasInk
+	 * @param lowInk
+	 */
 	@Override
-	public void notifyInk(boolean hasInk) {
+	public void maintainInk(boolean hasInk, boolean lowInk) {
 		this.hasInk = hasInk;
+		this.lowInk = lowInk;
 	}
 
 	protected boolean canPrint() {
-		return hasInk && hasPaper;
+		return hasInk && hasPaper && !lowInk && !lowPaper;
 	}
+
 
 }

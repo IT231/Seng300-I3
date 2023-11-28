@@ -54,15 +54,17 @@ public interface IPaymentManagerNotify {
 	
 	/**
 	 * Notifies the system about the paper status.
-	 *
+	 * 
 	 * @param hasPaper A boolean indicating whether there is paper available (true) or not (false).
+	 * @param lowPaper A boolean indicating whether the paper level is low (true) or not (false).
 	 */
-	void notifyPaper(boolean hasPaper);
+	void maintainPaper(boolean hasPaper, boolean lowPaper);
 	
 	/**
 	 * Notifies the system about the ink status.
-	 *
+	 * 
 	 * @param hasInk A boolean indicating whether there is ink available (true) or not (false).
+	 * @param lowInk A boolean indicating whether the ink level is low (true) or not (false).
 	 */
-	void notifyInk(boolean hasInk);
+	void maintainInk(boolean hasInk, boolean lowInk);
 }
