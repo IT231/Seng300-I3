@@ -289,6 +289,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		if (prod == null)
 			throw new IllegalArgumentException("PLU code doesn't match any known item.");
 
+		blockSession();
 		// adding the item to the order
 		products.add(prod);
 	}
