@@ -475,6 +475,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	}
 
 	/**
+	 * Sets variables: hasPaper and lowPaper
 	 * 
 	 * @param hasPaper
 	 * @param lowPaper
@@ -486,6 +487,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	}
 
 	/**
+	 * Sets variables: hasInk and lowInk
 	 * 
 	 * @param hasInk
 	 * @param lowInk
@@ -496,6 +498,11 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		this.lowInk = lowInk;
 	}
 
+	/**
+	 * Determines if receipt can be printed.
+	 * 
+	 * @return boolean on whether receipt can be printed
+	 */
 	protected boolean canPrint() {
 		return hasInk && hasPaper && !lowInk && !lowPaper;
 	}

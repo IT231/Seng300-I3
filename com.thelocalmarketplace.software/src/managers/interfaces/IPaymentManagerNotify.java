@@ -40,7 +40,6 @@ public interface IPaymentManagerNotify {
 	 * a card swipe.
 	 * 
 	 * @param the swiped card data
-	 * @return
 	 */
 	void notifyCardSwipe(CardData cardData);
 
