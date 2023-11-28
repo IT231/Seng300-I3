@@ -144,7 +144,7 @@ public class StubbedOrderManager extends OrderManager {
 	}
 
 	@Override
-	public void addItemToOrder(Item item, ScanType method) throws OperationNotSupportedException {
+	public void addItemToOrder(Item item, ScanType method) {
 		addItemToOrderCalled = true;
 		super.addItemToOrder(item, method);
 	}
@@ -190,7 +190,7 @@ public class StubbedOrderManager extends OrderManager {
 	}
 
 	@Override
-	public void removeItemFromOrder(Item item) throws OperationNotSupportedException {
+	public void removeItemFromOrder(Item item) {
 		removeItemFromOrderCalled = true;
 		super.removeItemFromOrder(item);
 	}
