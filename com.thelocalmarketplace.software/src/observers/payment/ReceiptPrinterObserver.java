@@ -47,33 +47,33 @@ public class ReceiptPrinterObserver extends AbstractDeviceObserver implements Re
 
 	@Override
 	public void thePrinterIsOutOfPaper() {
-		this.ref.notifyPaper(false);
+		this.ref.maintainPaper(false, true);
 	}
 
 	@Override
 	public void thePrinterIsOutOfInk() {
-		this.ref.notifyInk(false);
+		this.ref.maintainInk(false, true);
 	}
 
 	@Override
 	public void thePrinterHasLowInk() {
-		// TODO Auto-generated method stub
+		this.ref.maintainInk(true, true);
 
 	}
 
 	@Override
 	public void thePrinterHasLowPaper() {
-		// TODO Auto-generated method stub
+		this.ref.maintainInk(true, true);
 	}
 
 	@Override
 	public void paperHasBeenAddedToThePrinter() {
-		this.ref.notifyPaper(true);
+		this.ref.maintainPaper(true, false);
 	}
 
 	@Override
 	public void inkHasBeenAddedToThePrinter() {
-		this.ref.notifyInk(true);
+		this.ref.maintainInk(true, false);
 	}
 
 }
