@@ -336,6 +336,8 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 			throw new IllegalArgumentException("tried to remove item not in the order");
 		}
 
+		blockSession();
+		
 		// removing
 		if (this.products.remove(prod)) {
 			// TODO: nothing listens for this event (yet)
@@ -359,7 +361,9 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		if (!this.products.contains(prod)) {
 			throw new IllegalArgumentException("tried to remove item not in the order");
 		}
-
+		
+		blockSession();
+		
 		// removing
 		if (this.products.remove(prod)) {
 			// TODO: nothing listens for this event (yet)
