@@ -1,4 +1,4 @@
-package GuiForI3;
+package GUIcomponents.GuiForI3;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
