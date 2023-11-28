@@ -38,6 +38,7 @@ import com.jjjwelectronics.scanner.IBarcodeScanner;
 import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedItem;
+import com.thelocalmarketplace.hardware.PLUCodedProduct;
 import com.thelocalmarketplace.hardware.Product;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
@@ -225,7 +226,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	}
 
 	@Override
-	public void addItemToOrder(Item item, ScanType method) throws OperationNotSupportedException {
+	public void addItemToOrder(Item item, ScanType method) {
 		// checking for null
 		if (item == null) {
 			throw new IllegalArgumentException("tried to scan a null item");
@@ -240,7 +241,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		}
 
 		if (item instanceof PLUCodedItem) {
-			this.addItemToOrder((PLUCodedItem) item, method);
+			this.addItemToOrder((PLUCodedItem) item);
 		}
 
 		// check if customer wants to bag item (bulky item handler extension)
@@ -276,8 +277,21 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 * @param item   the item to add
 	 * @param method the method of scanning
 	 */
-	protected void addItemToOrder(PLUCodedItem item, ScanType method) throws OperationNotSupportedException {
-		throw new OperationNotSupportedException("adding items by PLU code is not supported yet");
+	protected void addItemToOrder(PLUCodedItem item) {
+		// checking for null
+		if (item == null)
+			throw new IllegalArgumentException("Invalid PLU Coded Item.");
+
+		// getting the item
+		PLUCodedProduct prod = ProductDatabases.PLU_PRODUCT_DATABASE.get(item.getPLUCode());
+
+		// checking for null
+		if (prod == null)
+			throw new IllegalArgumentException("PLU code doesn't match any known item.");
+
+		blockSession();
+		// adding the item to the order
+		products.add(prod);
 	}
 
 	/**
@@ -288,7 +302,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 * @throws OperationNotSupportedException
 	 */
 	@Override
-	public void removeItemFromOrder(Item item) throws OperationNotSupportedException {
+	public void removeItemFromOrder(Item item) {
 		if (item == null) {
 			throw new IllegalArgumentException("tried to remove a null item from the bagging area");
 		}
@@ -337,8 +351,23 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 *
 	 * @param item the {@link PLUCodedItem} to remove
 	 */
-	protected void removeItemFromOrder(PLUCodedItem item) throws OperationNotSupportedException {
-		throw new OperationNotSupportedException("removing PLU coded items is not supported yet");
+	protected void removeItemFromOrder(PLUCodedItem item) {
+		// getting the product
+		PLUCodedProduct prod = ProductDatabases.PLU_PRODUCT_DATABASE.get(item.getPLUCode());
+
+		// checking if the item is actually in the order
+		if (!this.products.contains(prod)) {
+			throw new IllegalArgumentException("tried to remove item not in the order");
+		}
+
+		// removing
+		if (this.products.remove(prod)) {
+			// TODO: nothing listens for this event (yet)
+			for (IOrderManagerNotify listener : listeners) {
+				listener.onItemRemovedFromOrder(item);
+			}
+
+		}
 	}
 
 	/**
