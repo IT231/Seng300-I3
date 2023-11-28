@@ -74,7 +74,7 @@ public class TestBarcodeScannerObserver {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullOrderManager() {
-		new BarcodeScannerObserver(null, machine.handheldScanner);
+		new BarcodeScannerObserver(null, machine.getHandheldScanner());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -114,8 +114,8 @@ public class TestBarcodeScannerObserver {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.mainScanner.turnOn();
-		machine.mainScanner.disable();
+		machine.getMainScanner().turnOn();
+		machine.getMainScanner().disable();
 
 		// asserting
 		assertFalse(bso.canUse());
@@ -123,8 +123,8 @@ public class TestBarcodeScannerObserver {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.mainScanner.turnOn();
-		machine.mainScanner.enable();
+		machine.getMainScanner().turnOn();
+		machine.getMainScanner().enable();
 
 		// asserting
 		assertTrue(bso.canUse());

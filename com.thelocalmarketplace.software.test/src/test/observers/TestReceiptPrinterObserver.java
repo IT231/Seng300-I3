@@ -65,7 +65,7 @@ public class TestReceiptPrinterObserver {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullPaymentManager() {
-		new ReceiptPrinterObserver(null, machine.printer);
+		new ReceiptPrinterObserver(null, machine.getPrinter());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -119,8 +119,8 @@ public class TestReceiptPrinterObserver {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.printer.turnOn();
-		machine.printer.disable();
+		machine.getPrinter().turnOn();
+		machine.getPrinter().disable();
 
 		// asserting
 		assertFalse(rpls.canUse());
@@ -128,8 +128,8 @@ public class TestReceiptPrinterObserver {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.printer.turnOn();
-		machine.printer.enable();
+		machine.getPrinter().turnOn();
+		machine.getPrinter().enable();
 
 		// asserting
 		assertTrue(rpls.canUse());

@@ -68,7 +68,7 @@ public class TestScaleObserver {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullOrderManager() {
-		new ScaleObserver(null, machine.baggingArea);
+		new ScaleObserver(null, machine.getBaggingArea());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -105,8 +105,8 @@ public class TestScaleObserver {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.baggingArea.turnOn();
-		machine.baggingArea.disable();
+		machine.getBaggingArea().turnOn();
+		machine.getBaggingArea().disable();
 
 		// asserting
 		assertFalse(so.canUse());
@@ -114,8 +114,8 @@ public class TestScaleObserver {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.baggingArea.turnOn();
-		machine.baggingArea.enable();
+		machine.getBaggingArea().turnOn();
+		machine.getBaggingArea().enable();
 
 		// asserting
 		assertTrue(so.canUse());

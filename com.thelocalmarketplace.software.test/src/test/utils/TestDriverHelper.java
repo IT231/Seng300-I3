@@ -66,10 +66,10 @@ public class TestDriverHelper {
 		list.add(coinDenominations[0]);
 
 		// asserting
-		Assert.assertArrayEquals(machine.banknoteDenominations, banknoteDenominations);
-		Assert.assertEquals(machine.coinDenominations, list);
-		Assert.assertEquals(machine.banknoteStorage.getCapacity(), banknoteStoragesize);
-		Assert.assertEquals(machine.coinDispensers.get(coinDenominations[0]).getCapacity(), coinDispenserSize);
+		Assert.assertArrayEquals(machine.getBanknoteDenominations(), banknoteDenominations);
+		Assert.assertEquals(machine.getCoinDenominations(), list);
+		Assert.assertEquals(machine.getBanknoteStorage().getCapacity(), banknoteStoragesize);
+		Assert.assertEquals(machine.getCoinDispensers().get(coinDenominations[0]).getCapacity(), coinDispenserSize);
 	}
 	
 	@Test
@@ -83,10 +83,10 @@ public class TestDriverHelper {
 		list.add(coinDenominations[0]);
 
 		// asserting
-		Assert.assertArrayEquals(machine.banknoteDenominations, banknoteDenominations);
-		Assert.assertEquals(machine.coinDenominations, list);
-		Assert.assertEquals(machine.banknoteStorage.getCapacity(), banknoteStoragesize);
-		Assert.assertEquals(machine.coinDispensers.get(coinDenominations[0]).getCapacity(), coinDispenserSize);
+		Assert.assertArrayEquals(machine.getBanknoteDenominations(), banknoteDenominations);
+		Assert.assertEquals(machine.getCoinDenominations(), list);
+		Assert.assertEquals(machine.getBanknoteStorage().getCapacity(), banknoteStoragesize);
+		Assert.assertEquals(machine.getCoinDispensers().get(coinDenominations[0]).getCapacity(), coinDispenserSize);
 	}
 	
 	@Test
@@ -100,10 +100,10 @@ public class TestDriverHelper {
 		list.add(coinDenominations[0]);
 
 		// asserting
-		Assert.assertArrayEquals(machine.banknoteDenominations, banknoteDenominations);
-		Assert.assertEquals(machine.coinDenominations, list);
-		Assert.assertEquals(machine.banknoteStorage.getCapacity(), banknoteStoragesize);
-		Assert.assertEquals(machine.coinDispensers.get(coinDenominations[0]).getCapacity(), coinDispenserSize);
+		Assert.assertArrayEquals(machine.getBanknoteDenominations(), banknoteDenominations);
+		Assert.assertEquals(machine.getCoinDenominations(), list);
+		Assert.assertEquals(machine.getBanknoteStorage().getCapacity(), banknoteStoragesize);
+		Assert.assertEquals(machine.getCoinDispensers().get(coinDenominations[0]).getCapacity(), coinDispenserSize);
 	}
 
 	@Test

@@ -68,7 +68,7 @@ public class TestCardReaderObserver {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullPaymentManager() {
-		new CardReaderObserver(null, machine.cardReader);
+		new CardReaderObserver(null, machine.getCardReader());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -101,8 +101,8 @@ public class TestCardReaderObserver {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.cardReader.turnOn();
-		machine.cardReader.disable();
+		machine.getCardReader().turnOn();
+		machine.getCardReader().disable();
 
 		// asserting
 		assertFalse(cro.canUse());
@@ -110,8 +110,8 @@ public class TestCardReaderObserver {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.cardReader.turnOn();
-		machine.cardReader.enable();
+		machine.getCardReader().turnOn();
+		machine.getCardReader().enable();
 
 		// asserting
 		assertTrue(cro.canUse());
