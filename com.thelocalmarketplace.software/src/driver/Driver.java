@@ -35,6 +35,7 @@ import com.jjjwelectronics.card.Card;
 import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
+import com.thelocalmarketplace.hardware.SelfCheckoutStationGold;
 import com.thelocalmarketplace.hardware.external.CardIssuer;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
@@ -109,9 +110,9 @@ public class Driver {
 	 * 
 	 * @throws OperationNotSupportedException this should never happen
 	 */
-	private void scanItem() throws OperationNotSupportedException {
-		System.out.println("Press Enter to Scan an Item\n" + "Note: Item is random.");
-		scanner.nextLine();
+	public void scanItem() throws OperationNotSupportedException {
+		//System.out.println("Press Enter to Scan an Item\n" + "Note: Item is random.");
+		//scanner.nextLine();// mean enter
 
 		BarcodedItem newItem = DatabaseHelper.createRandomBarcodedItem();
 		this.system.addItemToOrder(newItem, ScanType.MAIN);

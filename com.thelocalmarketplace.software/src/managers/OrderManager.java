@@ -42,6 +42,7 @@ import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedItem;
 import com.thelocalmarketplace.hardware.PLUCodedProduct;
 import com.thelocalmarketplace.hardware.Product;
+import com.thelocalmarketplace.hardware.SelfCheckoutStationGold;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
 import managers.enums.ScanType;
@@ -54,7 +55,7 @@ import observers.order.ScaleObserver;
 public class OrderManager implements IOrderManager, IOrderManagerNotify {
 
 	// hardware references
-	protected AbstractSelfCheckoutStation machine;
+	protected AbstractSelfCheckoutStation machine = new SelfCheckoutStationGold();
 
 	// object references
 	protected SystemManager sm;

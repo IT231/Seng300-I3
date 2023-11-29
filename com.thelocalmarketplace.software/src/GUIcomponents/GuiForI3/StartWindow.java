@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import driver.Driver;
+import managers.SystemManager;
+import utils.DriverHelper;
 
 public class StartWindow {
 	
@@ -40,9 +42,17 @@ public class StartWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Use this section to add code after button push
-				//Driver startdrver = new Driver(new AbstractSelfCheckoutStation);
+				//Driver startdrver = new Driver(new SelfCheckoutStation);
+				//d.main(null);
 				new MainGui();
 				startFrame.dispose(); 
+			/*	new Thread(new Runnable() {
+				     @Override
+				     public void run() {
+				    	 Driver d = new Driver(DriverHelper.chooseMachineType());
+				     }
+				}).start();*/
+				
 			}
 			
 		});
