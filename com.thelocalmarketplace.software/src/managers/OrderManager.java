@@ -25,11 +25,13 @@ package managers;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
 import com.jjjwelectronics.Item;
+import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.scale.ElectronicScaleListener;
 import com.jjjwelectronics.scale.IElectronicScale;
 import com.jjjwelectronics.scanner.Barcode;
@@ -68,6 +70,8 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	protected BigDecimal actualWeight = BigDecimal.ZERO;
 	protected boolean noBaggingRequested = false;
 	protected List<Product> products = new ArrayList<Product>();
+	// contains the total mass of products that require their specific mass for price/expected weight calculations
+	protected HashMap<Product, Mass> productsPricedByMass = new HashMap<Product, Mass>(); 
 	protected List<IOrderManagerNotify> listeners = new ArrayList<IOrderManagerNotify>();
 	protected List<IElectronicScale> overloadedScales = new ArrayList<IElectronicScale>();
 
@@ -161,6 +165,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 */
 	public BigDecimal getExpectedMass() {
 		BigDecimal total = BigDecimal.ZERO;
+		List<Product> totalMassAdded = new ArrayList<Product>(); // may check the product multiple times but only need to add mass once
 
 		for (Product i : this.products) {
 			// checking for null
@@ -174,8 +179,15 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 				total = total.add(new BigDecimal(temp.getExpectedWeight()));
 				continue;
 			}
+			
+			// if its a PLUCodedProduct, we get the mass from productsPricedByMass hashmap
+			if (i instanceof PLUCodedProduct && !totalMassAdded.contains(i)) {
+				total = total.add(productsPricedByMass.get(i).inGrams());
+				totalMassAdded.add(i);
+				continue;
+			}
 
-			throw new UnsupportedOperationException("cannot calculate mass of a non-barcoded product");
+			throw new UnsupportedOperationException("cannot calculate mass of a product without a mass");
 		}
 
 		return total;
@@ -199,10 +211,18 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		this.adjustment = a;
 	}
 
+	/**
+	 * Gets the total price of the order.
+	 * Operates under the following assumptions:
+	 * 	1. BarcodedItems are always sold per unit
+	 *  2. PLUCodedItems are always sold by mass
+	 * If either of the assumptions are untrue in the future, this method will need to be updated.
+	 */
 	@Override
 	public BigDecimal getTotalPrice() throws IllegalArgumentException {
 		BigDecimal total = BigDecimal.ZERO;
-
+		List<Product> totalPriceAdded = new ArrayList<Product>(); // may check the product multiple times but only need to add price once
+		
 		for (Product i : this.products) {
 			// checking for null
 			if (i == null) {
@@ -210,10 +230,25 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 			}
 
 			// calculating the price for a barcodeditem
-			if (i instanceof BarcodedProduct) {
+			if (i instanceof BarcodedProduct && i.isPerUnit()) {
 				// barcodeditems are always sold per unit, therefore we can just add the price
 				// directly
 				total = total.add(new BigDecimal(i.getPrice()));
+				continue;
+			}
+			
+			// calculating the price of items which are priced by mass
+			if (i instanceof PLUCodedProduct && !i.isPerUnit() && !totalPriceAdded.contains(i)) {
+				if (!productsPricedByMass.containsKey(i)) {
+					throw new IllegalArgumentException("An item priced per mass is added to products but not added to productsPriceByMass.");
+				}
+				
+				Mass totalItemMass = productsPricedByMass.get(i);
+				BigDecimal pricePerKilogram = new BigDecimal(i.getPrice());
+				// totalItemPrice = (totalMassInGrams / 1000) * pricePerKilogram
+				BigDecimal totalItemPrice = totalItemMass.inGrams().divide(new BigDecimal(1000)).multiply(pricePerKilogram);
+				total = total.add(totalItemPrice);
+				totalPriceAdded.add(i);
 				continue;
 			}
 
@@ -292,6 +327,16 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		blockSession();
 		// adding the item to the order
 		products.add(prod);
+		
+		// adding the product as priced by mass if specified in the product database
+		if (!prod.isPerUnit()) {
+			if (productsPricedByMass.containsKey(prod)) {
+				Mass currentTotalMass = productsPricedByMass.get(prod);
+				productsPricedByMass.put(prod, currentTotalMass.sum(item.getMass()));
+			} else {
+				productsPricedByMass.put(prod, item.getMass());
+			}
+		}
 	}
 
 	/**
@@ -363,6 +408,24 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		}
 		
 		blockSession();
+		
+		// Reduce the total mass of the product in the productsPircedByMass hashmap if
+		// the product is priced by mass
+		if (!prod.isPerUnit()) {
+			if (productsPricedByMass.containsKey(prod)) {
+				// check if we need to reduce the mass or remove the key
+				if (item.getMass().compareTo(productsPricedByMass.get(prod)) == -1) {
+					// mass being removed is less than the total mass of the hashmap value
+					Mass massBeingRemoved = item.getMass();
+					productsPricedByMass.put(prod, productsPricedByMass.get(prod).difference(massBeingRemoved).abs());
+				} else {
+					// mass being removed is greater than or equal to the total mass of the hashmap value
+					productsPricedByMass.remove(prod);
+				}
+			} else {
+				throw new IllegalArgumentException("tried to remove item which is not in the productPricedByMass hashmap.");
+			}
+		}
 		
 		// removing
 		if (this.products.remove(prod)) {
