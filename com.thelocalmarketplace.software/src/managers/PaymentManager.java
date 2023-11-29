@@ -73,6 +73,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	protected boolean hasInk = false;
 	protected boolean lowPaper = false;
 	protected boolean lowInk = false;
+	private boolean canPrint = true;
 
 	/**
 	 * This controls everything relating to customer payment.
@@ -411,13 +412,26 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		}
 
 		// ensuring that the printer can print
-		if (!canPrint()) {
-			// Notify the attendant and block the session
-			sm.notifyAttendant("Machine could not print receipt in full. Printer is empty.");
+		if (!canPrint) {
+			// Notify the attendant of what the printer needs
+			if(!hasInk && !hasPaper) {
+				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink and paper.");
+			}else if(!hasInk) {
+				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink.");
+			}else if(!hasPaper) {
+				sm.notifyAttendant("Machine could not print receipt in full. Printer requires paper.");
+			}
+			//block the session
 			sm.blockSession();
 			return;
 		}
 
+		if(lowInk) {
+			sm.notifyAttendant("The printer is low on ink.");
+		} else if(lowPaper) {
+			sm.notifyAttendant("The printer is low on paper.");
+		}
+		
 		// printing the receipt
 		try {
 			printLine("----- Receipt -----\n");
@@ -500,12 +514,19 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 
 	/**
 	 * Determines if receipt can be printed.
-	 * 
-	 * @return boolean on whether receipt can be printed
 	 */
-	protected boolean canPrint() {
-		return hasInk && hasPaper && !lowInk && !lowPaper;
+	protected void checkPrint() {
+		if(!hasInk || !hasPaper) {
+			setCanPrint(false);
+		}
+	}
+	
+	public void setCanPrint(boolean print){
+		this.canPrint = print;
 	}
 
+	public boolean getCanPrint(){
+		return canPrint;
+	}
 
 }
