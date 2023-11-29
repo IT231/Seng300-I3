@@ -1,5 +1,25 @@
-// Liam Major 30223023
-//Jason Very 30222040
+// Aleksandr Sokolov (30191754)
+// Azariah Francisco (30085863)
+// Brandon Smith (30141515)
+// Carlos Serrouya (30192761)
+// Diego de Jaraiz (30176017)
+// Emily Willams (30122865)
+// Evan Ficzere (30192404)
+// Jaden Taylor (30113034)
+// Joshua Bourchier (30194364)
+// Justine Mangaliman (30164741)
+// Kaelin Good (30092239)
+// Laura Yang（30156356)
+// Myra Latif (30171760)
+// Noelle Thundathil (30115430)
+// Raj Rawat (30173990)
+// Roshan Patel (30184010)
+// Sam Fasakin (30161903)
+// Simon Bondad (30163401)
+// Simon Oseen (30144175)
+// Sohaib Zia (30160114)
+// Sunny Hoang (30170708)
+// Yasemin Khanmoradi (30066537)
 
 package test.observers;
 
@@ -44,12 +64,12 @@ public class TestBanknoteCollector {
 		sm.configure(machine);
 
 		bc = pm.getBanknoteCollector();
-		machine.banknoteValidator.disable(); // the component is enabled by default, OK
+		machine.getBanknoteValidator().disable(); // the component is enabled by default, OK
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullPaymentManager() {
-		new BanknoteCollector(null, machine.banknoteValidator);
+		new BanknoteCollector(null, machine.getBanknoteValidator());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -82,7 +102,7 @@ public class TestBanknoteCollector {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.banknoteValidator.activate();
+		machine.getBanknoteValidator().activate();
 
 		// asserting
 		assertFalse(bc.canUse());
@@ -90,8 +110,8 @@ public class TestBanknoteCollector {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.banknoteValidator.activate();
-		machine.banknoteValidator.enable();
+		machine.getBanknoteValidator().activate();
+		machine.getBanknoteValidator().enable();
 
 		// asserting
 		assertTrue(bc.canUse());

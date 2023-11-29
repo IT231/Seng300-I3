@@ -1,5 +1,26 @@
-// Liam Major 30223023
-// Jason Very 30222040
+// Aleksandr Sokolov (30191754)
+// Azariah Francisco (30085863)
+// Brandon Smith (30141515)
+// Carlos Serrouya (30192761)
+// Diego de Jaraiz (30176017)
+// Emily Willams (30122865)
+// Evan Ficzere (30192404)
+// Jaden Taylor (30113034)
+// Joshua Bourchier (30194364)
+// Justine Mangaliman (30164741)
+// Kaelin Good (30092239)
+// Laura Yang（30156356)
+// Myra Latif (30171760)
+// Noelle Thundathil (30115430)
+// Raj Rawat (30173990)
+// Roshan Patel (30184010)
+// Sam Fasakin (30161903)
+// Simon Bondad (30163401)
+// Simon Oseen (30144175)
+// Sohaib Zia (30160114)
+// Sunny Hoang (30170708)
+// Yasemin Khanmoradi (30066537)
+
 package test.managers.payment;
 
 import static org.junit.Assert.assertFalse;
@@ -102,11 +123,11 @@ public class TestTenderChange {
 	public void testNotEnoughChangeInMachine()
 			throws CashOverloadException, DisabledException, RuntimeException, NoCashAvailableException {
 		// Load machine with 2 dollar coin
-		BigDecimal twoDenom = this.machine.coinDenominations.get(5);
-		coinDispenser = this.machine.coinDispensers.get(twoDenom);
+		BigDecimal twoDenom = this.machine.getCoinDenominations().get(5);
+		coinDispenser = this.machine.getCoinDispensers().get(twoDenom);
 		coinDispenser.load(twoDollar);
 
-		this.machine.banknoteInput.receive(fiftyNote);
+		this.machine.getBanknoteInput().receive(fiftyNote);
 
 		this.pm.tenderChange();
 
@@ -117,14 +138,14 @@ public class TestTenderChange {
 			DisabledException, RuntimeException, NoCashAvailableException {
 
 		// Load machine with 2 dollar coins
-		BigDecimal denomination = this.machine.coinDenominations.get(5);
-		coinDispenser = this.machine.coinDispensers.get(denomination);
+		BigDecimal denomination = this.machine.getCoinDenominations().get(5);
+		coinDispenser = this.machine.getCoinDispensers().get(denomination);
 		for (int i = 0; i < 10; i++) {
 			coinDispenser.load(twoDollar);
 		}
 		// Receives $10 from customer
 		for (int i = 0; i < 5; i++) {
-			this.machine.coinSlot.receive(twoDollar);
+			this.machine.getCoinSlot().receive(twoDollar);
 		}
 
 		// No Change to give back, should return true
@@ -139,12 +160,12 @@ public class TestTenderChange {
 			RuntimeException, NoCashAvailableException {
 
 		// Load machine with 2 dollar coins
-		BigDecimal denomination = this.machine.coinDenominations.get(5);
-		coinDispenser = this.machine.coinDispensers.get(denomination);
+		BigDecimal denomination = this.machine.getCoinDenominations().get(5);
+		coinDispenser = this.machine.getCoinDispensers().get(denomination);
 		for (int i = 0; i < 10; i++) {
 			coinDispenser.load(twoDollar);
 		}
-		this.machine.banknoteInput.receive(twentyNote);
+		this.machine.getBanknoteInput().receive(twentyNote);
 
 		// Change should be dispensed
 		assertTrue("Change was dispensed", this.pm.tenderChange());
@@ -154,12 +175,12 @@ public class TestTenderChange {
 	public void testPaymentLessThanPrice()
 			throws CashOverloadException, DisabledException, RuntimeException, NoCashAvailableException {
 		// Load machine with 2 dollar coins
-		BigDecimal denomination = this.machine.coinDenominations.get(5);
-		coinDispenser = this.machine.coinDispensers.get(denomination);
+		BigDecimal denomination = this.machine.getCoinDenominations().get(5);
+		coinDispenser = this.machine.getCoinDispensers().get(denomination);
 		for (int i = 0; i < 10; i++) {
 			coinDispenser.load(twoDollar);
 		}
-		this.machine.banknoteInput.receive(fiveNote);
+		this.machine.getBanknoteInput().receive(fiveNote);
 		this.pm.tenderChange();
 	}
 
@@ -168,18 +189,18 @@ public class TestTenderChange {
 			throws CashOverloadException, DisabledException, RuntimeException, NoCashAvailableException {
 
 		// load machine with five dollar bills
-		BigDecimal fiveDenom = this.machine.banknoteDenominations[0];
-		banknoteDispenser = this.machine.banknoteDispensers.get(fiveDenom);
+		BigDecimal fiveDenom = this.machine.getBanknoteDenominations()[0];
+		banknoteDispenser = this.machine.getBanknoteDispensers().get(fiveDenom);
 		for (int i = 0; i < 10; i++) {
 			banknoteDispenser.load(fiveNote);
 		}
 		// load machine with twenty dollar bills
-		BigDecimal twentyDenom = this.machine.banknoteDenominations[3];
-		banknoteDispenser = this.machine.banknoteDispensers.get(twentyDenom);
+		BigDecimal twentyDenom = this.machine.getBanknoteDenominations()[3];
+		banknoteDispenser = this.machine.getBanknoteDispensers().get(twentyDenom);
 
 		banknoteDispenser.load(twentyNote);
 
-		this.machine.banknoteInput.receive(fiftyNote);
+		this.machine.getBanknoteInput().receive(fiftyNote);
 		assertTrue(this.pm.tenderChange());
 
 	}
@@ -189,17 +210,17 @@ public class TestTenderChange {
 			throws CashOverloadException, DisabledException, RuntimeException, NoCashAvailableException {
 
 		// Load machine with 2 dollar coin
-		coinDispenser = this.machine.coinDispensers.get(new BigDecimal(2));
+		coinDispenser = this.machine.getCoinDispensers().get(new BigDecimal(2));
 		coinDispenser.load(twoDollar);
 
 		// Load machine with 1 dollar coins
-		coinDispenser = this.machine.coinDispensers.get(new BigDecimal(1));
+		coinDispenser = this.machine.getCoinDispensers().get(new BigDecimal(1));
 		for (int i = 0; i < 10; i++) {
 			coinDispenser.load(oneDollar);
 		}
 
 		// inputting a $20 bill
-		this.machine.banknoteInput.receive(twentyNote);
+		this.machine.getBanknoteInput().receive(twentyNote);
 
 		// need to update the payment so we don't trigger the wrong error
 		pm.setPayment(2 + (1 * 10));
@@ -212,15 +233,15 @@ public class TestTenderChange {
 			throws CashOverloadException, DisabledException, RuntimeException, NoCashAvailableException {
 
 		// Load machine with 2 dollar coins
-		BigDecimal denomination = this.machine.coinDenominations.get(5);
-		coinDispenser = this.machine.coinDispensers.get(denomination);
+		BigDecimal denomination = this.machine.getCoinDenominations().get(5);
+		coinDispenser = this.machine.getCoinDispensers().get(denomination);
 		for (int i = 0; i < 10; i++) {
 			coinDispenser.load(twoDollar);
 		}
 
 		// Receives $10 from customer
 		for (int i = 0; i < 6; i++) {
-			this.machine.coinSlot.receive(twoDollar);
+			this.machine.getCoinSlot().receive(twoDollar);
 		}
 		this.coinDispenser.disable();
 
@@ -236,12 +257,12 @@ public class TestTenderChange {
 			throws CashOverloadException, DisabledException, RuntimeException, NoCashAvailableException {
 
 		// load machine with five dollar bills
-		BigDecimal fiveDenom = this.machine.banknoteDenominations[0];
-		banknoteDispenser = this.machine.banknoteDispensers.get(fiveDenom);
+		BigDecimal fiveDenom = this.machine.getBanknoteDenominations()[0];
+		banknoteDispenser = this.machine.getBanknoteDispensers().get(fiveDenom);
 		for (int i = 0; i < 10; i++) {
 			banknoteDispenser.load(fiveNote);
 		}
-		this.machine.banknoteInput.receive(twentyNote);
+		this.machine.getBanknoteInput().receive(twentyNote);
 
 		this.banknoteDispenser.disable();
 		// Change should not be emitted

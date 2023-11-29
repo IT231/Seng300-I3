@@ -1,4 +1,25 @@
-// Liam Major 30223023
+// Aleksandr Sokolov (30191754)
+// Azariah Francisco (30085863)
+// Brandon Smith (30141515)
+// Carlos Serrouya (30192761)
+// Diego de Jaraiz (30176017)
+// Emily Willams (30122865)
+// Evan Ficzere (30192404)
+// Jaden Taylor (30113034)
+// Joshua Bourchier (30194364)
+// Justine Mangaliman (30164741)
+// Kaelin Good (30092239)
+// Laura Yang（30156356)
+// Myra Latif (30171760)
+// Noelle Thundathil (30115430)
+// Raj Rawat (30173990)
+// Roshan Patel (30184010)
+// Sam Fasakin (30161903)
+// Simon Bondad (30163401)
+// Simon Oseen (30144175)
+// Sohaib Zia (30160114)
+// Sunny Hoang (30170708)
+// Yasemin Khanmoradi (30066537)
 
 package test.managers.payment;
 
@@ -70,8 +91,8 @@ public class TestPrintReceipt {
 	@Test
 	public void testPrintLineWithLineTooLong() throws OverloadedDevice {
 		// loading the machine with paper
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// creating a string that's too big for the printer
 		StringBuilder sb = new StringBuilder();
@@ -94,8 +115,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptRunsOutOfPaperBlocks() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(1);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(1);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
@@ -114,8 +135,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptRunsOutOfInkBlocks() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(1);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(1);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
@@ -134,8 +155,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptWithCard() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
@@ -154,8 +175,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptWithoutCard() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
