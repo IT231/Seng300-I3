@@ -50,6 +50,7 @@ import managers.interfaces.IOrderManager;
 import managers.interfaces.IOrderManagerNotify;
 import observers.order.BarcodeScannerObserver;
 import observers.order.ScaleObserver;
+import utils.DatabaseHelper;
 
 public class OrderManager implements IOrderManager, IOrderManagerNotify {
 
@@ -336,6 +337,27 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 			} else {
 				productsPricedByMass.put(prod, item.getMass());
 			}
+		}
+	}
+	
+	protected boolean searchForItem(String itemName) {
+		String lowercaseItem = itemName.toLowerCase();
+		String[] items = DatabaseHelper.getLowercaseItemsInDatabase();
+		
+		for (String item : items) {
+			if (item == itemName) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	protected void addItemToOrder(String itemName) {
+		if (searchForItem(itemName)) {
+			
+		} else {
+			System.out.println("Item not found!");
 		}
 	}
 

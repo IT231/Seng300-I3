@@ -61,6 +61,7 @@ public class Driver {
 	private AbstractSelfCheckoutStation machine;
 	private CardIssuer cardIssuer;
 	private static Scanner scanner = new Scanner(System.in);
+	private String[] itemsInDatabase = DatabaseHelper.getItemsInDatabase();
 
 	// vars
 	private List<Item> items;
@@ -212,6 +213,10 @@ public class Driver {
 		}
 
 		System.out.println("Session ended. Have a nice day!");
+	}
+	
+	private void searchForItem() {
+		
 	}
 
 	/**

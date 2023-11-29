@@ -48,6 +48,27 @@ public class DatabaseHelper {
 	private static Random random = new Random();
 
 	public static final int DEFAULT_BARCODE_LENGTH = 10;
+	
+	/**
+	 * Returns all the items in the database.
+	 * @return the items in the database.
+	 */
+	public static String[] getItemsInDatabase() {
+		return names;
+	}
+	
+	/**
+	 * Returns all the items in the database, in lowercase.
+	 * @return the items in the database
+	 */
+	public static String[] getLowercaseItemsInDatabase() {
+		String[] lowercaseNames = new String[names.length];
+		for (int i = 0; i < names.length; i++) {
+			lowercaseNames[i] = names[i].toLowerCase(); 
+		}
+		
+		return lowercaseNames;
+	}
 
 	/**
 	 * Creates a randomized mass between 0.1 (inclusive) and 1.1 (exclusive), scaled
@@ -107,6 +128,16 @@ public class DatabaseHelper {
 		name += names[DatabaseHelper.random.nextInt(DatabaseHelper.names.length)];
 
 		return name;
+	}
+	
+	public static String addRandomAdjectiveToName(String name) {
+		String newName;
+		
+		newName = adjectives[DatabaseHelper.random.nextInt(DatabaseHelper.adjectives.length)];
+		newName += " ";
+		newName += name;
+		
+		return newName;
 	}
 
 	/**
