@@ -412,7 +412,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		}
 
 		// ensuring that the printer can print
-		if (!canPrint) {
+		if (!getCanPrint()) {
 			// Notify the attendant of what the printer needs
 			if(!hasInk && !hasPaper) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink and paper.");
@@ -521,10 +521,18 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		}
 	}
 	
+	/**
+	 * Sets the boolean canPrint
+	 * @param print boolean to set canPrint to
+	 */
 	public void setCanPrint(boolean print){
 		this.canPrint = print;
 	}
 
+	/**
+	 * Retrieves the value of canPrint
+	 * @return the value of canPrint
+	 */
 	public boolean getCanPrint(){
 		return canPrint;
 	}
