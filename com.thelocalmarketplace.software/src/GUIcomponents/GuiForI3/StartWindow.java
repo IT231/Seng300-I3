@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import driver.Driver;
+
 public class StartWindow {
 	
 	private JFrame startFrame;
@@ -37,7 +39,8 @@ public class StartWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// Use this section to add code after button push
+				//Driver startdrver = new Driver(new AbstractSelfCheckoutStation);
 				new MainGui();
 				startFrame.dispose(); 
 			}

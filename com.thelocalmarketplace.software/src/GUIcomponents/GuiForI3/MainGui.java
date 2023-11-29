@@ -37,7 +37,7 @@ private JFrame MainFrame;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// Use this section to add code after button push
 				new PayGui();
 				//startFrame.dispose(); 
 			}
@@ -50,7 +50,7 @@ private JFrame MainFrame;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// Use this section to add code after button push
 				new addItemGui();
 				//startFrame.dispose(); 
 			}
@@ -63,8 +63,8 @@ private JFrame MainFrame;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				//new removeItemGui();
+				// Use this section to add code after button push
+				new removeItemGUI();
 				//startFrame.dispose(); 
 			}
 			
