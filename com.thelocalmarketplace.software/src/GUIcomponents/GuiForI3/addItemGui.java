@@ -17,22 +17,24 @@ import driver.Driver;
 import managers.enums.ScanType;
 import utils.DriverHelper;
 
-public class addItemGui extends JFrame implements ActionListener {
+public class addItemGui extends Simulation implements ActionListener {
 	
 	public static final String SCAN_BARCODED_ITEM = "barcoded";
 	public static final String ADD_PLUCODED_ITEM = "plu";
+	private JFrame addItemGui;
 
 	addItemGui() {
 		initialize();
 	}
 	
 	public void initialize() {
-		setLayout(new BorderLayout(10, 5));
-		setTitle("payPage");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(500,400);
-		setLocationRelativeTo(null);
-		setVisible(true);
+		addItemGui = new JFrame();
+		addItemGui.setLayout(new BorderLayout(10, 5));
+		this.addItemGui.setTitle("Pay by Cash page");
+		this.addItemGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.addItemGui.setSize(500,400);
+		this.addItemGui.setLocationRelativeTo(null);
+		this.addItemGui.setVisible(true);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
@@ -49,7 +51,7 @@ public class addItemGui extends JFrame implements ActionListener {
 		addItembyitemlookupbutton.addActionListener(this);
 		panel.add(addItembyitemlookupbutton);
 		
-		add(panel, BorderLayout.CENTER);
+		addItemGui.add(panel, BorderLayout.CENTER);
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public class addItemGui extends JFrame implements ActionListener {
 //				e1.printStackTrace();
 //				System.out.println("this is called");
 //			}
-			dispose(); 
+			addItemGui.dispose(); 
 			
 		} else if (command.equals(ADD_PLUCODED_ITEM)) {
 			

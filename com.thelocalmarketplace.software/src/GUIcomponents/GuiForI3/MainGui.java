@@ -8,26 +8,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-public class MainGui extends JFrame implements ActionListener {
+public class MainGui extends Simulation implements ActionListener {
 
 	public static final String PAY = "pay";
 	public static final String ADD_ITEM = "add_item";
 	public static final String REMOVE_ITEM = "remove_item";
+	private JFrame MainGui;
 	
 	MainGui() {
 		initialize();
 	}
 	
 	public void initialize() {
-		setLayout(new BorderLayout(10, 5));
-		setTitle("mainPage");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(500,400);
-		setLocationRelativeTo(null);
-		setVisible(true);
+		MainGui = new JFrame();
+		MainGui.setLayout(new BorderLayout(10, 5));
+		this.MainGui.setTitle("Pay by Cash page");
+		this.MainGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.MainGui.setSize(500,400);
+		this.MainGui.setLocationRelativeTo(null);
+		this.MainGui.setVisible(true);
 		
+		// this section of panel is for control buttons
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		
@@ -47,7 +52,16 @@ public class MainGui extends JFrame implements ActionListener {
 		removeitembutton.setActionCommand(REMOVE_ITEM);
 		removeitembutton.addActionListener(this);
 		panel.add(removeitembutton);
-		add(panel, BorderLayout.CENTER);
+		MainGui.add(panel, BorderLayout.CENTER);
+		
+		//this section is to display added items and current price
+		JPanel displayplanel = new JPanel();
+		//JList bagarea = new JList();
+		displayplanel.add(new JScrollPane());
+		displayplanel.setBackground(Color.red);
+		MainGui.add(displayplanel, BorderLayout.WEST);
+		
+		
 	}
 
 	@Override

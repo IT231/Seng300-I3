@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 // this one show recipt and take back to startwindow
-public class ReciptGui {
+public class ReciptGui extends Simulation {
 private JFrame startFrame;
 	
 	ReciptGui() {

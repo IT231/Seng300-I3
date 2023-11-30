@@ -15,6 +15,7 @@ import com.thelocalmarketplace.hardware.PriceLookUpCode;
 import com.thelocalmarketplace.hardware.SelfCheckoutStationGold;
 import com.thelocalmarketplace.hardware.external.CardIssuer;
 import managers.OrderManager;
+import managers.PaymentManager;
 import managers.SystemManager;
 import powerutility.PowerGrid;
 import utils.CardHelper;
@@ -24,6 +25,7 @@ public class Simulation {
 	public static OrderManager orderManager;
 	public static SystemManager systemManager;
 	public static CardIssuer cardIssuer;
+	public static PaymentManager payman;
 	public static ArrayList<SimulationItem> itemsToAdd = new ArrayList<SimulationItem>();
 	
 	static void start() {
@@ -31,6 +33,8 @@ public class Simulation {
 		cardIssuer = CardHelper.createCardIssuer();
 		systemManager = new SystemManager(cardIssuer, BigDecimal.ONE);
 		systemManager.configure(station);
+		payman = new PaymentManager(systemManager, cardIssuer);
+		payman.configure(station);
 		PowerGrid.engageUninterruptiblePowerSource();
 
 		// plug in and turn on the machine
