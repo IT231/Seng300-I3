@@ -3,8 +3,11 @@ package GUIcomponents.GuiForI3;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+
+
 import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.Numeral;
+import com.jjjwelectronics.card.Card;
 import com.jjjwelectronics.scanner.Barcode;
 import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
@@ -27,6 +30,7 @@ public class Simulation {
 	public static CardIssuer cardIssuer;
 	public static PaymentManager payman;
 	public static ArrayList<SimulationItem> itemsToAdd = new ArrayList<SimulationItem>();
+	//public static Card card;
 	
 	static void start() {
 		station = new SelfCheckoutStationGold();
@@ -35,6 +39,7 @@ public class Simulation {
 		systemManager.configure(station);
 		payman = new PaymentManager(systemManager, cardIssuer);
 		payman.configure(station);
+	//	card = new Card("credit", "111111111", "Bob Bob", "123", "1234", true, true);
 		PowerGrid.engageUninterruptiblePowerSource();
 
 		// plug in and turn on the machine
@@ -62,4 +67,9 @@ public class Simulation {
 		PLUCodedProduct orangesProduct = new PLUCodedProduct(orangesPLUCode, "One or more oranges.", 1);
 		itemsToAdd.add(new SimulationItem(orangesItem, orangesProduct));
 	}
+	
+	//public Card cardgetter() {
+	//	return card;
+		
+	//}
 }

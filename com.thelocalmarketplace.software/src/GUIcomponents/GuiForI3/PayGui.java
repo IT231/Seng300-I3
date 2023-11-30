@@ -6,10 +6,13 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.naming.OperationNotSupportedException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import com.jjjwelectronics.card.Card;
 
 public class PayGui extends Simulation {
 	
@@ -33,26 +36,61 @@ public class PayGui extends Simulation {
 		
 		panel.setBackground(Color.red);
 		
-		Button paybytapbutton = new Button("Pay by tap"); // got to add on click start sesion and switch to main window
+		Button paybytapbutton = new Button("Pay by tap"); // since there is no tapcode in payment manager just reusing swipe
+		paybytapbutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Use this section to add code after button push
+				try {
+					payman.swipeCard(new Card("credit", "111111111", "Bob Bob", "123", "1234", true, true)); // this just re uses swipe code
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			
+		});
 		panel.add(paybytapbutton);
 		
-		Button paybyswipebutton = new Button("pay by swipe"); // got to add on click start sesion and switch to main window
+		Button paybyswipebutton = new Button("pay by swipe"); // this should work just need to add the payment checker stuff
 		paybyswipebutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Use this section to add code after button push
-				
+				try {
+					payman.swipeCard(new Card("credit", "111111111", "Bob Bob", "123", "1234", true, true)); // this should be a good card
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 			
 		});
 		panel.add(paybyswipebutton);
 		
-		Button paybyinsertbutton = new Button("pay by insert"); // got to add on click start sesion and switch to main window
+		Button paybyinsertbutton = new Button("pay by insert"); // no insert code just reusing swipe again
+		paybytapbutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Use this section to add code after button push
+				try {
+					payman.swipeCard(new Card("credit", "111111111", "Bob Bob", "123", "1234", true, true)); // this just re uses swipe code
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			
+		});
 		panel.add(paybyinsertbutton);
 		
-		Button paybycoinbutton = new Button("pay by coin"); // got to add on click start sesion and switch to main window
+		Button paybycoinbutton = new Button("pay by coin/cash"); // switchs to coin gui
 		paybycoinbutton.addActionListener(new ActionListener() {
 
 			@Override
@@ -65,8 +103,20 @@ public class PayGui extends Simulation {
 		});
 		panel.add(paybycoinbutton);
 		
-		Button paybybillbutton = new Button("pay by bill"); // got to add on click start sesion and switch to main window
-		panel.add(paybybillbutton);
+		
+		Button closebutton = new Button("Close pay"); // closes the pay gui need to add session changer stuff
+		paybytapbutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Use this section to add code after button push
+				payFrame.dispose();
+				
+			}
+			
+		});
+		panel.add(paybyinsertbutton);
+		
 		
 		
 		payFrame.add(panel, BorderLayout.CENTER);
