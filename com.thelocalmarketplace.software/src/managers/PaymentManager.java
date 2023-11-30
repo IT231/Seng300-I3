@@ -69,8 +69,8 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	// vars
 	protected BigDecimal payment = BigDecimal.ZERO;
 	protected String signature;
-	protected boolean hasPaper = false;
-	protected boolean hasInk = false;
+	protected boolean hasPaper = true;
+	protected boolean hasInk = true;
 	protected boolean lowPaper = false;
 	protected boolean lowInk = false;
 	private boolean canPrint = true;
@@ -415,11 +415,11 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		if (!getCanPrint()) {
 			// Notify the attendant of what the printer needs
 			if(!hasInk && !hasPaper) {
-				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink and paper.");
+				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink and paper. Duplicate receipt needed.");
 			}else if(!hasInk) {
-				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink.");
+				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink. Duplicate receipt needed.");
 			}else if(!hasPaper) {
-				sm.notifyAttendant("Machine could not print receipt in full. Printer requires paper.");
+				sm.notifyAttendant("Machine could not print receipt in full. Printer requires paper. Duplicate receipt needed.");
 			}
 			//block the session
 			sm.blockSession();
@@ -490,12 +490,10 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 
 	/**
 	 * Sets variables: hasPaper and lowPaper
-	 * 
-	 * @param hasPaper
-	 * @param lowPaper
+	 * @param hasPaper boolean indicating whether printer has paper.
+	 * @param lowPaper boolean indicating whether printer is low on paper.
 	 */
-	@Override
-	public void maintainPaper(boolean hasPaper, boolean lowPaper) {
+	public void modifyPaper(boolean hasPaper, boolean lowPaper) {
 		this.hasPaper = hasPaper;
 		this.lowPaper = lowPaper;
 	}
@@ -503,11 +501,10 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	/**
 	 * Sets variables: hasInk and lowInk
 	 * 
-	 * @param hasInk
-	 * @param lowInk
+	 * @param hasInk boolean indicating whether printer has ink.
+	 * @param lowInk boolean indicating whether printer is low on ink.
 	 */
-	@Override
-	public void maintainInk(boolean hasInk, boolean lowInk) {
+	public void modifyInk(boolean hasInk, boolean lowInk) {
 		this.hasInk = hasInk;
 		this.lowInk = lowInk;
 	}
@@ -535,6 +532,20 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 */
 	public boolean getCanPrint(){
 		return canPrint;
+	}
+	
+	/**
+	 * Updates system to account for ink being added to printer.
+	 */
+	public void inkAdded() {
+		modifyInk(true, false);
+	}
+	
+	/**
+	 * Updates system to account for paper being added to printer.
+	 */
+	public void paperAdded() {
+		modifyPaper(true, false);
 	}
 
 }

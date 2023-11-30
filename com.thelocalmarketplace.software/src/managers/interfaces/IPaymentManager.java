@@ -98,4 +98,20 @@ public interface IPaymentManager extends IManager {
 	 *             otherwise null).
 	 */
 	public void printReceipt(PaymentType type, Card card);
+	
+	/**
+	 * Notifies the system about the paper status.
+	 * 
+	 * @param hasPaper A boolean indicating whether there is paper available (true) or not (false).
+	 * @param lowPaper A boolean indicating whether the paper level is low (true) or not (false).
+	 */
+	void modifyPaper(boolean hasPaper, boolean lowPaper);
+	
+	/**
+	 * Notifies the system about the ink status.
+	 * 
+	 * @param hasInk A boolean indicating whether there is ink available (true) or not (false).
+	 * @param lowInk A boolean indicating whether the ink level is low (true) or not (false).
+	 */
+	void modifyInk(boolean hasInk, boolean lowInk);
 }
