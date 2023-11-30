@@ -1,45 +1,25 @@
 package GUIcomponents.GuiForI3;
 
-import javax.swing.SwingUtilities;
+import java.math.BigDecimal;
+
+import com.thelocalmarketplace.hardware.external.CardIssuer;
 
 import driver.Driver;
+import managers.PaymentManager;
+import managers.SystemManager;
 import utils.DriverHelper;
 
-
-
 public class Launcher {
-	
-	public static Driver dd; 
-
-	
-	
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				new Thread(new Runnable() {
-				     @Override
-				     public void run() {
-				    	dd = new Driver(DriverHelper.chooseMachineType());	
-				    	dd.setup();}
-				}).start();
-				
-				
-				StartWindow startframe = new StartWindow();
-				
-				    	 
-				    
-				
-				
-			}
-			
-		});
-
+	public static Driver dd = new Driver(DriverHelper.chooseMachineType());	
+	public CardIssuer cardI = new CardIssuer("BankofCanada", 10000); // this makes the card issuer
+	public SystemManager sysman = new SystemManager(cardI, new BigDecimal(2));  // dont really understand what lenecy is so i put 2
+	public PaymentManager payman = new PaymentManager(sysman, cardI);
+	GuiLauncher guil = new GuiLauncher();
+	public void main() {
+		dd.setup();
+		guil.main(null);
+		
+		
 	}
+
 }
-
-

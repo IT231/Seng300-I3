@@ -6,13 +6,21 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class paybyCashGui {
+import com.tdc.banknote.Banknote;
+import com.tdc.coin.Coin;
+
+import managers.PaymentManager;
+
+public class paybyCashGui extends Launcher {
 
 private JFrame paybyCashGui;
+
 	
 paybyCashGui() {
 		initialize();
@@ -32,12 +40,12 @@ paybyCashGui() {
 		
 		panel.setBackground(Color.gray);
 		
-		Button fiftybutton = new Button("$50"); // got to add on click start sesion and switch to main window
+		Button fiftybutton = new Button("$50"); 
 		fiftybutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(50)));
 				
 				
 			}
@@ -45,25 +53,25 @@ paybyCashGui() {
 		});
 		panel.add(fiftybutton);
 		
-		Button twentybutton = new Button("$20"); // got to add on click start sesion and switch to main window
+		Button twentybutton = new Button("$20"); 
 		twentybutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(20)));
+			
 				
 			}
 			
 		});
 		panel.add(twentybutton);
 		
-		Button tenbutton = new Button("$10"); // got to add on click start sesion and switch to main window
+		Button tenbutton = new Button("$10"); 
 		tenbutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(10)));
 				
 				
 			}
@@ -71,12 +79,12 @@ paybyCashGui() {
 		});
 		panel.add(tenbutton);
 		
-		Button fivebutton = new Button("$5"); // got to add on click start sesion and switch to main window
+		Button fivebutton = new Button("$5"); 
 		fivebutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(5)));
 				
 				
 			}
@@ -89,7 +97,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(new BigDecimal(2)));
 				
 				
 			}
@@ -101,6 +109,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				payman.insertCoin(new Coin(new BigDecimal(1)));
 				
 				
 				
@@ -113,7 +122,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(new BigDecimal(0.25)));
 				
 				
 			}
@@ -126,7 +135,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(new BigDecimal(0.1)));
 				
 				
 			}
@@ -138,7 +147,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(new BigDecimal(0.05)));
 				
 				
 			}
@@ -150,7 +159,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(new BigDecimal(0.01)));
 				
 				
 			}
@@ -158,7 +167,7 @@ paybyCashGui() {
 		});
 		
 		panel.add(dotonebutton);
-		Button closebutton = new Button("$50"); // got to add on click start sesion and switch to main window
+		Button closebutton = new Button("$close"); // this should close the coin window
 		closebutton.addActionListener(new ActionListener() {
 
 			@Override
