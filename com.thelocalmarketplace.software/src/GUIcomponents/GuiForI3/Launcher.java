@@ -24,8 +24,10 @@ public class Launcher {
 				new Thread(new Runnable() {
 				     @Override
 				     public void run() {
-				    	dd = new Driver(DriverHelper.chooseMachineType());	     }
+				    	dd = new Driver(DriverHelper.chooseMachineType());	
+				    	dd.setup();}
 				}).start();
+				
 				
 				StartWindow startframe = new StartWindow();
 				

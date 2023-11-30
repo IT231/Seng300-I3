@@ -4,11 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.naming.OperationNotSupportedException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class PayGui {
+public class PayGui extends Launcher {
 	
 	private JFrame payFrame;
 	
@@ -34,12 +37,32 @@ public class PayGui {
 		panel.add(paybytapbutton);
 		
 		Button paybyswipebutton = new Button("pay by swipe"); // got to add on click start sesion and switch to main window
+		paybyswipebutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Use this section to add code after button push
+				
+				
+			}
+			
+		});
 		panel.add(paybyswipebutton);
 		
 		Button paybyinsertbutton = new Button("pay by insert"); // got to add on click start sesion and switch to main window
 		panel.add(paybyinsertbutton);
 		
 		Button paybycoinbutton = new Button("pay by coin"); // got to add on click start sesion and switch to main window
+		paybycoinbutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new paybyCashGui();
+				payFrame.dispose();
+				
+				
+			}
+		});
 		panel.add(paybycoinbutton);
 		
 		Button paybybillbutton = new Button("pay by bill"); // got to add on click start sesion and switch to main window

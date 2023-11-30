@@ -90,6 +90,7 @@ public class Driver {
 
 	public void setup() {
 		// configuring the system
+		//System.out.println("beepbeep");
 		this.system.configure(this.machine);
 
 		// so that no power surges happen
