@@ -97,7 +97,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 		// init vars
 		setSessionState(SessionStatus.NOT_STARTED);
-		setStationState(StationStatus.ENABLED);
+		enableStation();
 		this.issuer = issuer; // a reference to the bank
 		this.records = new HashMap<>();
 
@@ -106,20 +106,6 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		this.om = new OrderManager(this, leniency);
 	}
 	
-	/**
-	 * Starts the session if the station is enabled and the session is in NOT_STARTED state
-	 */
-	public void startSession() {
-		if (getSessionState() != SessionStatus.NOT_STARTED) {
-			throw new IllegalStateException("Cannot start a session that is already active.");
-		}
-		
-		if (getStationState() == StationStatus.ENABLED) {
-			setSessionState(SessionStatus.NORMAL);
-		}
-		// Need to update GUI to say OUT OF ORDER instead of start session if station is disabled
-	}
-
 	@Override
 	public void configure(AbstractSelfCheckoutStation machine) {
 		// saving a reference
@@ -141,6 +127,35 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 		// all the managers are ready, returning true
 		return true;
+	}
+	
+	/**
+	 * Starts the session if the station is enabled and the session is in NOT_STARTED state
+	 */
+	public void startSession() {
+		if (getSessionState() != SessionStatus.NOT_STARTED) {
+			throw new IllegalStateException("Cannot start a session that is already active.");
+		}
+		
+		if (getStationState() == StationStatus.ENABLED) {
+			setSessionState(SessionStatus.NORMAL);
+		}
+		// Need to update GUI to say OUT OF ORDER instead of start session if station is disabled
+	}
+	
+	/**
+	 * Sets the stationState to enabled, allowing the session to be started
+	 */
+	public void enableStation() {
+		setStationState(StationStatus.ENABLED);
+	}
+	
+	/**
+	 * Sets the stationState to disable, disallowing the session to be started.
+	 * If called during an active session the current session will be allowed to finish.
+	 */
+	public void disableStation() {
+		setStationState(StationStatus.DISABLED);
 	}
 
 	/**
