@@ -10,22 +10,23 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MainGui {
+public class MainGui extends JFrame implements ActionListener {
 
-private JFrame MainFrame;
+	public static final String PAY = "pay";
+	public static final String ADD_ITEM = "add_item";
+	public static final String REMOVE_ITEM = "remove_item";
 	
 	MainGui() {
 		initialize();
 	}
 	
 	public void initialize() {
-		MainFrame = new JFrame();
-		MainFrame.setLayout(new BorderLayout(10, 5));
-		this.MainFrame.setTitle("mainPage");
-		this.MainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.MainFrame.setSize(500,400);
-		this.MainFrame.setLocationRelativeTo(null);
-		this.MainFrame.setVisible(true);
+		setLayout(new BorderLayout(10, 5));
+		setTitle("mainPage");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setSize(500,400);
+		setLocationRelativeTo(null);
+		setVisible(true);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
@@ -33,44 +34,33 @@ private JFrame MainFrame;
 		//panel.setBackground(Color.red);
 		
 		Button paybutton = new Button("Pay"); // got to add on click start sesion and switch to main window
-		paybutton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Use this section to add code after button push
-				new PayGui();
-				//startFrame.dispose(); 
-			}
-			
-		});
+		paybutton.setActionCommand(PAY);
+		paybutton.addActionListener(this);
 		panel.add(paybutton);
 		
 		Button additembutton = new Button("add item"); // got to add on click start sesion and switch to main window
-		additembutton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Use this section to add code after button push
-				new addItemGui();
-				//startFrame.dispose(); 
-			}
-			
-		});
+		additembutton.setActionCommand(ADD_ITEM);
+		additembutton.addActionListener(this);
 		panel.add(additembutton);
 		
-		Button removeitembuttom = new Button("remove item"); // got to add on click start sesion and switch to main window
-		removeitembuttom.addActionListener(new ActionListener() {
+		Button removeitembutton = new Button("remove item"); // got to add on click start sesion and switch to main window
+		removeitembutton.setActionCommand(REMOVE_ITEM);
+		removeitembutton.addActionListener(this);
+		panel.add(removeitembutton);
+		add(panel, BorderLayout.CENTER);
+	}
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Use this section to add code after button push
-				new removeItemGUI();
-				//startFrame.dispose(); 
-			}
-			
-		});
-		panel.add(removeitembuttom);
-		MainFrame.add(panel, BorderLayout.CENTER);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		if (PAY.equals(command)) {
+			new PayGui();
+		} else if (ADD_ITEM.equals(command)) {
+			new addItemGui();
+		} else if(REMOVE_ITEM.equals(command)) {
+			new removeItemGUI();
+		}
+		
 	}
 }
 
