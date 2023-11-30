@@ -12,6 +12,7 @@ import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedItem;
 import com.thelocalmarketplace.hardware.PLUCodedProduct;
 import com.thelocalmarketplace.hardware.PriceLookUpCode;
+import com.thelocalmarketplace.hardware.SelfCheckoutStationGold;
 import com.thelocalmarketplace.hardware.external.CardIssuer;
 import managers.OrderManager;
 import managers.SystemManager;
@@ -23,9 +24,10 @@ public class Simulation {
 	public static OrderManager orderManager;
 	public static SystemManager systemManager;
 	public static CardIssuer cardIssuer;
-	public static ArrayList<SimulationItem> itemsToAdd;
+	public static ArrayList<SimulationItem> itemsToAdd = new ArrayList<SimulationItem>();
 	
-	static {
+	static void start() {
+		station = new SelfCheckoutStationGold();
 		cardIssuer = CardHelper.createCardIssuer();
 		systemManager = new SystemManager(cardIssuer, BigDecimal.ONE);
 		systemManager.configure(station);
