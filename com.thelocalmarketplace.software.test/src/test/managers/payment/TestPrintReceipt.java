@@ -85,7 +85,7 @@ public class TestPrintReceipt {
 		sm.configure(machine);
 		
 		// setting the state of the machine
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CARD, card);
 
 		// asserting
-		assertEquals(SessionStatus.BLOCKED, pm.getState());
+		assertEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertTrue(sm.notifyAttendantCalled);
 	}
 
@@ -147,7 +147,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CARD, card);
 
 		// asserting
-		assertEquals(SessionStatus.BLOCKED, pm.getState());
+		assertEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertTrue(sm.notifyAttendantCalled);
 	}
 
@@ -167,7 +167,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CARD, card);
 
 		// asserting
-		assertNotEquals(SessionStatus.BLOCKED, pm.getState());
+		assertNotEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertFalse(sm.notifyAttendantCalled);
 	}
 
@@ -187,7 +187,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CASH, null);
 
 		// asserting
-		assertNotEquals(SessionStatus.BLOCKED, pm.getState());
+		assertNotEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertFalse(sm.notifyAttendantCalled);
 	}
 
@@ -206,7 +206,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CASH, null);
 
 		// asserting
-		assertEquals(SessionStatus.BLOCKED, pm.getState());
+		assertEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertTrue(sm.notifyAttendantCalled);
 	}
 
@@ -225,7 +225,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CASH, null);
 
 		// asserting
-		assertEquals(SessionStatus.BLOCKED, pm.getState());
+		assertEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertTrue(sm.notifyAttendantCalled);
 	}
 
@@ -244,7 +244,7 @@ public class TestPrintReceipt {
 		pm.printReceipt(PaymentType.CASH, null);
 
 		// asserting
-		assertEquals(SessionStatus.BLOCKED, pm.getState());
+		assertEquals(SessionStatus.BLOCKED, pm.getSessionState());
 		assertTrue(sm.notifyAttendantCalled);
 	}
 

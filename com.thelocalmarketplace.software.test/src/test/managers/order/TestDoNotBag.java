@@ -100,7 +100,7 @@ public class TestDoNotBag {
         Item item = new StubbedItem(2);
 
         // set state to a state other than NORMAL
-        sm.setState(SessionStatus.BLOCKED);
+        sm.setSessionState(SessionStatus.BLOCKED);
         om.onDoNotBagRequest(item);
 
         // check if the weight adjustment remains unchanged
@@ -111,7 +111,7 @@ public class TestDoNotBag {
     public void testDoNotBagRequestNotifiesAttendant() {
         Item item = new StubbedItem(4);
         
-        sm.setState(SessionStatus.NORMAL);
+        sm.setSessionState(SessionStatus.NORMAL);
         om.onDoNotBagRequest(item);
 
         // check if the attendant is notified with the correct reason

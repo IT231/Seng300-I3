@@ -47,47 +47,47 @@ public class TestTransitionStates {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testCannotSetANullState() {
-		sm.setState(null);
+		sm.setSessionState(null);
 	}
 
 
 	@Test
 	public void testBlockSession() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		sm.blockSession();
 
-		assertEquals(sm.getState(), SessionStatus.BLOCKED);
+		assertEquals(sm.getSessionState(), SessionStatus.BLOCKED);
 	}
 
 	@Test
 	public void testUnblockSession() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.unblockSession();
 
-		assertEquals(sm.getState(), SessionStatus.NORMAL);
+		assertEquals(sm.getSessionState(), SessionStatus.NORMAL);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testCannotUnblockSessionFromPaid() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.unblockSession();
 	}
 
 	@Test
 	public void testNotifyPaid() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		sm.notifyPaid();
 
-		assertEquals(sm.getState(), SessionStatus.PAID);
+		assertEquals(sm.getSessionState(), SessionStatus.PAID);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testNotifyPaidFromBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.notifyPaid();
 	}

@@ -71,7 +71,7 @@ public class TestAttendantOverride {
 
 		om.onAttendantOverride();
 
-		assertEquals(om.getState(), SessionStatus.NORMAL);
+		assertEquals(om.getSessionState(), SessionStatus.NORMAL);
 	}
 
 	@Test

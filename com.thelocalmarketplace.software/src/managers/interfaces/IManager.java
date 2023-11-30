@@ -42,7 +42,7 @@ public interface IManager extends IManagerNotify {
 	 * 
 	 * @return the state
 	 */
-	SessionStatus getState();
+	SessionStatus getSessionState();
 
 	/**
 	 * This method simply blocks the session, should only be used internally.

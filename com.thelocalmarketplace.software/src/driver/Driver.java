@@ -251,7 +251,7 @@ public class Driver {
 		d.setup();
 
 		// ready for customer input
-		while (d.system.getState() != SessionStatus.PAID) {
+		while (d.system.getSessionState() != SessionStatus.PAID) {
 			System.out.print(
 					"1) Add an item\n2) Remove an Item\n3) Cause weight discrepancy\n4) Pay (Insert cash) and Checkout\n5) View order\n6) Cancel Session\n\n>> ");
 			String input = scanner.nextLine();

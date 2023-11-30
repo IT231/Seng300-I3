@@ -114,7 +114,7 @@ public class StubbedOrderManager extends OrderManager {
 	}
 
 	public void setState(SessionStatus s) {
-		smStub.setState(s);
+		smStub.setSessionState(s);
 	}
 
 	@Override

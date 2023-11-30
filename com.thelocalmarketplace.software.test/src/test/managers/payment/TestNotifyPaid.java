@@ -63,10 +63,10 @@ public class TestNotifyPaid {
 	
 	@Test
 	public void testNotifyPaidSetsState() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 		
 		pm.notifyPaid();
 		
-		assertEquals(SessionStatus.PAID, sm.getState());
+		assertEquals(SessionStatus.PAID, sm.getSessionState());
 	}
 }
