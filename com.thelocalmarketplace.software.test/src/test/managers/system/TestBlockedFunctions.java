@@ -51,126 +51,126 @@ public class TestBlockedFunctions {
 	
 	@Test(expected = IllegalStateException.class)
 	public void testSwipeCardWhenBlocked() throws IOException {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.swipeCard(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testSwipeCardWhenPaid() throws IOException {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.swipeCard(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotInsertCoinWhenBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.insertCoin(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotInsertCoinWhenPaid() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.insertCoin(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotInsertBanknoteWhenBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.insertBanknote(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotInsertBanknoteWhenPaid() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.insertBanknote(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotTenderChangeWhenBlocked() throws RuntimeException, NoCashAvailableException {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.tenderChange();
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotTenderChangeWhenPaid() throws RuntimeException, NoCashAvailableException {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.tenderChange();
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotAddItemWhenBlocked() throws OperationNotSupportedException {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.addItemToOrder(null, null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotAddItemWhenPaid() throws OperationNotSupportedException {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.addItemToOrder(null, null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotRecordTransactionFromBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.recordTransaction(null, null, null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotRecordTransactionFromPaid() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.recordTransaction(null, null, null);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testCannotAddBagsWhenBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.addCustomerBags(null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotAddBagsWhenPaid() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.addCustomerBags(null);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testAttendantCannotOverrideWhenPaid() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.onAttendantOverride();
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testCannotRemoveItemWhenPaid() throws OperationNotSupportedException {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		sm.removeItemFromOrder(null);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testCannotPrintReceiptWhenBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		sm.printReceipt(null, null);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testCannotPrintReceiptWhenNormal() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		sm.printReceipt(null, null);
 	}

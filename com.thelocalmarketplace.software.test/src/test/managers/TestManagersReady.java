@@ -65,7 +65,7 @@ public class TestManagersReady {
 		sm.configure(machine);
 
 		// setting the state of the machine
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 	}
 
 	@Test

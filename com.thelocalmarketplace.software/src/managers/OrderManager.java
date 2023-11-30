@@ -496,8 +496,8 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	}
 
 	@Override
-	public SessionStatus getState() {
-		return sm.getState();
+	public SessionStatus getSessionState() {
+		return sm.getSessionState();
 	}
 
 	@Override
@@ -530,7 +530,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		// Set the flag for no bagging
 		this.noBaggingRequested = true;
 
-		switch (getState()) {
+		switch (getSessionState()) {
 		case NORMAL:
 			// Adjust the overall weight adjustment
 			adjustment = this.adjustment.add(item.getMass().inGrams());
@@ -570,7 +570,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 */
 	protected void checkWeightDifference(BigDecimal difference) {
 		// testing whether or not to block or unblock the session
-		switch (getState()) {
+		switch (getSessionState()) {
 		case NORMAL:
 			// blocking the session due to a discrepancy
 			if (difference.compareTo(leniency) > 0) {

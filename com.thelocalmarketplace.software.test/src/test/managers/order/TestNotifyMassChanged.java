@@ -57,7 +57,7 @@ public class TestNotifyMassChanged {
 		om.notifyMassChanged(null, BigDecimal.ONE);
 
 		// station should be blocked now
-		assertEquals(om.getState(), SessionStatus.BLOCKED);
+		assertEquals(om.getSessionState(), SessionStatus.BLOCKED);
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class TestNotifyMassChanged {
 		om.notifyMassChanged(null, BigDecimal.ZERO);
 
 		// station should still be normal
-		assertEquals(om.getState(), SessionStatus.NORMAL);
+		assertEquals(om.getSessionState(), SessionStatus.NORMAL);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class TestNotifyMassChanged {
 		om.checkWeightDifference(BigDecimal.ONE);
 
 		// the OrderManager should be blocked now
-		assertEquals(om.getState(), SessionStatus.BLOCKED);
+		assertEquals(om.getSessionState(), SessionStatus.BLOCKED);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class TestNotifyMassChanged {
 		om.checkWeightDifference(BigDecimal.ZERO);
 
 		// the OrderManager should still be normal
-		assertEquals(om.getState(), SessionStatus.NORMAL);
+		assertEquals(om.getSessionState(), SessionStatus.NORMAL);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class TestNotifyMassChanged {
 		om.checkWeightDifference(BigDecimal.ZERO);
 
 		// the OrderManager should be unblocked now
-		assertEquals(om.getState(), SessionStatus.NORMAL);
+		assertEquals(om.getSessionState(), SessionStatus.NORMAL);
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class TestNotifyMassChanged {
 		om.checkWeightDifference(BigDecimal.ONE);
 
 		// the OrderManager should still be blocked
-		assertEquals(om.getState(), SessionStatus.BLOCKED);
+		assertEquals(om.getSessionState(), SessionStatus.BLOCKED);
 	}
 	
 	@Test(expected = IllegalStateException.class)

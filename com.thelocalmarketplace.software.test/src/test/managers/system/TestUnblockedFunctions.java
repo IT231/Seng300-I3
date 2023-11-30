@@ -51,7 +51,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testGetRemainingBalanceFunctionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.getRemainingBalance());
 		}
 	}
@@ -59,7 +59,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testGetTotalPriceFunctionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.getTotalPrice());
 		}
 	}
@@ -67,7 +67,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testGetCustomerPaymentFunctionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.getCustomerPayment());
 		}
 	}
@@ -75,7 +75,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testGetExpectedMassFunctionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.getExpectedMass());
 		}
 	}
@@ -83,7 +83,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testGetProductsFunctionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.getProducts());
 		}
 	}
@@ -91,7 +91,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testGetStateFunctionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.getRemainingBalance());
 		}
 	}
@@ -99,7 +99,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testIsScaleOverloadedWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertNotNull(sm.isScaleOverloaded());
 		}
 	}
@@ -107,7 +107,7 @@ public class TestUnblockedFunctions {
 	@Test
 	public void testPostTransactionsWithoutState() {
 		for (SessionStatus status : SessionStatus.values()) {
-			sm.setState(status);
+			sm.setSessionState(status);
 			assertTrue(sm.postTransactions());
 		}
 	}

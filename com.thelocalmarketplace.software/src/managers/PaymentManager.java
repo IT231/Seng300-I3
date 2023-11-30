@@ -368,8 +368,8 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	}
 
 	@Override
-	public SessionStatus getState() {
-		return sm.getState();
+	public SessionStatus getSessionState() {
+		return sm.getSessionState();
 	}
 
 	@Override

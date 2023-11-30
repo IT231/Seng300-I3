@@ -46,7 +46,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testInsertCoinCallsPaymentManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.insertCoin(null);
@@ -59,7 +59,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testInsertBanknoteCallsPaymentManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.insertBanknote(null);
@@ -72,7 +72,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testTenderChangeCallsPaymentManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.tenderChange();
@@ -85,7 +85,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testAddItemToOrderCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.addItemToOrder(null, null);
@@ -98,7 +98,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testAddCustomerBagsCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.addCustomerBags(null);
@@ -111,7 +111,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testGetTotalPriceCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.getTotalPrice();
@@ -124,7 +124,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testGetCustomerPaymentCallsPaymentManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.getCustomerPayment();
@@ -137,7 +137,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testGetProductsCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.getProducts();
@@ -150,7 +150,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testGetExpectedMassCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.getExpectedMass();
@@ -163,7 +163,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testOnAttendantOverrideCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.onAttendantOverride();
@@ -176,7 +176,7 @@ public class TestFunctionDelegation {
 
 	@Test
 	public void testOnDoNotBagRequestCallsOrderManager() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.onDoNotBagRequest(null);
@@ -189,7 +189,7 @@ public class TestFunctionDelegation {
 	
 	@Test
 	public void testRemoveItemFromOrderCallsOrderManagerWhenNormal() {
-		sm.setState(SessionStatus.NORMAL);
+		sm.setSessionState(SessionStatus.NORMAL);
 
 		try {
 			sm.removeItemFromOrder(null);
@@ -202,7 +202,7 @@ public class TestFunctionDelegation {
 	
 	@Test
 	public void testRemoveItemFromOrderCallsOrderManagerWhenBlocked() {
-		sm.setState(SessionStatus.BLOCKED);
+		sm.setSessionState(SessionStatus.BLOCKED);
 
 		try {
 			sm.removeItemFromOrder(null);
@@ -215,7 +215,7 @@ public class TestFunctionDelegation {
 	
 	@Test
 	public void testPrintReceiptCallsPaymentManager() {
-		sm.setState(SessionStatus.PAID);
+		sm.setSessionState(SessionStatus.PAID);
 
 		try {
 			sm.printReceipt(null, null);

@@ -58,8 +58,8 @@ public class TestManagerConstructorDefaultValues {
 
 	@Test
 	public void testSystemDefaultState() {
-		assertNotNull(sm.getState());
-		assertEquals(sm.getState(), SessionStatus.NORMAL);
+		assertNotNull(sm.getSessionState());
+		assertEquals(sm.getSessionState(), SessionStatus.NORMAL);
 	}
 
 	@Test

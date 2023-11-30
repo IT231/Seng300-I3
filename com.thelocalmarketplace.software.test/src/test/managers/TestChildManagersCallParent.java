@@ -51,7 +51,7 @@ public class TestChildManagersCallParent {
 	@Test
 	public void testPaymentGetStateCallsSystem() {
 		try {
-			pm.getState();
+			pm.getSessionState();
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -95,7 +95,7 @@ public class TestChildManagersCallParent {
 	@Test
 	public void testOrderGetStateCallsSystem() {
 		try {
-			om.getState();
+			om.getSessionState();
 		} catch (Exception e) {
 			// do nothing
 		}
