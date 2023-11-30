@@ -6,11 +6,16 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class paybyCashGui {
+import com.tdc.banknote.Banknote;
+import com.tdc.coin.Coin;
+
+public class paybyCashGui extends Simulation {
 
 private JFrame paybyCashGui;
 	
@@ -37,7 +42,8 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(50)));
+				//System.out.println("made past it");
 				
 				
 			}
@@ -50,7 +56,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(20)));
 				
 				
 			}
@@ -63,7 +69,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(10)));
 				
 				
 			}
@@ -76,7 +82,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(5)));
 				
 				
 			}
@@ -89,7 +95,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(2)));
 				
 				
 			}
@@ -101,7 +107,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(1)));
 				
 				
 			}
@@ -113,7 +119,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(0.25)));
 				
 				
 			}
@@ -127,7 +133,7 @@ paybyCashGui() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(.1)));
 				
 			}
 			
@@ -138,7 +144,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(0.05)));
 				
 				
 			}
@@ -150,7 +156,7 @@ paybyCashGui() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(0.01)));
 				
 				
 			}
@@ -158,12 +164,12 @@ paybyCashGui() {
 		});
 		
 		panel.add(dotonebutton);
-		Button closebutton = new Button("$50"); // got to add on click start sesion and switch to main window
+		Button closebutton = new Button("close"); // got to add on click start sesion and switch to main window
 		closebutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				paybyCashGui.dispose();
 				
 				
 			}

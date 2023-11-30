@@ -11,7 +11,7 @@ import javax.naming.OperationNotSupportedException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class PayGui extends Launcher {
+public class PayGui extends Simulation {
 	
 	private JFrame payFrame;
 	

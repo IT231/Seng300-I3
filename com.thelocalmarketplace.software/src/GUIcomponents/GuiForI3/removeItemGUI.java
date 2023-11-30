@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class removeItemGUI {
+public class removeItemGUI extends Simulation {
 private JFrame removeItemFrame;
 	
 	removeItemGUI() {
