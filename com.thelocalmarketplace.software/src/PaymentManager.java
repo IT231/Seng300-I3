@@ -1,523 +1,317 @@
-// Liam Major 30223023
-// André Beaulieu, UCID 30174544
-// Simon Bondad, 30164301
-// Jason Very 30222040
-// Nezla Annaisha 30123223
-// Sheikh Falah Sheikh Hasan - 30175335
-
-package managers;
+package com.jjjwelectronics.card;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.util.Random;
 
-import com.jjjwelectronics.EmptyDevice;
-import com.jjjwelectronics.OverloadedDevice;
-import com.jjjwelectronics.card.Card;
-import com.jjjwelectronics.card.Card.CardData;
-import com.tdc.CashOverloadException;
-import com.tdc.DisabledException;
-import com.tdc.NoCashAvailableException;
-import com.tdc.banknote.Banknote;
-import com.tdc.banknote.IBanknoteDispenser;
-import com.tdc.coin.Coin;
-import com.tdc.coin.ICoinDispenser;
-import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
-import com.thelocalmarketplace.hardware.BarcodedProduct;
-import com.thelocalmarketplace.hardware.Product;
-import com.thelocalmarketplace.hardware.external.CardIssuer;
+import ca.ucalgary.seng300.simulation.InvalidArgumentSimulationException;
+import ca.ucalgary.seng300.simulation.NullPointerSimulationException;
+import ca.ucalgary.seng300.simulation.SimulationException;
 
-import managers.enums.PaymentType;
-import managers.enums.SessionStatus;
-import managers.interfaces.IPaymentManager;
-import managers.interfaces.IPaymentManagerNotify;
-import observers.payment.BanknoteCollector;
-import observers.payment.CardReaderObserver;
-import observers.payment.CoinCollector;
-import observers.payment.ReceiptPrinterObserver;
-
-public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
-
-	// hardware references
-	protected AbstractSelfCheckoutStation machine;
-
-	// object references
-	protected SystemManager sm;
-	protected CardIssuer issuer;
-
-	// object ownership
-	protected CoinCollector cc;
-	protected BanknoteCollector bc;
-	protected CardReaderObserver cro;
-	protected ReceiptPrinterObserver rpls;
-
-	// vars
-	protected BigDecimal payment = BigDecimal.ZERO;
-	protected String signature;
-	protected boolean hasPaper = false;
-	protected boolean hasInk = false;
+/**
+ * Represents plastic cards (e.g., credit cards, debit cards, membership cards).
+ * 
+ * @author JJJW Electronics LLP
+ */
+public final class Card {
+	/**
+	 * The kind of card (Visa, Mastercard, etc.). Reading this field simulates
+	 * visually reading the physical card.
+	 */
+	public final String kind;
+	/**
+	 * The account number of the card. Reading this field simulates visually reading
+	 * the physical card.
+	 */
+	public final String number;
+	/**
+	 * The name of the account holder of the card. Reading this field simulates
+	 * visually reading the physical card.
+	 */
+	public final String cardholder;
+	/**
+	 * The security code on the back of the card. Reading this field simulates
+	 * visually reading the physical card.
+	 */
+	public final String cvv;
+	private final String pin;
+	/**
+	 * Some cards support the "tap" action; others not.
+	 */
+	public final boolean isTapEnabled;
+	/**
+	 * Some cards possess an RFID chip; others not.
+	 */
+	public final boolean hasChip;
+	private int failedTrials = 0;
+	private boolean isBlocked;
 
 	/**
-	 * This controls everything relating to customer payment.
+	 * Create a card instance.
 	 * 
-	 * @param sm     a reference to the parent {@link SystemManager} object
-	 * @param issuer a card issuer
-	 * @throws IllegalArgumentException when either argument is null
+	 * @param type
+	 *            The type of the card.
+	 * @param number
+	 *            The number of the card. This has to be a string of digits.
+	 * @param cardholder
+	 *            The name of the cardholder.
+	 * @param cvv
+	 *            The card verification value (CVV), a 3- or 4-digit value often on
+	 *            the back of the card. This can be null.
+	 * @param pin
+	 *            The personal identification number (PIN) for access to the card.
+	 *            This can be null if the card has no chip.
+	 * @param isTapEnabled
+	 *            Whether this card is capable of being tapped.
+	 * @param hasChip
+	 *            Whether this card has a chip.
+	 * @throws SimulationException
+	 *             If type, number, or cardholder is null.
+	 * @throws SimulationException
+	 *             If hasChip is true but pin is null.
 	 */
-	public PaymentManager(SystemManager sm, CardIssuer issuer) {
-		// checking arguments
-		if (sm == null) {
-			throw new IllegalArgumentException("the system manager cannot be null");
-		}
+	public Card(String type, String number, String cardholder, String cvv, String pin, boolean isTapEnabled,
+		boolean hasChip) {
+		if(type == null)
+			throw new NullPointerSimulationException("type");
 
-		if (issuer == null) {
-			throw new IllegalArgumentException("the card issuer cannot be null");
-		}
+		if(number == null)
+			throw new NullPointerSimulationException("number");
 
-		// copying references
-		this.sm = sm;
-		this.issuer = issuer;
+		if(cardholder == null)
+			throw new NullPointerSimulationException("cardholder");
+
+		if(hasChip && pin == null)
+			throw new InvalidArgumentSimulationException("The card has a chip, but pin is null.");
+
+		this.kind = type;
+		this.number = number;
+		this.cardholder = cardholder;
+		this.cvv = cvv;
+		this.pin = pin;
+		this.isTapEnabled = isTapEnabled;
+		this.hasChip = hasChip;
 	}
 
-	@Override
-	public void configure(AbstractSelfCheckoutStation machine) {
-		// saving reference
-		this.machine = machine;
+	private static final Random random = new Random(0);
+	private static final double PROBABILITY_OF_MAGNETIC_STRIPE_FAILURE = 0.01;
+	private static final double PROBABILITY_OF_TAP_FAILURE = 0.005;
+	private static final double PROBABILITY_OF_INSERT_FAILURE = 0.001;
+	private static final double PROBABILITY_OF_MAGNETIC_STRIPE_CORRUPTION = 0.001;
+	private static final double PROBABILITY_OF_CHIP_CORRUPTION = 0.00001;
 
-		// passing references, because nothing actually notifies the observers of the
-		// machine itself EVER
-		cc = new CoinCollector(this, machine.getCoinValidator());
-		bc = new BanknoteCollector(this, machine.getBanknoteValidator());
-		cro = new CardReaderObserver(this, machine.getCardReader());
-		rpls = new ReceiptPrinterObserver(this, machine.getPrinter());
-	}
+	/**
+	 * Simulates the action of swiping the card.
+	 * 
+	 * @return The card data.
+	 * @throws IOException
+	 *             If anything went wrong with the data transfer.
+	 */
+	public final synchronized CardSwipeData swipe() throws IOException {
+		if(isBlocked)
+			throw new BlockedCardException();
 
-	@Override
-	public boolean ready() {
-		if (!cc.canUse()) {
-			return false;
-		}
-		if (!bc.canUse()) {
-			return false;
-		}
-		if (!cro.canUse()) {
-			return false;
-		}
-		if (!rpls.canUse()) {
-			return false;
-		}
+		if(random.nextDouble() <= PROBABILITY_OF_MAGNETIC_STRIPE_FAILURE)
+			throw new MagneticStripeFailureException();
 
-		// all the observers are ready, return true
-		return true;
+		return new CardSwipeData();
 	}
 
 	/**
-	 * This is how you should tell the payment manager that there was payment added
-	 * to the system.
+	 * Simulates the action of tapping the card.
 	 * 
-	 * @param value the value
+	 * @return The card data.
+	 * @throws IOException
+	 *             If anything went wrong with the data transfer.
 	 */
-	@Override
-	public void notifyBalanceAdded(BigDecimal value) {
-		if (value == null)
-			throw new IllegalArgumentException("the value added cannot be null");
+	public final synchronized CardTapData tap() throws IOException {
+		if(isBlocked)
+			throw new BlockedCardException();
 
-		this.payment = this.payment.add(value);
+		if(isTapEnabled) {
+			if(random.nextDouble() <= PROBABILITY_OF_TAP_FAILURE)
+				throw new ChipFailureException();
+
+			return new CardTapData();
+		}
+
+		return null;
 	}
 
-	@Override
-	public BigDecimal getCustomerPayment() {
-		return this.payment;
+	/**
+	 * Simulates the action of inserting the card.
+	 * 
+	 * @param pin
+	 *            The personal identification number intended to match that of the
+	 *            card.
+	 * @return The card data.
+	 * @throws IOException
+	 *             If anything went wrong with the data transfer.
+	 */
+	public final synchronized CardInsertData insert(String pin) throws IOException {
+		if(isBlocked)
+			throw new BlockedCardException();
+
+		if(hasChip) {
+			if(random.nextDouble() <= PROBABILITY_OF_INSERT_FAILURE)
+				throw new ChipFailureException();
+
+			return new CardInsertData(pin);
+		}
+
+		return null;
 	}
 
-	@Override
-	public void swipeCard(Card card) throws IOException {
-		if (card == null) {
-			throw new IllegalArgumentException("cannot swipe a null card");
+	private String randomize(String original, double probability) {
+		if(random.nextDouble() <= probability) {
+			int length = original.length();
+			int index = random.nextInt(length);
+			String first;
+
+			if(index == 0)
+				first = "";
+			else
+				first = original.substring(0, index);
+
+			char second = original.charAt(index);
+			second++;
+
+			String third;
+
+			if(index == length - 1)
+				third = "";
+			else
+				third = original.substring(index + 1, length);
+
+			return first + second + third;
 		}
 
-		this.machine.getCardReader().swipe(card);
+		return original;
 	}
 
-	public void notifyCardSwipe(CardData cardData) {
-		if (cardData == null) {
-			throw new IllegalArgumentException("received null card data from the observer");
-		}
+	/**
+	 * The abstract base type of card data.
+	 */
+	public interface CardData {
+		/**
+		 * Gets the type of the card.
+		 * 
+		 * @return The type of the card.
+		 */
+		public String getType();
 
-		// vars
-		double amountDouble = sm.getTotalPrice().doubleValue();
-		long holdNumber = issuer.authorizeHold(cardData.getNumber(), amountDouble);
+		/**
+		 * Gets the number of the card.
+		 * 
+		 * @return The number of the card.
+		 */
+		public String getNumber();
 
-		// testing the hold number
-		if (holdNumber == -1) {
-			return;
-		} else {
-			payment = sm.getTotalPrice();
-			recordTransaction(cardData, holdNumber, amountDouble);
-			sm.notifyPaid();
-		}
-	}
-	public void tapCard(Card card) throws IOException{
-		if (card == null ) {
-			throw new IllegalArgumentException("Cannot tap a null card");
-		}
-		this.machine.getCardReader().tap(card);
-	}
-	
-	public void notifyCardTap(CardData cardData) {
-		if (cardData == null) {
-			throw new IllegalArgumentException("received null card data from the observer");
-		}
+		/**
+		 * Gets the cardholder's name.
+		 * 
+		 * @return The cardholder's name.
+		 */
+		public String getCardholder();
 
-		// vars
-		double amountDouble = sm.getTotalPrice().doubleValue();
-		long holdNumber = issuer.authorizeHold(cardData.getNumber(), amountDouble);
-
-		// testing the hold number
-		if (holdNumber == -1) {
-			return;
-		} else {
-			payment = sm.getTotalPrice();
-			recordTransaction(cardData, holdNumber, amountDouble);
-			sm.notifyPaid();
-		}
-	}
-	public void insertCard(Card card) throws IOException {
-		if (card == null) {
-			throw new IllegalArgumentException("cannot insert a null card");
-		}
-
-		this.machine.getCardReader().insert(card);
-	}
-	public void notifyCardInsert(CardData cardData) {
-		if (cardData == null) {
-			throw new IllegalArgumentException("received null card data from the observer");
-		}
-
-		// vars
-		double amountDouble = sm.getTotalPrice().doubleValue();
-		long holdNumber = issuer.authorizeHold(cardData.getNumber(), amountDouble);
-
-		// testing the hold number
-		if (holdNumber == -1) {
-			return;
-		} else {
-			payment = sm.getTotalPrice();
-			recordTransaction(cardData, holdNumber, amountDouble);
-			sm.notifyPaid();
-		}
+		/**
+		 * Gets the card verification value (CVV) of the card.
+		 * 
+		 * @return The CVV of the card.
+		 * @throws UnsupportedOperationException
+		 *             If this operation is unsupported by this object.
+		 */
+		public String getCVV();
 	}
 
-	@Override
-	public void insertCoin(Coin coin) {
-		try {
-			this.machine.getCoinSlot().receive(coin);
-		} catch (DisabledException e) {
-			this.sm.blockSession();
-			this.sm.notifyAttendant("Device Powered Off");
+	/**
+	 * The data from swiping a card.
+	 */
+	public class CardSwipeData implements CardData {
+		@Override
+		public String getType() {
+			return randomize(kind, PROBABILITY_OF_MAGNETIC_STRIPE_CORRUPTION);
+		}
 
-			// Should never happen
-		} catch (CashOverloadException e) {
-			this.sm.blockSession();
-			this.sm.notifyAttendant("Machine cannot accept coins");
+		@Override
+		public String getNumber() {
+			return randomize(number, PROBABILITY_OF_MAGNETIC_STRIPE_CORRUPTION);
+		}
 
+		@Override
+		public String getCardholder() {
+			return randomize(cardholder, PROBABILITY_OF_MAGNETIC_STRIPE_CORRUPTION);
+		}
+
+		@Override
+		public String getCVV() {
+			throw new UnsupportedOperationException();
 		}
 	}
 
-	@Override
-	public void insertBanknote(Banknote banknote) {
-		try {
-			this.machine.getBanknoteInput().receive(banknote);
-		} catch (DisabledException e) {
-			this.sm.blockSession();
-			this.sm.notifyAttendant("Device Powered Off");
-		} catch (CashOverloadException e) {
-			// Should never happen
-			this.sm.blockSession();
-			this.sm.notifyAttendant("Machine cannot accept bank notes");
+	/**
+	 * The data from tapping a card.
+	 */
+	public final class CardTapData implements CardData {
+		@Override
+		public String getType() {
+			return randomize(kind, PROBABILITY_OF_CHIP_CORRUPTION);
+		}
+
+		@Override
+		public String getNumber() {
+			return randomize(number, PROBABILITY_OF_CHIP_CORRUPTION);
+		}
+
+		@Override
+		public String getCardholder() {
+			return randomize(cardholder, PROBABILITY_OF_CHIP_CORRUPTION);
+		}
+
+		@Override
+		public String getCVV() {
+			return randomize(cvv, PROBABILITY_OF_CHIP_CORRUPTION);
 		}
 	}
 
-	// Determines if the machine can provide
-	// change to customer
-	protected boolean canTenderChange(BigDecimal change) {
-
-		ICoinDispenser coinDispenser;
-		IBanknoteDispenser banknoteDispenser;
-		BigDecimal denomination = BigDecimal.ZERO;
-		int cashCount = 0;
-		BigDecimal totalMachineCash = BigDecimal.ZERO;
-		boolean canGiveChange = true;
-
-		// Loop through all coin dispensers in the machine to check if empty
-		// and find total machine cash balance
-		for (int i = 0; i < this.machine.getCoinDenominations().size(); i++) {
-			denomination = this.machine.getCoinDenominations().get(i);
-			coinDispenser = this.machine.getCoinDispensers().get(denomination);
-			cashCount = cashCount + coinDispenser.size();
-			totalMachineCash = totalMachineCash.add(denomination.multiply(BigDecimal.valueOf(coinDispenser.size())));
+	/**
+	 * The data from inserting a card.
+	 */
+	public final class CardInsertData implements CardData {
+		CardInsertData(String pin) throws InvalidPINException {
+			if(!testPIN(pin))
+				throw new InvalidPINException();
 		}
 
-		// Loop through all banknotes in machine to check if empty
-		for (int i = 0; i < this.machine.getBanknoteDenominations().length; i++) {
-			denomination = this.machine.getBanknoteDenominations()[i];
-			banknoteDispenser = this.machine.getBanknoteDispensers().get(denomination);
-			cashCount = cashCount + banknoteDispenser.size();
-			totalMachineCash = totalMachineCash
-					.add(denomination.multiply(BigDecimal.valueOf(banknoteDispenser.size())));
+		@Override
+		public String getType() {
+			return randomize(kind, PROBABILITY_OF_CHIP_CORRUPTION);
 		}
 
-		// if cashCount is 0, no coins or banknotes in machine
-		// block session and notify
-		if (cashCount == 0) {
-			canGiveChange = false;
+		@Override
+		public String getNumber() {
+			return randomize(number, PROBABILITY_OF_CHIP_CORRUPTION);
 		}
 
-		// Machine does not have enough cash
-		// to return change
-		if (totalMachineCash.compareTo(change) < 0) {
-			canGiveChange = false;
+		@Override
+		public String getCardholder() {
+			return randomize(cardholder, PROBABILITY_OF_CHIP_CORRUPTION);
 		}
 
-		return canGiveChange;
-
-	}
-
-	@Override
-	public boolean tenderChange() throws RuntimeException, NoCashAvailableException {
-		// Determines amount of change needed
-		BigDecimal change = this.payment.subtract(sm.getTotalPrice());
-
-		// machine does not have enough cash
-		// to give change
-		if (!canTenderChange(change)) {
-			this.sm.blockSession();
-			this.sm.notifyAttendant("Not enough cash in machine to return change");
-			throw new NoCashAvailableException();
+		@Override
+		public String getCVV() {
+			return randomize(cvv, PROBABILITY_OF_CHIP_CORRUPTION);
 		}
 
-		switch (change.compareTo(BigDecimal.ZERO)) {
-		case 1:
-			// Payment greater then total, need to dispense change
-			break;
-		case 0:
-			// Payment == total, no change needed
-			this.sm.notifyPaid();
-			return true;
-		case -1:
-			// The payment was less than the total price
-			throw new RuntimeException("The total price is greater than payment");
-		}
-
-		// Iterate through all the banknote denominations in descending order
-		// This assumes largest denominations are last in list
-		for (int i = this.machine.getBanknoteDenominations().length - 1; i >= 0; i--) {
-			BigDecimal denomination = this.machine.getBanknoteDenominations()[i];
-			IBanknoteDispenser banknoteDispenser = this.machine.getBanknoteDispensers().get(denomination);
-
-			// check if current dispensers is empty.
-			// If empty, switch to next denomination
-			if (banknoteDispenser.size() == 0) {
-				continue;
+		private boolean testPIN(String pinToTest) {
+			if(pinToTest.equals(pin)) {
+				failedTrials = 0;
+				return true;
 			}
 
-			// checks if current change balance is less then
-			// current denomination
-			if (change.compareTo(denomination) < 0) {
-				continue;
-			}
+			if(++failedTrials >= 3)
+				isBlocked = true;
 
-			// emits current banknote denomination until balance is less
-			// than current denomination
-			while (change.compareTo(denomination) >= 0) {
-				// Emit current banknote denomination
-				// and update current change
-				try {
-					banknoteDispenser.emit();
-				} catch (NoCashAvailableException | DisabledException | CashOverloadException e) {
-					this.sm.blockSession();
-					this.sm.notifyAttendant("Banknote was not emitted");
-					return false;
-
-				}
-				change = change.subtract(denomination);
-			}
-		}
-
-		// Iterate through all the cash denominations now
-		for (int i = 0; i <= this.machine.getCoinDenominations().size() - 1; i++) {
-			BigDecimal denomination = this.machine.getCoinDenominations().get(i);
-			ICoinDispenser coinDispenser = this.machine.getCoinDispensers().get(denomination);
-
-			// checks if current dispenser are empty
-			// If empty switch to next denomination
-			if (coinDispenser.size() == 0) {
-				continue;
-			}
-
-			// checks if current balance is less than
-			// the current denomination
-			if (change.compareTo(denomination) < 0) {
-				continue;
-			}
-
-			// emits current coin until
-			// change is less then coin value
-			while (change.compareTo(denomination) >= 0) {
-				// emits current coin denomination
-				// and updates change balance
-				try {
-					coinDispenser.emit();
-				} catch (CashOverloadException | NoCashAvailableException | DisabledException e) {
-					this.sm.blockSession();
-					this.sm.notifyAttendant("Coin was not emitted");
-					return false;
-
-				}
-				change = change.subtract(denomination);
-			}
-		}
-
-		// Checks to insure proper change was provided
-		return switch (change.compareTo(BigDecimal.ZERO)) {
-		case 1:
-			// We did not dispense enough change
-			this.sm.notifyAttendant("Not enough change was dispensed");
-			yield false;
-		case 0:
-			// Dispensed enough change
-			this.machine.getBanknoteOutput().dispense();
-			this.sm.notifyPaid();
-			yield true;
-		case -1:
-			// this should never actually happen
-			this.sm.notifyAttendant("To much change was dispensed");
-			this.machine.getBanknoteOutput().dispense();
-			this.sm.notifyPaid();
-			yield false;
-		default:
-			// I can't imagine this ever happening, I don't know why Java forces you to
-			// include it.
-			throw new IllegalArgumentException("Unexpected value: " + change.compareTo(BigDecimal.ZERO));
-		};
-	}
-
-	@Override
-	public SessionStatus getState() {
-		return sm.getState();
-	}
-
-	@Override
-	public void blockSession() {
-		sm.blockSession();
-	}
-
-	@Override
-	public void unblockSession() {
-		sm.unblockSession();
-	}
-
-	@Override
-	public void notifyPaid() {
-		sm.notifyPaid();
-	}
-
-	@Override
-	public void recordTransaction(CardData card, Long holdnumber, Double amount) {
-		sm.recordTransaction(card, holdnumber, amount);
-	}
-
-	@Override
-	public void printReceipt(PaymentType type, Card card) {
-		// asserting arguments
-		if (type == null) {
-			throw new IllegalArgumentException("Type cannot be null.");
-		}
-		if (type == PaymentType.CARD && card == null) {
-			throw new IllegalArgumentException("Card cannot be null for type CARD.");
-		}
-		if (sm.getCustomerPayment().compareTo(sm.getTotalPrice()) < 0) {
-			throw new RuntimeException("Payment is less than total price.");
-		}
-		if (sm.getProducts().isEmpty()) {
-			throw new RuntimeException("Product list cannot be empty.");
-		}
-
-		// ensuring that the printer can print
-		if (!canPrint()) {
-			// Notify the attendant and block the session
-			sm.notifyAttendant("Machine could not print receipt in full. Printer is empty.");
-			sm.blockSession();
-			return;
-		}
-
-		// printing the receipt
-		try {
-			printLine("----- Receipt -----\n");
-			for (Product product : sm.getProducts()) {
-				// printing the item
-				if (product instanceof BarcodedProduct) {
-					BarcodedProduct p = (BarcodedProduct) product;
-					printLine(String.valueOf(p.getPrice()) + "\t" + p.getDescription() + "\n");
-					continue;
-				}
-
-				// this should never happen because other functions would catch an illegal
-				// product
-				throw new IllegalArgumentException(
-						"cannot print information of product of type " + product.getClass().toString());
-			}
-			printLine("Payment Type: " + type.toString() + "\n");
-			printLine("Price: $" + sm.getTotalPrice() + "\n");
-			printLine("Payment: $" + sm.getCustomerPayment() + "\n");
-
-			// adding card details
-			if (card != null) {
-				printLine("Card Holder: " + card.cardholder + "\n");
-				printLine("Card Number: " + card.number + "\n");
-				printLine("Kind of Card: " + card.kind + "\n");
-			}
-		} catch (EmptyDevice e) {
-			// Notify the attendant and block the session
-			sm.notifyAttendant("Machine could not print receipt in full. Printer is empty.");
-			sm.blockSession();
-		}
-
-		// cutting the paper
-		this.machine.getPrinter().cutPaper();
-	}
-
-	protected void printLine(String s) throws EmptyDevice {
-		for (int i = 0; i < s.length(); i++) {
-			try {
-				this.machine.getPrinter().print(s.charAt(i));
-			} catch (OverloadedDevice e) {
-				try {
-					this.machine.getPrinter().print('\n');
-				} catch (OverloadedDevice e_2) {
-					// this should never happen
-					throw new RuntimeException("an unexpected error occurred.");
-				}
-			}
+			return false;
 		}
 	}
-
-	@Override
-	public void notifyAttendant(String reason) {
-		sm.notifyAttendant(reason);
-	}
-
-	@Override
-	public void notifyPaper(boolean hasPaper) {
-		this.hasPaper = hasPaper;
-	}
-
-	@Override
-	public void notifyInk(boolean hasInk) {
-		this.hasInk = hasInk;
-	}
-
-	protected boolean canPrint() {
-		return hasInk && hasPaper;
-	}
-
 }
