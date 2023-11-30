@@ -74,6 +74,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	protected boolean lowPaper = false;
 	protected boolean lowInk = false;
 	private boolean canPrint = true;
+	private String membershipNum = null;
 
 	/**
 	 * This controls everything relating to customer payment.
@@ -458,6 +459,9 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 				printLine("Card Number: " + card.number + "\n");
 				printLine("Kind of Card: " + card.kind + "\n");
 			}
+			if(membershipNum!=null) {
+				printLine(membershipNum);
+			}
 		} catch (EmptyDevice e) {
 			// Notify the attendant and block the session
 			sm.notifyAttendant("Machine could not print receipt in full. Printer is empty.");
@@ -546,6 +550,22 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 */
 	public void paperAdded() {
 		modifyPaper(true, false);
+	}
+
+	/**
+	 * gets the membership number for the given customer
+	 * @return the membership number of the customer
+	 */
+	public String getMembershipNum() {
+		return membershipNum;
+	}
+
+	/**
+	 * sets the membership number of the customer
+	 * @param membershipNum membership number entered by the customer
+	 */
+	public void setMembershipNum(String membershipNum) {
+		this.membershipNum = membershipNum;
 	}
 
 }
