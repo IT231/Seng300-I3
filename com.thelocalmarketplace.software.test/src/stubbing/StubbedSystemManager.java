@@ -79,6 +79,8 @@ public class StubbedSystemManager extends SystemManager {
 		unblockSessionCalled = false;
 		getStateCalled = false;
 		recordTransactionCalled = false;
+		
+		startSession();
 	}
 
 	public void setIssuer(CardIssuer i) {
@@ -114,9 +116,9 @@ public class StubbedSystemManager extends SystemManager {
 	}
 
 	@Override
-	public SessionStatus getState() {
+	public SessionStatus getSessionState() {
 		getStateCalled = true;
-		return super.getState();
+		return super.getSessionState();
 	}
 
 	public String getAttendantNotification() {
@@ -124,8 +126,8 @@ public class StubbedSystemManager extends SystemManager {
 	}
 
 	@Override
-	public void setState(SessionStatus s) {
-		super.setState(s);
+	public void setSessionState(SessionStatus s) {
+		super.setSessionState(s);
 	}
 
 	public Map<String, List<Pair<Long, Double>>> getRecords() {
