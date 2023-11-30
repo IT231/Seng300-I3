@@ -51,6 +51,7 @@ import managers.interfaces.IOrderManager;
 import managers.interfaces.IOrderManagerNotify;
 import observers.order.BarcodeScannerObserver;
 import observers.order.ScaleObserver;
+import powerutility.PowerGrid;
 
 public class OrderManager implements IOrderManager, IOrderManagerNotify {
 
@@ -75,6 +76,24 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	protected HashMap<Product, Mass> productsPricedByMass = new HashMap<Product, Mass>(); 
 	protected List<IOrderManagerNotify> listeners = new ArrayList<IOrderManagerNotify>();
 	protected List<IElectronicScale> overloadedScales = new ArrayList<IElectronicScale>();
+	
+	public void setup() {
+		// configuring the system
+		//this.system.configure(this.machine);
+
+		// so that no power surges happen
+		PowerGrid.engageUninterruptiblePowerSource();
+
+		// plug in and turn on the machine
+		this.machine.plugIn(PowerGrid.instance());
+
+		// turning off then on because some observers won't get their references because
+		// of Walker
+		this.machine.turnOff();
+		this.machine.turnOn();
+
+		
+	}
 
 	/**
 	 * This controls everything relating to adding and removing items from a
@@ -263,6 +282,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 
 	@Override
 	public void addItemToOrder(Item item, ScanType method) {
+		setup();
 		// checking for null
 		if (item == null) {
 			throw new IllegalArgumentException("tried to scan a null item");
@@ -314,6 +334,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 * @param method the method of scanning
 	 */
 	protected void addItemToOrder(PLUCodedItem item) {
+		setup();
 		// checking for null
 		if (item == null)
 			throw new IllegalArgumentException("Invalid PLU Coded Item.");
@@ -349,6 +370,7 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	 */
 	@Override
 	public void removeItemFromOrder(Item item) {
+		setup();
 		if (item == null) {
 			throw new IllegalArgumentException("tried to remove a null item from the bagging area");
 		}
