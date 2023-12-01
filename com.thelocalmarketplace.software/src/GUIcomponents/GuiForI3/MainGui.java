@@ -5,6 +5,9 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -19,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import com.jjjwelectronics.Mass;
@@ -99,8 +103,22 @@ public class MainGui extends Simulation implements ActionListener {
 		MainGui.add(panel, BorderLayout.CENTER);
 		
 		//this section is to display added items and current price
-		List<String> list = new ArrayList<String>();
-		for (Product i : orderManager.getProducts()) {
+		JPanel displayPanel = new JPanel();
+		//displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
+		//displayPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 20));
+    	//centralPanel.add(new CartProduct(product1, session, new Mass(product1.getExpectedWeight())));
+    	//centralPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+		displayPanel.setBackground(Color.gray);
+		displayPanel.setLayout(new GridLayout(20,1));
+       // GridBagConstraints gbc = new GridBagConstraints();
+    	//JScrollPane scroll = new JScrollPane(displayPanel);
+    	//scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    	//scroll.setBackground(Color.red);
+    //	displayPanel.setLayout(new BorderLayout());
+	//	displayPanel.setLayout(new FlowLayout().RIGHT);
+    	//scroll.add(displayPanel);
+		ArrayList<Object> list = new ArrayList<Object>();
+		for (Product i : orderManager.getProducts()) { // this should work for show items added does not due to of the same
 			// checking for null
 			if (i == null) {
 				
@@ -108,28 +126,34 @@ public class MainGui extends Simulation implements ActionListener {
 			if (i instanceof BarcodedProduct) {
 				
 				BarcodedProduct name = (BarcodedProduct) i;
-				list.add(name.getDescription());
+				
+				JLabel product = new JLabel(name.getDescription()+ "      $"+ name.getPrice());
+				list.add(product);
+				//displayPanel.add(product);
 				continue;
 			}
 			
 			if (i instanceof PLUCodedProduct) {
 				PLUCodedProduct name = (PLUCodedProduct) i;
-				list.add(name.getDescription());
+				JLabel product = new JLabel(name.getDescription()+ "      $"+ name.getPrice()+"\n");
+				list.add(product);
 			}}
+		for (int j = 0; j < list.size(); j++) {
+			displayPanel.add((Component) list.get(j));
+		
+			}
+		
+		JLabel cartInfo = new JLabel("mass: " + systemManager.getExpectedMass()+"          Remaining  $" + systemManager.getRemainingBalance());
+		displayPanel.add(cartInfo);
+		
+		///
+		///for loop in for loop
 		//products = orderManager.getProducts(); // cant get the list to work yet
-		JPanel displayplanel = new JPanel();
-		//JList bagarea = new JList();
-		displayplanel.setLayout(new BoxLayout(displayplanel, BoxLayout.Y_AXIS));
-		displayplanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 50));
 		
-		JScrollPane scrollpan = new JScrollPane(list);
-    	scrollpan.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    	scrollpan.setBackground(Color.red);
-    	//displayplanel.add(scrollpan);
-    //	displayplanel.setLayout(new BorderLayout());
-		MainGui.add(displayplanel, BorderLayout.WEST);
+    	
+		MainGui.add(displayPanel, BorderLayout.WEST);
 		
-
+		
 			
 		}
 		
