@@ -3,21 +3,28 @@ package GUIcomponents.GuiForI3;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.card.Card;
+import com.thelocalmarketplace.hardware.BarcodedProduct;
+import com.thelocalmarketplace.hardware.PLUCodedProduct;
 import com.thelocalmarketplace.hardware.Product;
 
 public class MainGui extends Simulation implements ActionListener {
@@ -92,24 +99,42 @@ public class MainGui extends Simulation implements ActionListener {
 		MainGui.add(panel, BorderLayout.CENTER);
 		
 		//this section is to display added items and current price
+		List<String> list = new ArrayList<String>();
+		for (Product i : orderManager.getProducts()) {
+			// checking for null
+			if (i == null) {
+				
+			} 
+			if (i instanceof BarcodedProduct) {
+				
+				BarcodedProduct name = (BarcodedProduct) i;
+				list.add(name.getDescription());
+				continue;
+			}
+			
+			if (i instanceof PLUCodedProduct) {
+				PLUCodedProduct name = (PLUCodedProduct) i;
+				list.add(name.getDescription());
+			}}
 		//products = orderManager.getProducts(); // cant get the list to work yet
 		JPanel displayplanel = new JPanel();
 		//JList bagarea = new JList();
 		displayplanel.setLayout(new BoxLayout(displayplanel, BoxLayout.Y_AXIS));
 		displayplanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 50));
-		JScrollPane scrollpan = new JScrollPane(displayplanel);
+		
+		JScrollPane scrollpan = new JScrollPane(list);
     	scrollpan.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	scrollpan.setBackground(Color.red);
     	//displayplanel.add(scrollpan);
     //	displayplanel.setLayout(new BorderLayout());
 		MainGui.add(displayplanel, BorderLayout.WEST);
-		System.out.println(orderManager.getProducts());
-		System.out.println(systemManager.getProducts());
-		System.out.println(systemManager.getTotalPrice());
-		System.out.println(systemManager.getRemainingBalance());
+		
+
+			
+		}
 		
 		
-	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
