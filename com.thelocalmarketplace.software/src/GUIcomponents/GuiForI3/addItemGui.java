@@ -68,7 +68,7 @@ public class addItemGui extends Simulation implements ActionListener {
 			addItemGui.dispose(); 
 			new MainGui();
 			
-		} else if (command.equals(ADD_PLUCODED_ITEM)) {
+		} else if (command.equals(ADD_PLUCODED_ITEM)) { // dont know how to add plu item
 			
 		}
 		

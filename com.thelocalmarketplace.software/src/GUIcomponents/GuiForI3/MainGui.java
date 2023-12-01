@@ -38,6 +38,7 @@ public class MainGui extends Simulation implements ActionListener {
 	public static final String REMOVE_ITEM = "remove_item";
 	public JFrame MainGui;
 	public List<Product> products;
+	int num = 0;
 	
 	MainGui() {
 		initialize();
@@ -118,8 +119,10 @@ public class MainGui extends Simulation implements ActionListener {
 	//	displayPanel.setLayout(new FlowLayout().RIGHT);
     	//scroll.add(displayPanel);
 		ArrayList<Object> list = new ArrayList<Object>();
+		
 		for (Product i : orderManager.getProducts()) { // this should work for show items added does not due to of the same
 			// checking for null
+			num = num +1;
 			if (i == null) {
 				
 			} 
@@ -127,7 +130,7 @@ public class MainGui extends Simulation implements ActionListener {
 				
 				BarcodedProduct name = (BarcodedProduct) i;
 				
-				JLabel product = new JLabel(name.getDescription()+ "      $"+ name.getPrice());
+				JLabel product = new JLabel(num + "     " + name.getDescription()+ "      $"+ name.getPrice());
 				list.add(product);
 				//displayPanel.add(product);
 				continue;
@@ -135,9 +138,10 @@ public class MainGui extends Simulation implements ActionListener {
 			
 			if (i instanceof PLUCodedProduct) {
 				PLUCodedProduct name = (PLUCodedProduct) i;
-				JLabel product = new JLabel(name.getDescription()+ "      $"+ name.getPrice()+"\n");
+				JLabel product = new JLabel(num + "     " + name.getDescription()+ "      $"+ name.getPrice()+"\n");
 				list.add(product);
-			}}
+			} 
+			}
 		for (int j = 0; j < list.size(); j++) {
 			displayPanel.add((Component) list.get(j));
 		

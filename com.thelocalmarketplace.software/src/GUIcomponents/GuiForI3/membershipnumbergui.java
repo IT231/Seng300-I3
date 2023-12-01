@@ -26,10 +26,10 @@ membershipnumbergui() {
 		this.startFrame.setVisible(true);
 		
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 		
 		panel.setBackground(Color.gray);
-		TextField membershipnum = new TextField();
+		TextField membershipnum = new TextField(50);
 	//	Button endbutton = new Button("End checkout"); // got to add on click start sesion and switch to main window
 		panel.add(membershipnum);
 		startFrame.add(panel, BorderLayout.CENTER);

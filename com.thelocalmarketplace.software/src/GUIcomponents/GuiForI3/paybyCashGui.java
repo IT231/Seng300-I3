@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.tdc.banknote.Banknote;
@@ -44,7 +45,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(50)));
 				//System.out.println("made past it");
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 				
 			}
 			
@@ -57,7 +60,9 @@ paybyCashGui() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(20)));
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 				
 			}
 			
@@ -71,7 +76,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(10)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -84,7 +91,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertBanknote(new Banknote(Currency.getInstance("CAD"), new BigDecimal(5)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -97,7 +106,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(2)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -109,7 +120,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(1)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -121,7 +134,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(0.25)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -135,6 +150,9 @@ paybyCashGui() {
 				
 				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(.1)));
 				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -146,7 +164,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(0.05)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -158,7 +178,9 @@ paybyCashGui() {
 			public void actionPerformed(ActionEvent e) {
 				payman.insertCoin(new Coin(Currency.getInstance("CAD"), new BigDecimal(0.01)));
 				
-				
+				paybyCashGui.invalidate();
+				paybyCashGui.validate();
+				paybyCashGui.repaint();
 			}
 			
 		});
@@ -180,6 +202,11 @@ paybyCashGui() {
 		
 		
 		paybyCashGui.add(panel, BorderLayout.CENTER);
+		
+		JPanel pricepanel = new JPanel();
+		JLabel crurentprice = new JLabel("current total:  $" + systemManager.getRemainingBalance());
+		pricepanel.add(crurentprice);
+		paybyCashGui.add(pricepanel, BorderLayout.EAST);
 	}
 
 }
