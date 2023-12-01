@@ -314,6 +314,10 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		// recording the transaction
 		records.put(card.getNumber(), ar);
 	}
+	
+	public void notifyAddToBaggingArea() {
+		System.out.printf("[PLEASE ADD ITEM TO BAGGING AREA]");
+	}
 
 	@Override
 	public void notifyAttendant(String reason) {

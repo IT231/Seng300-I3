@@ -30,6 +30,9 @@ import com.jjjwelectronics.Numeral;
 import com.jjjwelectronics.scanner.Barcode;
 import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
+import com.thelocalmarketplace.hardware.PLUCodedItem;
+import com.thelocalmarketplace.hardware.PLUCodedProduct;
+import com.thelocalmarketplace.hardware.PriceLookUpCode;
 import com.thelocalmarketplace.hardware.Product;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
@@ -114,6 +117,30 @@ public class DatabaseHelper {
 
 		return new Barcode(code);
 	}
+	
+	/**
+	 * This creates a plu code of length {@code digits} for anything that needs a
+	 * {@link PriceLookUpCode}.
+	 * 
+	 * @param digits the number of digits for the {@link PriceLookUpCode}
+	 * @return a randomized {@link PriceLookUpCode}
+	 */
+	public static PriceLookUpCode createRandomPriceLookUpCode(int digits) {	
+		StringBuilder sb = new StringBuilder();
+		
+		// testing length
+		if (digits < 4 || digits > 5) {
+			throw new InvalidArgumentSimulationException("Invalid number of digits, between 4 and 5 inclusive");
+		}
+		
+		// creating as many digits that are put in
+		for (int i = 0; i < digits; ++i) {
+			sb.append(DatabaseHelper.random.nextInt(10));
+		}
+		String code = sb.toString();
+		
+		return new PriceLookUpCode(code);
+	}
 
 	/**
 	 * Creates a randomized description for a {@link Product}.
@@ -130,6 +157,11 @@ public class DatabaseHelper {
 		return name;
 	}
 	
+	/**
+	 * Creates a randomized description for a {@link Product} given we already know the name.
+	 * @param name - the name of the product.
+	 * @return newName = the new name of the product with a random adjective.
+	 */
 	public static String addRandomAdjectiveToName(String name) {
 		String newName;
 		
@@ -168,6 +200,39 @@ public class DatabaseHelper {
 
 		// add both to database
 		ProductDatabases.BARCODED_PRODUCT_DATABASE.put(barcode, prod);
+
+		// return item to caller
+		return item;
+	}
+	
+	/**
+	 * <p>
+	 * Creates a {@link PLUCodedItem} with a randomized mass and plu code. This
+	 * method also creates a {@link PLUCodedProduct} with a randomized plu code,
+	 * description (given an already known product name, like Milk or Eggs), price and mass.
+	 * </p>
+	 * <p>
+	 * This method guarantees that the {@link PriceLookUpCode}s of both item and product are
+	 * the same and that they are put into respective databases in {@link Database}.
+	 * </p>
+	 * 
+	 * @param length how many digits to generate for the {@link PriceLookUpCode}
+	 * @return the {@link PLUCodedItem}
+	 */
+	public static PLUCodedItem createRandomPLUCodedItem(int length, String name) {
+		// creating the plu code
+		PriceLookUpCode plu = DatabaseHelper.createRandomPriceLookUpCode(length);
+		double mass = DatabaseHelper.createRandomMass();
+
+		// need to create the item
+		PLUCodedItem item = new PLUCodedItem(plu, new Mass(mass));
+
+		// need to create the corresponding product
+		PLUCodedProduct prod = new PLUCodedProduct(plu, DatabaseHelper.addRandomAdjectiveToName(name),
+				DatabaseHelper.createRandomPrice());
+
+		// add both to database
+		ProductDatabases.PLU_PRODUCT_DATABASE.put(plu, prod);
 
 		// return item to caller
 		return item;

@@ -354,8 +354,16 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 	}
 	
 	protected void addItemToOrder(String itemName) {
+		if (itemName == null) {
+			throw new IllegalArgumentException("Item name cannot be a null value.");
+		}
+		
 		if (searchForItem(itemName)) {
-			
+			blockSession();
+			PLUCodedItem item = DatabaseHelper.createRandomPLUCodedItem(DatabaseHelper.DEFAULT_BARCODE_LENGTH, itemName);
+			addItemToOrder(item); // this updates the expected mass as well
+			sm.notifyAddToBaggingArea();
+			unblockSession();
 		} else {
 			System.out.println("Item not found!");
 		}

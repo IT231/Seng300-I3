@@ -214,10 +214,6 @@ public class Driver {
 
 		System.out.println("Session ended. Have a nice day!");
 	}
-	
-	private void searchForItem() {
-		
-	}
 
 	/**
 	 * This displays the items in the order.
