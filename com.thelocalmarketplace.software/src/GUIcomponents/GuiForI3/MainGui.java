@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import com.jjjwelectronics.card.Card;
 import com.thelocalmarketplace.hardware.Product;
@@ -24,7 +25,7 @@ public class MainGui extends Simulation implements ActionListener {
 	public static final String PAY = "pay";
 	public static final String ADD_ITEM = "add_item";
 	public static final String REMOVE_ITEM = "remove_item";
-	private JFrame MainGui;
+	public JFrame MainGui;
 	public List<Product> products;
 	
 	MainGui() {
@@ -102,6 +103,10 @@ public class MainGui extends Simulation implements ActionListener {
     	//displayplanel.add(scrollpan);
     //	displayplanel.setLayout(new BorderLayout());
 		MainGui.add(displayplanel, BorderLayout.WEST);
+		System.out.println(orderManager.getProducts());
+		System.out.println(systemManager.getProducts());
+		System.out.println(systemManager.getTotalPrice());
+		System.out.println(systemManager.getRemainingBalance());
 		
 		
 	}
@@ -111,12 +116,15 @@ public class MainGui extends Simulation implements ActionListener {
 		String command = e.getActionCommand();
 		if (PAY.equals(command)) {
 			new PayGui();
+			
 		} else if (ADD_ITEM.equals(command)) {
+			MainGui.dispose();
 			new addItemGui();
 		} else if(REMOVE_ITEM.equals(command)) {
 			new removeItemGUI();
 		}
 		
 	}
+	
 }
 

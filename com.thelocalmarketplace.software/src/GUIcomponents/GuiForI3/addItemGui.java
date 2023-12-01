@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.jjjwelectronics.scanner.BarcodedItem;
 
@@ -63,7 +64,9 @@ public class addItemGui extends Simulation implements ActionListener {
 //				e1.printStackTrace();
 //				System.out.println("this is called");
 //			}
+			
 			addItemGui.dispose(); 
+			new MainGui();
 			
 		} else if (command.equals(ADD_PLUCODED_ITEM)) {
 			

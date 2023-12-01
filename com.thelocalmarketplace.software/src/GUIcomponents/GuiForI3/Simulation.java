@@ -39,6 +39,8 @@ public class Simulation {
 		systemManager.configure(station);
 		payman = new PaymentManager(systemManager, cardIssuer);
 		payman.configure(station);
+		orderManager = new OrderManager(systemManager, BigDecimal.ONE);
+		orderManager.configure(station);
 	//	card = new Card("credit", "111111111", "Bob Bob", "123", "1234", true, true);
 		PowerGrid.engageUninterruptiblePowerSource();
 
