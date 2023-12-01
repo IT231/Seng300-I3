@@ -542,14 +542,14 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 * Updates system to account for ink being added to printer.
 	 */
 	public void inkAdded() {
-		modifyInk(true, false);
+		rpls.inkHasBeenAddedToThePrinter();
 	}
 	
 	/**
 	 * Updates system to account for paper being added to printer.
 	 */
 	public void paperAdded() {
-		modifyPaper(true, false);
+		rpls.paperHasBeenAddedToThePrinter();
 	}
 
 	/**
