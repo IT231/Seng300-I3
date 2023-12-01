@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -92,8 +94,13 @@ public class MainGui extends Simulation implements ActionListener {
 		//products = orderManager.getProducts(); // cant get the list to work yet
 		JPanel displayplanel = new JPanel();
 		//JList bagarea = new JList();
-		displayplanel.add(new JScrollPane());
-		displayplanel.setBackground(Color.red);
+		displayplanel.setLayout(new BoxLayout(displayplanel, BoxLayout.Y_AXIS));
+		displayplanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 50));
+		JScrollPane scrollpan = new JScrollPane(displayplanel);
+    	scrollpan.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    	scrollpan.setBackground(Color.red);
+    	//displayplanel.add(scrollpan);
+    //	displayplanel.setLayout(new BorderLayout());
 		MainGui.add(displayplanel, BorderLayout.WEST);
 		
 		
