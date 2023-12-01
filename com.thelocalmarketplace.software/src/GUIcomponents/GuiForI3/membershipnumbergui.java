@@ -4,24 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.TextField;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class StartWindow extends Simulation implements ActionListener {
+public class membershipnumbergui extends Simulation {
+private JFrame startFrame;
 	
-	private JFrame startFrame;
-	
-	StartWindow() {
+membershipnumbergui() {
 		initialize();
 	}
 	
 	public void initialize() {
 		startFrame = new JFrame();
 		startFrame.setLayout(new BorderLayout(10, 5));
-		this.startFrame.setTitle("StartPage");
+		this.startFrame.setTitle("membershipPage");
 		this.startFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.startFrame.setSize(500,400);
 		this.startFrame.setLocationRelativeTo(null);
@@ -31,20 +29,10 @@ public class StartWindow extends Simulation implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		
 		panel.setBackground(Color.gray);
-		
-		Button button = new Button("Start checkout"); // on click starts sesion and switch to main window
-		button.addActionListener(this);
-		
-		panel.add(button);
+		TextField membershipnum = new TextField();
+	//	Button endbutton = new Button("End checkout"); // got to add on click start sesion and switch to main window
+		panel.add(membershipnum);
 		startFrame.add(panel, BorderLayout.CENTER);
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// Use this section to add code after button push
-		systemManager.startSession(); //
-		new MainGui();
-		startFrame.dispose(); 	
-	}
-
+}
 }

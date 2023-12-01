@@ -15,6 +15,7 @@ public class Launcher {
 			@Override
 			public void run() {
 				StartWindow startframe = new StartWindow();
+				new adminGUI();
 			}
 			
 		});

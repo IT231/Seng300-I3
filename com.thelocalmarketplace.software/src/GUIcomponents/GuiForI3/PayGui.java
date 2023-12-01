@@ -48,7 +48,9 @@ public class PayGui extends Simulation {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+				new ReciptGui();
+				//systemManager.
+				payFrame.dispose();
 			}
 			
 		});
