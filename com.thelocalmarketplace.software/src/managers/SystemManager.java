@@ -385,4 +385,27 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	public boolean isScaleOverloaded() {
 		return om.isScaleOverloaded();
 	}
+
+	@Override
+	public void modifyPaper(boolean hasPaper, boolean lowPaper) {
+		if(lowPaper && !hasPaper) {
+			notifyAttendant("Machine could not print receipt in full. Printer requires paper. Duplicate receipt needed.");
+			//block the session
+			blockSession();
+		}else if(lowPaper) {
+			notifyAttendant("The printer is low on paper.");
+		}	
+	}
+
+	@Override
+	public void modifyInk(boolean hasInk, boolean lowInk) {
+		if(lowInk && !hasInk) {
+			notifyAttendant("Machine could not print receipt in full. Printer requires ink. Duplicate receipt needed.");
+			//block the session
+			blockSession();
+		}if(lowInk) {
+			notifyAttendant("The printer is low on ink.");
+		}
+	}
+
 }

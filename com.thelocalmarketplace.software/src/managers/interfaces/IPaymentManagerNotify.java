@@ -40,7 +40,6 @@ public interface IPaymentManagerNotify {
 	 * a card swipe.
 	 * 
 	 * @param the swiped card data
-	 * @return
 	 */
 	void notifyCardSwipe(CardData cardData);
 
@@ -51,18 +50,5 @@ public interface IPaymentManagerNotify {
 	 * @param value the value of the inputted banknote or coin
 	 */
 	void notifyBalanceAdded(BigDecimal value);
-	
-	/**
-	 * Notifies the system about the paper status.
-	 *
-	 * @param hasPaper A boolean indicating whether there is paper available (true) or not (false).
-	 */
-	void notifyPaper(boolean hasPaper);
-	
-	/**
-	 * Notifies the system about the ink status.
-	 *
-	 * @param hasInk A boolean indicating whether there is ink available (true) or not (false).
-	 */
-	void notifyInk(boolean hasInk);
+
 }

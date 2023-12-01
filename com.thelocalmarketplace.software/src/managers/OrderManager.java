@@ -53,6 +53,12 @@ import observers.order.BarcodeScannerObserver;
 import observers.order.ScaleObserver;
 import powerutility.PowerGrid;
 
+/**
+ * 
+ * 
+ * @author 
+ *
+ */
 public class OrderManager implements IOrderManager, IOrderManagerNotify {
 
 	// hardware references

@@ -30,9 +30,11 @@ import java.util.Scanner;
 
 import javax.naming.OperationNotSupportedException;
 
+import com.jjjwelectronics.IDevice;
 import com.jjjwelectronics.Item;
 import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.card.Card;
+import com.jjjwelectronics.printer.IReceiptPrinter;
 import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
@@ -41,10 +43,13 @@ import com.thelocalmarketplace.hardware.external.CardIssuer;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
 import ca.ucalgary.seng300.simulation.NullPointerSimulationException;
+import managers.PaymentManager;
 import managers.SystemManager;
+import managers.enums.PaymentType;
 import managers.enums.ScanType;
 import managers.enums.SelfCheckoutTypes;
 import managers.enums.SessionStatus;
+import managers.interfaces.IPaymentManager;
 import powerutility.PowerGrid;
 import utils.CardHelper;
 import utils.DatabaseHelper;
@@ -67,7 +72,8 @@ public class Driver {
 	// vars
 	private ArrayList<Item> items = new ArrayList<Item> (); // doing this seemed to fix the null issue
 	private BigDecimal leniency = BigDecimal.ONE;
-	private Card card;
+	private static Card card;
+	private static PaymentType type;
 
 	// denominations
 	private final BigDecimal[] coinDenominations = new BigDecimal[] { new BigDecimal(0.01), new BigDecimal(0.05),
@@ -178,7 +184,7 @@ public class Driver {
 	 * > 0, prompts user to insert coins. Otherwise, asks if user wants a receipt,
 	 * then ends session.
 	 */
-	private void payForOrder() {
+	private void payForOrder(PaymentType type, Card card) {
 		System.out.println("Total price: " + system.getTotalPrice() + " cents");
 		System.out.println("Valid coins/cash:");
 
@@ -217,7 +223,8 @@ public class Driver {
 		System.out.print("Do you want your receipt printed? (y or n): ");
 		String input = scanner.next();
 		if (input.contains("y") || input.contains("Y")) {
-			// TODO: print receipt
+			PaymentManager paymentManager = new PaymentManager(system, cardIssuer);
+			paymentManager.printReceipt(type, card);
 		}
 
 		System.out.println("Session ended. Have a nice day!");
@@ -286,7 +293,7 @@ public class Driver {
 			case 3: // cause discrepancy
 				break;
 			case 4: // display total balance, update when coin is inserted
-				d.payForOrder();
+					d.payForOrder(type, card);
 				break;
 			case 5:
 				d.displayItems();
