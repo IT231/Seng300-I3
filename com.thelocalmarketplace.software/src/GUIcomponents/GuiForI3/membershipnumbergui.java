@@ -8,6 +8,7 @@ import java.awt.TextField;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class membershipnumbergui extends Simulation {
 private JFrame startFrame;
@@ -29,7 +30,7 @@ membershipnumbergui() {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 		
 		panel.setBackground(Color.gray);
-		TextField membershipnum = new TextField(50);
+		JTextField membershipnum = new JTextField("Please enter membership number",20);
 	//	Button endbutton = new Button("End checkout"); // got to add on click start sesion and switch to main window
 		panel.add(membershipnum);
 		startFrame.add(panel, BorderLayout.CENTER);
