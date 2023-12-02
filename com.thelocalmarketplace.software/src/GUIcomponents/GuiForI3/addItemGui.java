@@ -68,8 +68,11 @@ public class addItemGui extends Simulation implements ActionListener {
 			addItemGui.dispose(); 
 			new MainGui();
 			
-		} else if (command.equals(ADD_PLUCODED_ITEM)) { // dont know how to add plu item
-			
+		} else if (command.equals(ADD_PLUCODED_ITEM)) { // dont know how to add plu item	`
+			// add a text box and an enter button so that when the enter button is click it runs this code no matter what they put in the text box
+			Simulation.station.getMainScanner().scan((BarcodedItem)Simulation.itemsToAdd.get(1).item);
+			addItemGui.dispose(); 
+			new MainGui();
 		}
 		
 	}

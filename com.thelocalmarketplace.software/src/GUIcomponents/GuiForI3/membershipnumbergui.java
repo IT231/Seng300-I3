@@ -5,7 +5,10 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -30,9 +33,25 @@ membershipnumbergui() {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 		
 		panel.setBackground(Color.gray);
-		JTextField membershipnum = new JTextField("Please enter membership number",20);
+		JTextField membershipnum = new JTextField(20);
 	//	Button endbutton = new Button("End checkout"); // got to add on click start sesion and switch to main window
+		JButton enter = new JButton("Enter");
+		enter.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				//if(systemManager.getSessionState() == SessionStatus.BLOCKED) {
+				membershipnum.getText();
+				}
+				//systemManager.unblockSession();
+		//	}
+			
+		});
+		panel.add(enter);
+		
 		panel.add(membershipnum);
+		
 		startFrame.add(panel, BorderLayout.CENTER);
 
 }

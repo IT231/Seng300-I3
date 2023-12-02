@@ -60,14 +60,21 @@ public class Simulation {
 		Numeral[] appleJuicebBrcodeDigits = {Numeral.one, Numeral.five, Numeral.seven, Numeral.three};
 		Barcode appleJuiceBarcode = new Barcode(appleJuicebBrcodeDigits);
 		BarcodedItem appleJuiceItem = new BarcodedItem(appleJuiceBarcode, new Mass(BigDecimal.valueOf(255)));
-		BarcodedProduct appleJuiceProduct = new BarcodedProduct(appleJuiceBarcode, "Box of Apple Juice.", 3, 255);
+		BarcodedProduct appleJuiceProduct = new BarcodedProduct(appleJuiceBarcode, "Apple Juice.", 3, 255);
 		itemsToAdd.add(new SimulationItem(appleJuiceItem, appleJuiceProduct));
 		
 		// Add oranges a PLU coded item
-		PriceLookUpCode orangesPLUCode = new PriceLookUpCode("1324");
-		PLUCodedItem orangesItem = new PLUCodedItem(orangesPLUCode, new Mass(BigDecimal.valueOf(1000)));
-		PLUCodedProduct orangesProduct = new PLUCodedProduct(orangesPLUCode, "One or more oranges.", 1);
-		itemsToAdd.add(new SimulationItem(orangesItem, orangesProduct));
+		// since plu is not added making it a parcoded item so changing this code to barcode
+		//PriceLookUpCode orangesPLUCode = new PriceLookUpCode("1324");
+		//PLUCodedItem orangesItem = new PLUCodedItem(orangesPLUCode, new Mass(BigDecimal.valueOf(1000)));
+		//PLUCodedProduct orangesProduct = new PLUCodedProduct(orangesPLUCode, "One or more oranges.", 1);
+		//itemsToAdd.add(new SimulationItem(orangesItem, orangesProduct));
+		//
+		Numeral[] orangeJuicebBrcodeDigits = {Numeral.one, Numeral.three, Numeral.two, Numeral.four};
+		Barcode orangeJuiceBarcode = new Barcode(orangeJuicebBrcodeDigits);
+		BarcodedItem orangeJuiceItem = new BarcodedItem(orangeJuiceBarcode, new Mass(BigDecimal.valueOf(255)));
+		BarcodedProduct orangeJuiceProduct = new BarcodedProduct(orangeJuiceBarcode, "orange Juice.", 3, 255);
+		itemsToAdd.add(new SimulationItem(orangeJuiceItem, orangeJuiceProduct));
 	}
 	
 	//public Card cardgetter() {
