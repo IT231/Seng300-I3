@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -41,6 +42,7 @@ import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedItem;
 import com.thelocalmarketplace.hardware.PLUCodedProduct;
+import com.thelocalmarketplace.hardware.PriceLookUpCode;
 import com.thelocalmarketplace.hardware.Product;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
@@ -340,33 +342,32 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 		}
 	}
 	
-	protected boolean searchForItem(String itemName) {
-		String lowercaseItem = itemName.toLowerCase();
-		String[] items = DatabaseHelper.getLowercaseItemsInDatabase();
-		
-		for (String item : items) {
-			if (item == itemName) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	protected void addItemToOrder(String itemName) {
+	protected boolean addItemByTextSearch(String itemName) {
 		if (itemName == null) {
 			throw new IllegalArgumentException("Item name cannot be a null value.");
 		}
 		
-		if (searchForItem(itemName)) {
-			blockSession();
-			PLUCodedItem item = DatabaseHelper.createRandomPLUCodedItem(DatabaseHelper.DEFAULT_BARCODE_LENGTH, itemName);
-			addItemToOrder(item); // this updates the expected mass as well
-			sm.notifyAddToBaggingArea();
-			unblockSession();
-		} else {
-			System.out.println("Item not found!");
+		// looking through BarcodedProducts in database to see if it exists
+		for (Map.Entry<Barcode, BarcodedProduct> prod : ProductDatabases.BARCODED_PRODUCT_DATABASE.entrySet()) {
+			if (prod.getValue().getDescription().toLowerCase() == itemName.toLowerCase()) { // if item is found
+				blockSession();
+				products.add(prod.getValue());
+				sm.notifyAddToBaggingArea();
+				return true; // returns true if item was found
+			}
 		}
+		
+		// looking through PLUCodedProducts in database to see if it exists
+		for (Map.Entry<PriceLookUpCode, PLUCodedProduct> prod : ProductDatabases.PLU_PRODUCT_DATABASE.entrySet()) {
+			if (prod.getValue().getDescription().toLowerCase() == itemName.toLowerCase()) {
+				blockSession();
+				products.add(prod.getValue());
+				sm.notifyAddToBaggingArea();
+				return true; // returns true if item was found
+			}
+		}
+		
+		return false; // item was not found
 	}
 
 	/**
