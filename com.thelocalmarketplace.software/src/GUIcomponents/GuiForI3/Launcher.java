@@ -1,28 +1,27 @@
 package GUIcomponents.GuiForI3;
 
+import java.awt.event.WindowAdapter;
+
 import javax.swing.SwingUtilities;
 
 
-
 public class Launcher {
-	
-	
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Simulation.start();
+		
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				
+				new adminGUI();
 				StartWindow startframe = new StartWindow();
-				
 				
 			}
 			
 		});
 
 	}
-
 }
+
+

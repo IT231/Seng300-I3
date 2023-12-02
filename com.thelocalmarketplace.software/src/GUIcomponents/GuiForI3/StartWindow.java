@@ -10,9 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import driver.Driver;
-
-public class StartWindow {
+public class StartWindow extends Simulation implements ActionListener {
 	
 	private JFrame startFrame;
 	
@@ -34,20 +32,19 @@ public class StartWindow {
 		
 		panel.setBackground(Color.gray);
 		
-		Button button = new Button("Start checkout"); // got to add on click start sesion and switch to main window
-		button.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Use this section to add code after button push
-				//Driver startdrver = new Driver(new AbstractSelfCheckoutStation);
-				new MainGui();
-				startFrame.dispose(); 
-			}
-			
-		});
+		Button button = new Button("Start checkout"); // on click starts sesion and switch to main window
+		button.addActionListener(this);
+		
 		panel.add(button);
 		startFrame.add(panel, BorderLayout.CENTER);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// Use this section to add code after button push
+		systemManager.startSession(); //
+		new MainGui();
+		startFrame.dispose(); 	
 	}
 
 }

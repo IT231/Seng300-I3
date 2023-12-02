@@ -32,11 +32,13 @@ import javax.naming.OperationNotSupportedException;
 
 import com.jjjwelectronics.IDevice;
 import com.jjjwelectronics.Item;
+import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.card.Card;
 import com.jjjwelectronics.printer.IReceiptPrinter;
 import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
+import com.thelocalmarketplace.hardware.SelfCheckoutStationGold;
 import com.thelocalmarketplace.hardware.external.CardIssuer;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
 
@@ -68,7 +70,7 @@ public class Driver {
 	private static Scanner scanner = new Scanner(System.in);
 
 	// vars
-	private List<Item> items;
+	private ArrayList<Item> items = new ArrayList<Item> (); // doing this seemed to fix the null issue
 	private BigDecimal leniency = BigDecimal.ONE;
 	private static Card card;
 	private static PaymentType type;
@@ -94,6 +96,7 @@ public class Driver {
 
 	public void setup() {
 		// configuring the system
+		//System.out.println("beepbeep");
 		this.system.configure(this.machine);
 
 		// so that no power surges happen
@@ -115,13 +118,19 @@ public class Driver {
 	 * 
 	 * @throws OperationNotSupportedException this should never happen
 	 */
-	private void scanItem() throws OperationNotSupportedException {
-		System.out.println("Press Enter to Scan an Item\n" + "Note: Item is random.");
-		scanner.nextLine();
+	public void scanItem() throws OperationNotSupportedException {
+		//System.out.println("Press Enter to Scan an Item\n" + "Note: Item is random.");
+		//scanner.nextLine();// mean enter
 
 		BarcodedItem newItem = DatabaseHelper.createRandomBarcodedItem();
-		this.system.addItemToOrder(newItem, ScanType.MAIN);
-		this.items.add(newItem);
+		//BarcodedItem helperItem = new BarcodedItem(DatabaseHelper.createRandomBarcode(48), new Mass(DatabaseHelper.createRandomMass()));
+	//	if (newItem == null) { // for some reason was getting item equals null so doing this
+			this.items.add(newItem);//needs to be changed seeing if this works
+	//	} else {
+		//	System.out.println(newItem);
+		//this.items.add(newItem);}
+		this.system.addItemToOrder(newItem, ScanType.MAIN);//switch new item with helperItem until we can fiqure out why its null
+		//this.items.add(newItem);
 	}
 
 	/**
@@ -256,6 +265,7 @@ public class Driver {
 
 		// setup driver class
 		d.setup();
+		
 
 		// ready for customer input
 		while (d.system.getSessionState() != SessionStatus.PAID) {

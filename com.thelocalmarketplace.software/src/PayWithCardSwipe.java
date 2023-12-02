@@ -10,6 +10,7 @@ import com.jjjwelectronics.card.CardReaderListener;
 import com.thelocalmarketplace.hardware.*;
 import com.thelocalmarketplace.hardware.external.CardIssuer;
 import ca.ucalgary.seng300.simulation.NullPointerSimulationException;
+import observers.payment.CardReaderObserver;
 
 public class PayWithCardSwipe{
 	private double amountToPay;

@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class adminGUI {
+import managers.enums.SessionStatus;
+
+public class adminGUI extends Simulation {
 private JFrame adminFrame;
 	
 	adminGUI() {
@@ -30,16 +32,33 @@ private JFrame adminFrame;
 		
 		//panel.setBackground(Color.red);
 		
-		Button unblockbutton = new Button("unblock"); // got to add on click start sesion and switch to main window
+		Button unblockbutton = new Button("unblock"); // should unblock session
 		unblockbutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				//unblock session 
+				//if(systemManager.getSessionState() == SessionStatus.BLOCKED) {
+					systemManager.unblockSession();
+				}
+				//systemManager.unblockSession();
+		//	}
+			
+		});
+		panel.add(unblockbutton);
+		
+		Button additembutton = new Button("add item"); // should unblock session
+		additembutton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new addItemGui();
 			}
 			
 		});
+		panel.add(additembutton);
+		
 		
 		adminFrame.add(panel, BorderLayout.CENTER);
 	}
