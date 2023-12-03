@@ -34,6 +34,22 @@ public interface IPaymentManager extends IManager {
 	void swipeCard(Card card) throws IOException;
 
 	/**
+	 * Allows the customer to insert their card
+	 * 
+	 * @param card
+	 * @throws IOException
+	 */
+	void insertCard(Card card, String pin) throws IOException;
+
+	/**
+	 * Allows the customer to tap their card
+	 * 
+	 * @param card
+	 * @throws IOException
+	 */
+	void tapCard(Card card) throws IOException;
+
+	/**
 	 * Allows the customer to insert a coin into the system.
 	 * 
 	 * @param coin a coin
@@ -78,4 +94,5 @@ public interface IPaymentManager extends IManager {
 	 *             otherwise null).
 	 */
 	public void printReceipt(PaymentType type, Card card);
+
 }
