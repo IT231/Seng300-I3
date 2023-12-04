@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.OperationNotSupportedException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -175,7 +176,13 @@ public class MainGui extends Simulation implements ActionListener {
 			MainGui.dispose();
 			new addItemGui();
 		} else if(REMOVE_ITEM.equals(command)) {
-			orderManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
+			try {
+				systemManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
+				orderManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
+			} catch (OperationNotSupportedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			MainGui.dispose();
 			new MainGui();
 		}
