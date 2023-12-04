@@ -177,8 +177,8 @@ public class MainGui extends Simulation implements ActionListener {
 			new addItemGui();
 		} else if(REMOVE_ITEM.equals(command)) {
 			try {
-				systemManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
-				orderManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
+				Simulation.systemManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
+				Simulation.orderManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
 			} catch (OperationNotSupportedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
