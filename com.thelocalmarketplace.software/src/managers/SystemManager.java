@@ -1,7 +1,25 @@
-// Liam Major 30223023
-// André Beaulieu, UCID 30174544
-// Nezla Annaisha
-// Sheikh Falah Sheikh Hasan - 30175335
+// Aleksandr Sokolov (30191754)
+// Azariah Francisco (30085863)
+// Brandon Smith (30141515)
+// Carlos Serrouya (30192761)
+// Diego de Jaraiz (30176017)
+// Emily Willams (30122865)
+// Evan Ficzere (30192404)
+// Jaden Taylor (30113034)
+// Joshua Bourchier (30194364)
+// Justine Mangaliman (30164741)
+// Kaelin Good (30092239)
+// Laura Yang（30156356)
+// Myra Latif (30171760)
+// Noelle Thundathil (30115430)
+// Raj Rawat (30173990)
+// Roshan Patel (30184010)
+// Sam Fasakin (30161903)
+// Simon Bondad (30163401)
+// Simon Oseen (30144175)
+// Sohaib Zia (30160114)
+// Sunny Hoang (30170708)
+// Yasemin Khanmoradi (30066537)
 
 package managers;
 
@@ -28,6 +46,7 @@ import ca.ucalgary.seng300.simulation.NullPointerSimulationException;
 import managers.enums.PaymentType;
 import managers.enums.ScanType;
 import managers.enums.SessionStatus;
+import managers.enums.StationStatus;
 import managers.interfaces.IOrderManager;
 import managers.interfaces.IPaymentManager;
 import managers.interfaces.ISystemManager;
@@ -53,7 +72,8 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	protected OrderManager om;
 
 	// vars
-	protected SessionStatus state;
+	protected SessionStatus sessionState;
+	protected StationStatus stationState;
 	protected CardIssuer issuer;
 	protected Map<String, List<Pair<Long, Double>>> records;
 
@@ -76,7 +96,8 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		}
 
 		// init vars
-		setState(SessionStatus.NORMAL);
+		setSessionState(SessionStatus.NOT_STARTED);
+		enableStation();
 		this.issuer = issuer; // a reference to the bank
 		this.records = new HashMap<>();
 
@@ -84,7 +105,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		this.pm = new PaymentManager(this, issuer);
 		this.om = new OrderManager(this, leniency);
 	}
-
+	
 	@Override
 	public void configure(AbstractSelfCheckoutStation machine) {
 		// saving a reference
@@ -107,6 +128,35 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		// all the managers are ready, returning true
 		return true;
 	}
+	
+	/**
+	 * Starts the session if the station is enabled and the session is in NOT_STARTED state
+	 */
+	public void startSession() {
+		if (getSessionState() != SessionStatus.NOT_STARTED) {
+			throw new IllegalStateException("Cannot start a session that is already active.");
+		}
+		
+		if (getStationState() == StationStatus.ENABLED) {
+			setSessionState(SessionStatus.NORMAL);
+		}
+		// Need to update GUI to say OUT OF ORDER instead of start session if station is disabled
+	}
+	
+	/**
+	 * Sets the stationState to enabled, allowing the session to be started
+	 */
+	public void enableStation() {
+		setStationState(StationStatus.ENABLED);
+	}
+	
+	/**
+	 * Sets the stationState to disable, disallowing the session to be started.
+	 * If called during an active session the current session will be allowed to finish.
+	 */
+	public void disableStation() {
+		setStationState(StationStatus.DISABLED);
+	}
 
 	/**
 	 * This calculates the outstanding balance the customer must pay for their
@@ -120,7 +170,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 	@Override
 	public void removeItemFromOrder(Item item) throws OperationNotSupportedException {
-		if (getState() == SessionStatus.PAID) {
+		if (getSessionState() == SessionStatus.PAID) {
 			throw new IllegalStateException("cannot remove item from state PAID");
 		}
 
@@ -131,7 +181,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void insertCoin(Coin coin) {
 		// not performing action if session is blocked
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot insert coin when in a non-normal state");
 
 		this.pm.insertCoin(coin);
@@ -140,7 +190,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void insertBanknote(Banknote banknote) {
 		// not performing action if session is blocked
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot insert banknote when in a non-normal state");
 
 		this.pm.insertBanknote(banknote);
@@ -159,7 +209,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void swipeCard(Card card) throws IOException {
 		// not performing action if session is blocked
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot swipe card when PAID");
 
 		this.pm.swipeCard(card);
@@ -184,7 +234,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	}
 
 	public boolean tenderChange() throws RuntimeException, NoCashAvailableException {
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot tender change when in a non-normal state");
 
 		return this.pm.tenderChange();
@@ -202,7 +252,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 	@Override
 	public void onAttendantOverride() {
-		if (getState() == SessionStatus.PAID) {
+		if (getSessionState() == SessionStatus.PAID) {
 			throw new IllegalStateException("attendant cannot override from state PAID");
 		}
 
@@ -217,7 +267,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void addItemToOrder(Item item, ScanType method) throws OperationNotSupportedException {
 		// not performing action if session is blocked
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot add item when in a non-normal state");
 
 		this.om.addItemToOrder(item, method);
@@ -226,7 +276,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void blockSession() {
 		// should be able to block from any state
-		setState(SessionStatus.BLOCKED);
+		setSessionState(SessionStatus.BLOCKED);
 
 		// notify the attendant
 		notifyAttendant("Session was blocked.");
@@ -234,33 +284,45 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 	@Override
 	public void unblockSession() {
-		if (getState() == SessionStatus.PAID) {
+		if (getSessionState() == SessionStatus.PAID) {
 			throw new IllegalStateException("cannot unblock from state PAID");
 		}
 
-		setState(SessionStatus.NORMAL);
+		setSessionState(SessionStatus.NORMAL);
 	}
 
-	protected void setState(SessionStatus state) {
+	protected void setSessionState(SessionStatus state) {
 		if (state == null) {
 			throw new IllegalArgumentException("cannot set the state of the manager to null");
 		}
 
-		this.state = state;
+		this.sessionState = state;
 	}
 
 	@Override
-	public SessionStatus getState() {
-		return state;
+	public SessionStatus getSessionState() {
+		return sessionState;
+	}
+	
+	protected void setStationState(StationStatus state) {
+		if (state == null) {
+			throw new IllegalArgumentException("cannot set the state of the manager to null");
+		}
+
+		this.stationState = state;
+	}
+
+	public StationStatus getStationState() {
+		return stationState;
 	}
 
 	@Override
 	public void notifyPaid() {
-		if (getState() == SessionStatus.BLOCKED) {
+		if (getSessionState() == SessionStatus.BLOCKED) {
 			throw new IllegalStateException("cannot set state from BLOCKED to PAID");
 		}
 
-		setState(SessionStatus.PAID);
+		setSessionState(SessionStatus.PAID);
 	}
 
 	@Override
@@ -287,7 +349,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 	@Override
 	public void recordTransaction(CardData card, Long holdnumber, Double amount) {
-		if (getState() != SessionStatus.NORMAL) {
+		if (getSessionState() != SessionStatus.NORMAL) {
 			throw new IllegalStateException("cannot record a transaction from a non-normal state");
 		}
 
@@ -322,7 +384,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 	@Override
 	public void printReceipt(PaymentType type, Card card) {
-		if (getState() != SessionStatus.PAID) {
+		if (getSessionState() != SessionStatus.PAID) {
 			throw new IllegalStateException("Cannot print receipt. System state is not PAID.");
 		}
 
@@ -330,7 +392,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	}
 
 	public void addCustomerBags(Item bags) {
-		if (getState() != SessionStatus.NORMAL) {
+		if (getSessionState() != SessionStatus.NORMAL) {
 			throw new IllegalStateException("cannot add customer bags when not in a normal state");
 		}
 
@@ -341,4 +403,27 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	public boolean isScaleOverloaded() {
 		return om.isScaleOverloaded();
 	}
+
+	@Override
+	public void modifyPaper(boolean hasPaper, boolean lowPaper) {
+		if(lowPaper && !hasPaper) {
+			notifyAttendant("Machine could not print receipt in full. Printer requires paper. Duplicate receipt needed.");
+			//block the session
+			blockSession();
+		}else if(lowPaper) {
+			notifyAttendant("The printer is low on paper.");
+		}	
+	}
+
+	@Override
+	public void modifyInk(boolean hasInk, boolean lowInk) {
+		if(lowInk && !hasInk) {
+			notifyAttendant("Machine could not print receipt in full. Printer requires ink. Duplicate receipt needed.");
+			//block the session
+			blockSession();
+		}if(lowInk) {
+			notifyAttendant("The printer is low on ink.");
+		}
+	}
+
 }
