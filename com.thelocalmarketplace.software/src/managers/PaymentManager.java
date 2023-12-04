@@ -74,8 +74,6 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	protected BigDecimal payment = BigDecimal.ZERO;
 	protected String signature;
 	protected String pin;
-	protected boolean hasPaper = false;
-	protected boolean hasInk = false;
 	protected boolean hasPaper = true;
 	protected boolean hasInk = true;
 	protected boolean lowPaper = false;
@@ -637,6 +635,18 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 */
 	public void setMembershipNum(String membershipNum) {
 		this.membershipNum = membershipNum;
+	}
+
+	@Override
+	public void notifyPaper(boolean hasPaper) {
+		this.hasPaper=hasPaper;
+		
+	}
+
+	@Override
+	public void notifyInk(boolean hasInk) {
+		this.hasInk=hasInk;
+		
 	}
 
 }

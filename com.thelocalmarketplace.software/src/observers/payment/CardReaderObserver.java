@@ -24,6 +24,7 @@
 package observers.payment;
 
 import com.jjjwelectronics.card.Card.CardData;
+import com.jjjwelectronics.card.Card.CardSwipeData;
 import com.jjjwelectronics.card.CardReaderListener;
 import com.jjjwelectronics.card.ICardReader;
 
@@ -52,7 +53,7 @@ public class CardReaderObserver extends AbstractDeviceObserver implements CardRe
 
 	@Override
 	public void theDataFromACardHasBeenRead(CardData data) {
-		this.ref.notifyCardSwipe(data);
+		this.ref.notifyCardSwipe((CardSwipeData) data);
 	}
 
 	@Override
