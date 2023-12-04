@@ -1,5 +1,25 @@
-// Liam Major 30223023
-// Jason Very 30222040
+// Aleksandr Sokolov (30191754)
+// Azariah Francisco (30085863)
+// Brandon Smith (30141515)
+// Carlos Serrouya (30192761)
+// Diego de Jaraiz (30176017)
+// Emily Willams (30122865)
+// Evan Ficzere (30192404)
+// Jaden Taylor (30113034)
+// Joshua Bourchier (30194364)
+// Justine Mangaliman (30164741)
+// Kaelin Good (30092239)
+// Laura Yang（30156356)
+// Myra Latif (30171760)
+// Noelle Thundathil (30115430)
+// Raj Rawat (30173990)
+// Roshan Patel (30184010)
+// Sam Fasakin (30161903)
+// Simon Bondad (30163401)
+// Simon Oseen (30144175)
+// Sohaib Zia (30160114)
+// Sunny Hoang (30170708)
+// Yasemin Khanmoradi (30066537)
 
 package test.managers.payment;
 
@@ -63,7 +83,7 @@ public class TestInsertCoin {
 
 	@Test
 	public void testDisabledInsert() {
-		this.machine.coinSlot.disable();
+		this.machine.getCoinSlot().disable();
 		this.pm.insertCoin(fiveCent);
 		assertTrue("attendant was called", this.sm.notifyAttendantCalled);
 		assertTrue("Session was blocked", this.sm.blockSessionCalled);
@@ -77,12 +97,12 @@ public class TestInsertCoin {
 
 	@Test
 	public void testOverloadedInsert() throws CashOverloadException {
-		CoinStorageUnit csu = this.machine.coinStorage;
+		CoinStorageUnit csu = this.machine.getCoinStorage();
 
 		// loading the dispensers to the max
-		for (int i = 0; i < this.machine.coinDenominations.size(); i++) {
-			BigDecimal denomination = this.machine.coinDenominations.get(i);
-			ICoinDispenser coinDispenser = this.machine.coinDispensers.get(denomination);
+		for (int i = 0; i < this.machine.getCoinDenominations().size(); i++) {
+			BigDecimal denomination = this.machine.getCoinDenominations().get(i);
+			ICoinDispenser coinDispenser = this.machine.getCoinDispensers().get(denomination);
 			for (int j = 0; j < coinDispenser.getCapacity(); j++) {
 				coinDispenser.load(fiveCent);
 			}
