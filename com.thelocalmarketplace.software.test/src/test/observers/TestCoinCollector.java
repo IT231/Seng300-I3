@@ -44,12 +44,12 @@ public class TestCoinCollector {
 		sm.configure(machine);
 
 		cc = pm.getCoinCollector();
-		machine.coinValidator.disable(); // the component is enabled by default, OK
+		machine.getCoinValidator().disable(); // the component is enabled by default, OK
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullPaymentManager() {
-		new CoinCollector(null, machine.coinValidator);
+		new CoinCollector(null, machine.getCoinValidator());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -84,7 +84,7 @@ public class TestCoinCollector {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.coinValidator.activate();
+		machine.getCoinValidator().activate();
 
 		// asserting
 		assertFalse(cc.canUse());
@@ -92,8 +92,8 @@ public class TestCoinCollector {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.coinValidator.activate();
-		machine.coinValidator.enable();
+		machine.getCoinValidator().activate();
+		machine.getCoinValidator().enable();
 
 		// asserting
 		assertTrue(cc.canUse());

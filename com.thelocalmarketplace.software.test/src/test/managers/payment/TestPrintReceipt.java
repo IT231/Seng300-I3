@@ -70,8 +70,8 @@ public class TestPrintReceipt {
 	@Test
 	public void testPrintLineWithLineTooLong() throws OverloadedDevice {
 		// loading the machine with paper
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// creating a string that's too big for the printer
 		StringBuilder sb = new StringBuilder();
@@ -94,8 +94,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptRunsOutOfPaperBlocks() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(1);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(1);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
@@ -114,8 +114,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptRunsOutOfInkBlocks() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(1);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(1);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
@@ -134,8 +134,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptWithCard() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();
@@ -154,8 +154,8 @@ public class TestPrintReceipt {
 	public void testPrintReceiptWithoutCard() throws OverloadedDevice {
 		// loading the machine with paper, this updates the internal state of payment
 		// manager
-		machine.printer.addInk(MAXIMUM_INK);
-		machine.printer.addPaper(MAXIMUM_PAPER);
+		machine.getPrinter().addInk(MAXIMUM_INK);
+		machine.getPrinter().addPaper(MAXIMUM_PAPER);
 
 		// adding a product to the order
 		BarcodedProduct prod = new StubbedBarcodedProduct();

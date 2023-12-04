@@ -60,7 +60,7 @@ public class TestInsertBanknote {
 
 	@Test
 	public void testDisabledInsert() {
-		this.machine.banknoteInput.disable();
+		this.machine.getBanknoteStorage().disable();
 		this.pm.insertBanknote(fiveNote);
 		assertTrue("attendant was called", this.sm.notifyAttendantCalled);
 		assertTrue("Session was blocked", this.sm.blockSessionCalled);
@@ -75,8 +75,8 @@ public class TestInsertBanknote {
 	@Test
 	public void testOverloadedInsert() throws CashOverloadException {
 		// loading storage to max
-		for (int i = 0; i < this.machine.banknoteStorage.getCapacity(); i++) {
-			this.machine.banknoteStorage.load(fiveNote);
+		for (int i = 0; i < this.machine.getBanknoteStorage().getCapacity(); i++) {
+			this.machine.getBanknoteStorage().load(fiveNote);
 		}
 
 		// inserting a banknote, this should trigger a cash overload exception

@@ -44,12 +44,12 @@ public class TestBanknoteCollector {
 		sm.configure(machine);
 
 		bc = pm.getBanknoteCollector();
-		machine.banknoteValidator.disable(); // the component is enabled by default, OK
+		machine.getBanknoteValidator().disable(); // the component is enabled by default, OK
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullPaymentManager() {
-		new BanknoteCollector(null, machine.banknoteValidator);
+		new BanknoteCollector(null, machine.getBanknoteValidator());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -82,7 +82,7 @@ public class TestBanknoteCollector {
 
 	@Test
 	public void testCannotUseWhenDisabled() {
-		machine.banknoteValidator.activate();
+		machine.getBanknoteValidator().activate();
 
 		// asserting
 		assertFalse(bc.canUse());
@@ -90,8 +90,8 @@ public class TestBanknoteCollector {
 
 	@Test
 	public void testCanUseWhenTurnedOnAndEnabled() {
-		machine.banknoteValidator.activate();
-		machine.banknoteValidator.enable();
+		machine.getBanknoteValidator().activate();
+		machine.getBanknoteValidator().enable();
 
 		// asserting
 		assertTrue(bc.canUse());

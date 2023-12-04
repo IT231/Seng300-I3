@@ -63,7 +63,7 @@ public class TestInsertCoin {
 
 	@Test
 	public void testDisabledInsert() {
-		this.machine.coinSlot.disable();
+		this.machine.getCoinSlot().disable();
 		this.pm.insertCoin(fiveCent);
 		assertTrue("attendant was called", this.sm.notifyAttendantCalled);
 		assertTrue("Session was blocked", this.sm.blockSessionCalled);
@@ -77,12 +77,12 @@ public class TestInsertCoin {
 
 	@Test
 	public void testOverloadedInsert() throws CashOverloadException {
-		CoinStorageUnit csu = this.machine.coinStorage;
+		CoinStorageUnit csu = this.machine.getCoinStorage();
 
 		// loading the dispensers to the max
-		for (int i = 0; i < this.machine.coinDenominations.size(); i++) {
-			BigDecimal denomination = this.machine.coinDenominations.get(i);
-			ICoinDispenser coinDispenser = this.machine.coinDispensers.get(denomination);
+		for (int i = 0; i < this.machine.getCoinDenominations().size(); i++) {
+			BigDecimal denomination = this.machine.getCoinDenominations().get(i);
+			ICoinDispenser coinDispenser = this.machine.getCoinDispensers().get(denomination);
 			for (int j = 0; j < coinDispenser.getCapacity(); j++) {
 				coinDispenser.load(fiveCent);
 			}

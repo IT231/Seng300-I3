@@ -117,7 +117,7 @@ public class TestRemoveItem {
 	 */
 	@Test
 	public void testWhenItemInOrder() throws OperationNotSupportedException, OverloadedDevice {
-		AbstractElectronicScale scale = (AbstractElectronicScale) machine.baggingArea;
+		AbstractElectronicScale scale = (AbstractElectronicScale) machine.getBaggingArea();
 		StubbedOrderManagerNotify omnStub = new StubbedOrderManagerNotify();
 		om.registerListener(omnStub);
 
@@ -185,7 +185,7 @@ public class TestRemoveItem {
 	 */
 	@Test
 	public void testSystemManagerItemInOrder() throws OperationNotSupportedException, OverloadedDevice {
-		AbstractElectronicScale scale = (AbstractElectronicScale) machine.baggingArea;
+		AbstractElectronicScale scale = (AbstractElectronicScale) machine.getBaggingArea();
 		StubbedOrderManagerNotify omnStub = new StubbedOrderManagerNotify();
 		sm.omStub.registerListener(omnStub);
 
