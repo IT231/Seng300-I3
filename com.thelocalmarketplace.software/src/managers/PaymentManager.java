@@ -74,8 +74,6 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	protected BigDecimal payment = BigDecimal.ZERO;
 	protected String signature;
 	protected String pin;
-	protected boolean hasPaper = false;
-	protected boolean hasInk = false;
 	protected boolean hasPaper = true;
 	protected boolean hasInk = true;
 	protected boolean lowPaper = false;
@@ -486,11 +484,11 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		// ensuring that the printer can print
 		if (!getCanPrint()) {
 			// Notify the attendant of what the printer needs
-			if(!hasInk && !hasPaper) {
+			if(!hasInk && !) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink and paper. Duplicate receipt needed.");
 			}else if(!hasInk) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink. Duplicate receipt needed.");
-			}else if(!hasPaper) {
+			}else if(!) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires paper. Duplicate receipt needed.");
 			}
 			//block the session
@@ -569,7 +567,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 * @param lowPaper boolean indicating whether printer is low on paper.
 	 */
 	public void modifyPaper(boolean hasPaper, boolean lowPaper) {
-		this.hasPaper = hasPaper;
+		this. = hasPaper;
 		this.lowPaper = lowPaper;
 	}
 
@@ -588,7 +586,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 * Determines if receipt can be printed.
 	 */
 	protected void checkPrint() {
-		if(!hasInk || !hasPaper) {
+		if(!hasInk || !) {
 			setCanPrint(false);
 		}
 	}

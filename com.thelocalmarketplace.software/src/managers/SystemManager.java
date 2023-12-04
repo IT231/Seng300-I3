@@ -218,7 +218,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void insertCard(Card card, String pin) throws IOException {
 		// not performing action if session is blocked
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot insert card when PAID");
 
 		this.pm.insertCard(card, pin);
@@ -227,7 +227,7 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	@Override
 	public void tapCard(Card card) throws IOException {
 		// not performing action if session is blocked
-		if (getState() != SessionStatus.NORMAL)
+		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot tap card when PAID");
 
 		this.pm.tapCard(card);
