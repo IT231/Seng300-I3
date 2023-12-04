@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.card.Card;
+import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedProduct;
 import com.thelocalmarketplace.hardware.Product;
@@ -174,7 +175,9 @@ public class MainGui extends Simulation implements ActionListener {
 			MainGui.dispose();
 			new addItemGui();
 		} else if(REMOVE_ITEM.equals(command)) {
-			new removeItemGUI();
+			orderManager.removeItemFromOrder((BarcodedItem)Simulation.itemsToAdd.get(0).item);
+			MainGui.dispose();
+			new MainGui();
 		}
 		
 	}

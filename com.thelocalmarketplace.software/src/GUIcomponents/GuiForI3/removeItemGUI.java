@@ -35,8 +35,7 @@ private JFrame removeItemFrame;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				//unblock session 
+				orderManager.getProducts().remove(orderManager.getProducts().size()-1);
 			}
 			
 		});
