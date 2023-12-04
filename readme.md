@@ -1,6 +1,6 @@
 # About
 
-The second iteration of the project woooooooooooo.
+The third iteration of the project.
 
 >Main page is [here](https://d2l.ucalgary.ca/d2l/le/content/544368/viewContent/5929785/View).
 

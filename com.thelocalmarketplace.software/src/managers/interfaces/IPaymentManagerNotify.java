@@ -26,6 +26,9 @@ package managers.interfaces;
 import java.math.BigDecimal;
 
 import com.jjjwelectronics.card.Card.CardData;
+import com.jjjwelectronics.card.Card.CardInsertData;
+import com.jjjwelectronics.card.Card.CardSwipeData;
+import com.jjjwelectronics.card.Card.CardTapData;
 
 /**
  * This interface is used by any object that {@link IPaymentManager} owns, this
@@ -41,7 +44,24 @@ public interface IPaymentManagerNotify {
 	 * 
 	 * @param the swiped card data
 	 */
-	void notifyCardSwipe(CardData cardData);
+	void notifyCardSwipe(CardSwipeData cardData);
+
+	/**
+	 * This method notifies the {@link IPaymentManager} that a child object received
+	 * a card insert.
+	 * 
+	 * @param cardData
+	 * @return
+	 */
+	void notifyCardInsert(CardInsertData cardData);
+
+	/**
+	 * This method notifies the {@link IPaymentManager} that a child object received
+	 * a card tap
+	 * 
+	 * @param cardData
+	 */
+	void notifyCardTap(CardTapData cardData);
 
 	/**
 	 * This method notifies the {@link IPaymentManager} that a child object has
@@ -50,5 +70,23 @@ public interface IPaymentManagerNotify {
 	 * @param value the value of the inputted banknote or coin
 	 */
 	void notifyBalanceAdded(BigDecimal value);
+
+	/**
+	 * Notifies the system about the paper status.
+	 *
+	 * @param hasPaper A boolean indicating whether there is paper available (true)
+	 *                 or not (false).
+	 */
+	void notifyPaper(boolean hasPaper);
+
+	/**
+	 * Notifies the system about the ink status.
+	 *
+	 * @param hasInk A boolean indicating whether there is ink available (true) or
+	 *               not (false).
+	 */
+	void notifyInk(boolean hasInk);
+
+
 
 }

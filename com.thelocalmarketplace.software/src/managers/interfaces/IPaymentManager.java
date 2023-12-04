@@ -54,6 +54,22 @@ public interface IPaymentManager extends IManager {
 	void swipeCard(Card card) throws IOException;
 
 	/**
+	 * Allows the customer to insert their card
+	 * 
+	 * @param card
+	 * @throws IOException
+	 */
+	void insertCard(Card card, String pin) throws IOException;
+
+	/**
+	 * Allows the customer to tap their card
+	 * 
+	 * @param card
+	 * @throws IOException
+	 */
+	void tapCard(Card card) throws IOException;
+
+	/**
 	 * Allows the customer to insert a coin into the system.
 	 * 
 	 * @param coin a coin
@@ -98,6 +114,9 @@ public interface IPaymentManager extends IManager {
 	 *             otherwise null).
 	 */
 	public void printReceipt(PaymentType type, Card card);
+
+
+
 	
 	/**
 	 * Notifies the system about the paper status.
@@ -114,4 +133,5 @@ public interface IPaymentManager extends IManager {
 	 * @param lowInk A boolean indicating whether the ink level is low (true) or not (false).
 	 */
 	void modifyInk(boolean hasInk, boolean lowInk);
+
 }

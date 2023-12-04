@@ -101,6 +101,9 @@ public class CardHelper {
 		Calendar expiry = Calendar.getInstance();
 		expiry.add(Calendar.DAY_OF_MONTH, 20);
 		String holder = "Joe Joeman";
+		String pin = "1234";
+		Boolean tapEnabled = true;
+		Boolean hasChip = true;
 
 		// finding a non-used card number
 		do {
@@ -108,7 +111,7 @@ public class CardHelper {
 				String number = String.valueOf(r.nextLong(1, 1_000_000_000));
 
 				// creating the card object
-				Card card = new Card("debit", number, holder, ccv, null, false, false);
+				Card card = new Card("debit", number, holder, ccv, pin, tapEnabled, hasChip);
 
 				// adding the card to the issuer
 				issuer.addCardData(number, holder, expiry, ccv, limit);
@@ -120,7 +123,7 @@ public class CardHelper {
 				if (!e.getMessage().contains("The card number is not valid.")) {
 					throw new IllegalArgumentException("invalid amount was passed into the function");
 				}
-				
+
 				// since only the card number is invalid, we can loop
 				continue;
 			}
@@ -143,12 +146,15 @@ public class CardHelper {
 		Calendar expiry = Calendar.getInstance();
 		expiry.add(Calendar.DAY_OF_MONTH, 20);
 		String holder = "Joe Joeman";
+		String pin = "1234";
+		Boolean tapEnabled = true;
+		Boolean hasChip = true;
 
 		// finding a non-used card number
 		String number = String.valueOf(r.nextLong(1, 1_000_000_000));
 
 		// creating the card object
-		Card card = new Card("debit", number, holder, ccv, null, false, false);
+		Card card = new Card("debit", number, holder, ccv, pin, tapEnabled, hasChip);
 
 		// returning the card to the caller
 		return card;
