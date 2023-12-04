@@ -1,3 +1,6 @@
+
+// Simon Bondad, 30164301
+// Liam Major 30223023
 // Aleksandr Sokolov (30191754)
 // Azariah Francisco (30085863)
 // Brandon Smith (30141515)
@@ -20,6 +23,7 @@
 // Sohaib Zia (30160114)
 // Sunny Hoang (30170708)
 // Yasemin Khanmoradi (30066537)
+
 
 package test.managers.payment;
 
@@ -109,7 +113,7 @@ public class TestSwipeCard {
 	}
 
 	@Test
-	public void swipingNullCard() throws IOException {
+	public void swipingInvalidCard() throws IOException {
 		Card card = CardHelper.createNonIssuedCard();
 		pm.swipeCard(card);
 		assertEquals(SessionStatus.NORMAL, sm.getSessionState());

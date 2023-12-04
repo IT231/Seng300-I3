@@ -215,6 +215,24 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		this.pm.swipeCard(card);
 	}
 
+	@Override
+	public void insertCard(Card card, String pin) throws IOException {
+		// not performing action if session is blocked
+		if (getState() != SessionStatus.NORMAL)
+			throw new IllegalStateException("cannot insert card when PAID");
+
+		this.pm.insertCard(card, pin);
+	}
+
+	@Override
+	public void tapCard(Card card) throws IOException {
+		// not performing action if session is blocked
+		if (getState() != SessionStatus.NORMAL)
+			throw new IllegalStateException("cannot tap card when PAID");
+
+		this.pm.tapCard(card);
+	}
+
 	public boolean tenderChange() throws RuntimeException, NoCashAvailableException {
 		if (getSessionState() != SessionStatus.NORMAL)
 			throw new IllegalStateException("cannot tender change when in a non-normal state");
