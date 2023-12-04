@@ -61,8 +61,8 @@ public class VisualCatalogueGUI extends Simulation implements ActionListener {
 		addAppleJuice.addActionListener(this);
 		
 		Button addOrangeJuice = new Button("Orange Juice");
-		addAppleJuice.setActionCommand(ORANGE_JUICE);
-		addAppleJuice.addActionListener(this);
+		addOrangeJuice.setActionCommand(ORANGE_JUICE);
+		addOrangeJuice.addActionListener(this);
 		
 		panel.add(addAppleJuice);
 		panel.add(addOrangeJuice);
@@ -72,8 +72,8 @@ public class VisualCatalogueGUI extends Simulation implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		
-		
+		System.out.println(command.toString());
+	
 		if (command.equals(APPLE_JUICE)) {		
 			Simulation.station.getMainScanner().scan((BarcodedItem)Simulation.itemsToAdd.get(0).item);
 			visualCatalogueFrame.dispose(); 
