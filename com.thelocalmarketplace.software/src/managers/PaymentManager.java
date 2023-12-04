@@ -30,6 +30,10 @@ import com.jjjwelectronics.EmptyDevice;
 import com.jjjwelectronics.OverloadedDevice;
 import com.jjjwelectronics.card.Card;
 import com.jjjwelectronics.card.Card.CardData;
+import com.jjjwelectronics.card.Card.CardInsertData;
+import com.jjjwelectronics.card.Card.CardSwipeData;
+import com.jjjwelectronics.card.Card.CardTapData;
+import com.jjjwelectronics.card.InvalidPINException;
 import com.tdc.CashOverloadException;
 import com.tdc.DisabledException;
 import com.tdc.NoCashAvailableException;
@@ -69,12 +73,16 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	// vars
 	protected BigDecimal payment = BigDecimal.ZERO;
 	protected String signature;
+	protected String pin;
+	protected boolean hasPaper = false;
+	protected boolean hasInk = false;
 	protected boolean hasPaper = true;
 	protected boolean hasInk = true;
 	protected boolean lowPaper = false;
 	protected boolean lowInk = false;
 	private boolean canPrint = true;
 	private String membershipNum = null;
+
 
 	/**
 	 * This controls everything relating to customer payment.
@@ -158,7 +166,70 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		this.machine.getCardReader().swipe(card);
 	}
 
-	public void notifyCardSwipe(CardData cardData) {
+	public void notifyCardSwipe(CardSwipeData cardData) {
+		if (cardData == null) {
+			throw new IllegalArgumentException("received null card data from the observer");
+		}
+
+		// vars
+		double amountDouble = sm.getTotalPrice().doubleValue();
+		long holdNumber = issuer.authorizeHold(cardData.getNumber(), amountDouble);
+
+		// testing the hold number
+		if (holdNumber == -1) {
+			return;
+		} else {
+			payment = sm.getTotalPrice();
+			recordTransaction(cardData, holdNumber, amountDouble);
+			sm.notifyPaid();
+		}
+	}
+
+	@Override
+	public void insertCard(Card card, String pin) throws IOException {
+		if (card == null) {
+			throw new IllegalArgumentException("cannot swipe a null card");
+		}
+		try {
+			this.machine.getCardReader().insert(card, pin);
+		} catch (InvalidPINException e) {
+			return;
+		}
+
+	}
+
+	@Override
+	public void notifyCardInsert(CardInsertData cardData) {
+		if (cardData == null) {
+			throw new IllegalArgumentException("received null card data from the observer");
+		}
+
+		// vars
+		double amountDouble = sm.getTotalPrice().doubleValue();
+		long holdNumber = issuer.authorizeHold(cardData.getNumber(), amountDouble);
+
+		// testing the hold number
+		if (holdNumber == -1) {
+			return;
+		} else {
+			payment = sm.getTotalPrice();
+			recordTransaction(cardData, holdNumber, amountDouble);
+			sm.notifyPaid();
+		}
+
+	}
+
+	@Override
+	public void tapCard(Card card) throws IOException {
+		if (card == null) {
+			throw new IllegalArgumentException("cannot swipe a null card");
+		}
+
+		this.machine.getCardReader().tap(card);
+	}
+
+	@Override
+	public void notifyCardTap(CardTapData cardData) {
 		if (cardData == null) {
 			throw new IllegalArgumentException("received null card data from the observer");
 		}
