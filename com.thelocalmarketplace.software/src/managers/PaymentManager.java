@@ -484,11 +484,11 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 		// ensuring that the printer can print
 		if (!getCanPrint()) {
 			// Notify the attendant of what the printer needs
-			if(!hasInk && !) {
+			if(!hasInk && !hasPaper) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink and paper. Duplicate receipt needed.");
 			}else if(!hasInk) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires ink. Duplicate receipt needed.");
-			}else if(!) {
+			}else if(!hasPaper) {
 				sm.notifyAttendant("Machine could not print receipt in full. Printer requires paper. Duplicate receipt needed.");
 			}
 			//block the session
@@ -567,7 +567,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 * @param lowPaper boolean indicating whether printer is low on paper.
 	 */
 	public void modifyPaper(boolean hasPaper, boolean lowPaper) {
-		this. = hasPaper;
+		this.hasPaper = hasPaper;
 		this.lowPaper = lowPaper;
 	}
 
@@ -586,7 +586,7 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 * Determines if receipt can be printed.
 	 */
 	protected void checkPrint() {
-		if(!hasInk || !) {
+		if(!hasInk || !hasPaper) {
 			setCanPrint(false);
 		}
 	}
@@ -635,6 +635,18 @@ public class PaymentManager implements IPaymentManager, IPaymentManagerNotify {
 	 */
 	public void setMembershipNum(String membershipNum) {
 		this.membershipNum = membershipNum;
+	}
+
+	@Override
+	public void notifyPaper(boolean hasPaper) {
+		this.hasPaper=hasPaper;
+		
+	}
+
+	@Override
+	public void notifyInk(boolean hasInk) {
+		this.hasInk=hasInk;
+		
 	}
 
 }
