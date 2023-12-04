@@ -1,4 +1,4 @@
-//Simon Bondad, 30164301
+// Simon Bondad, 30164301
 // Liam Major 30223023
 
 package test.managers.payment;
@@ -90,7 +90,7 @@ public class TestSwipeCard {
 	}
 
 	@Test
-	public void swipingNullCard() throws IOException {
+	public void swipingInvalidCard() throws IOException {
 		Card card = CardHelper.createNonIssuedCard();
 		pm.swipeCard(card);
 		assertEquals(SessionStatus.NORMAL, sm.getState());
