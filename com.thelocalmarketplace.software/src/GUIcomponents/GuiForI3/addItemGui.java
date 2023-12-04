@@ -103,6 +103,7 @@ public class addItemGui extends Simulation implements ActionListener {
 			addItemGui.dispose(); 
 			new MainGui();
 		} else if (command.equals(ADD_VISUAL_CATALOGUE_ITEM)) {
+			addItemGui.dispose(); 
 			new VisualCatalogueGUI();
 		}
 		
