@@ -25,6 +25,7 @@ package GUIcomponents.GuiForI3;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -60,13 +61,12 @@ public class VisualCatalogueGUI extends Simulation implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 		
-		JButton addAppleJuice = new JButton(new ImageIcon("/home/cogg2/Documents/GitHub/Seng300-I3/com.thelocalmarketplace.software/src/GUIcomponents/GuiForI3/pics/applejuice.png"));
-		//addAppleJuice.setBounds(300, 300, 150, 75);
+		JButton addAppleJuice = new JButton(new ImageIcon("src/pics/applejuice.png"));
 		
 		addAppleJuice.setActionCommand(APPLE_JUICE);
 		addAppleJuice.addActionListener(this);
 		
-		JButton addOrangeJuice = new JButton(new ImageIcon("/home/cogg2/Documents/GitHub/Seng300-I3/com.thelocalmarketplace.software/src/GUIcomponents/GuiForI3/pics/orangejuice.jpg"));
+		JButton addOrangeJuice = new JButton(new ImageIcon("src/pics/orangejuice.jpg"));
 				
 		addOrangeJuice.setActionCommand(ORANGE_JUICE);
 		addOrangeJuice.addActionListener(this);
