@@ -60,7 +60,7 @@ public class VisualCatalogueGUI extends Simulation implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 		
-		JButton addAppleJuice = new JButton(new ImageIcon("/home/cogg2/Documents/GitHub/Seng300-I3/com.thelocalmarketplace.software/src/GUIcomponents/GuiForI3/pics/Applejuice.jpg"));
+		JButton addAppleJuice = new JButton(new ImageIcon("/home/cogg2/Documents/GitHub/Seng300-I3/com.thelocalmarketplace.software/src/GUIcomponents/GuiForI3/pics/applejuice.png"));
 		//addAppleJuice.setBounds(300, 300, 150, 75);
 		
 		addAppleJuice.setActionCommand(APPLE_JUICE);
