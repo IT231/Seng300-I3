@@ -99,7 +99,7 @@ public class TestSwipeCard {
 	public void testSuccessfulNotifyCardSwipe() throws IOException {
 		Card card = CardHelper.createCard(issuer, sm.getTotalPrice().doubleValue());
 		pm.notifyCardSwipe(card.swipe());
-		assertEquals(SessionStatus.PAID, sm.getState());
+		assertEquals(SessionStatus.PAID, sm.getSessionState());
 		assertEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
@@ -108,7 +108,7 @@ public class TestSwipeCard {
 		Card card = CardHelper.createCard(issuer, 2);
 		CardSwipeData data = card.swipe();
 		pm.notifyCardSwipe(data);
-		assertEquals(SessionStatus.NORMAL, sm.getState());
+		assertEquals(SessionStatus.NORMAL, sm.getSessionState());
 		assertNotEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
@@ -116,7 +116,7 @@ public class TestSwipeCard {
 	public void swipingInvalidCard() throws IOException {
 		Card card = CardHelper.createNonIssuedCard();
 		pm.swipeCard(card);
-		assertEquals(SessionStatus.NORMAL, sm.getState());
+		assertEquals(SessionStatus.NORMAL, sm.getSessionState());
 		assertNotEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
