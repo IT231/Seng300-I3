@@ -42,6 +42,7 @@ import com.tdc.coin.Coin;
 public class paybyCashGui extends Simulation {
 
 private JFrame paybyCashGui;
+private JPanel pricepanel = new JPanel();
 	
 public paybyCashGui() {
 	this.systemManager = systemManager;
@@ -227,7 +228,7 @@ public paybyCashGui() {
 		
 		paybyCashGui.add(panel, BorderLayout.CENTER);
 		
-		JPanel pricepanel = new JPanel();
+	//	JPanel pricepanel = new JPanel();
 		JLabel crurentprice = new JLabel("current total:  $" + systemManager.getRemainingBalance());
 		pricepanel.add(crurentprice);
 		paybyCashGui.add(pricepanel, BorderLayout.EAST);
