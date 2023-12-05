@@ -57,7 +57,7 @@ public class PayGui extends Simulation {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		
-		panel.setBackground(Color.red);
+		panel.setBackground(Color.gray);
 		
 		Button paybytapbutton = new Button("Pay by tap"); // since there is no tapcode in payment manager just reusing swipe
 		paybytapbutton.addActionListener(new ActionListener() {
@@ -91,6 +91,9 @@ public class PayGui extends Simulation {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				new ReciptGui();
+				//systemManager.
+				payFrame.dispose();
 				
 			}
 			
@@ -109,6 +112,9 @@ public class PayGui extends Simulation {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				new ReciptGui();
+				//systemManager.
+				payFrame.dispose();
 				
 			}
 			

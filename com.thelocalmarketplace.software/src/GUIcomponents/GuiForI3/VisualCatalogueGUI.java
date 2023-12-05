@@ -26,9 +26,13 @@ package GUIcomponents.GuiForI3;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -54,13 +58,16 @@ public class VisualCatalogueGUI extends Simulation implements ActionListener {
 		this.visualCatalogueFrame.setVisible(true);
 		
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 		
-		Button addAppleJuice = new Button("Apple Juice");
+		JButton addAppleJuice = new JButton(new ImageIcon("/home/cogg2/Documents/GitHub/Seng300-I3/com.thelocalmarketplace.software/src/GUIcomponents/GuiForI3/pics/Applejuice.jpg"));
+		//addAppleJuice.setBounds(300, 300, 150, 75);
+		
 		addAppleJuice.setActionCommand(APPLE_JUICE);
 		addAppleJuice.addActionListener(this);
 		
-		Button addOrangeJuice = new Button("Orange Juice");
+		JButton addOrangeJuice = new JButton(new ImageIcon("/home/cogg2/Documents/GitHub/Seng300-I3/com.thelocalmarketplace.software/src/GUIcomponents/GuiForI3/pics/orangejuice.jpg"));
+				
 		addOrangeJuice.setActionCommand(ORANGE_JUICE);
 		addOrangeJuice.addActionListener(this);
 		
@@ -72,7 +79,7 @@ public class VisualCatalogueGUI extends Simulation implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		System.out.println(command.toString());
+		//System.out.println(command.toString());
 	
 		if (command.equals(APPLE_JUICE)) {		
 			Simulation.station.getMainScanner().scan((BarcodedItem)Simulation.itemsToAdd.get(0).item);
