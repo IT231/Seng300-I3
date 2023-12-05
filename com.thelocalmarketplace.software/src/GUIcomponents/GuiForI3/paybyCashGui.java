@@ -44,7 +44,8 @@ public class paybyCashGui extends Simulation {
 private JFrame paybyCashGui;
 	
 public paybyCashGui() {
-		initialize();
+	this.systemManager = systemManager;
+	initialize();
 	}
 	
 	public void initialize() {
@@ -231,13 +232,16 @@ public paybyCashGui() {
 		pricepanel.add(crurentprice);
 		paybyCashGui.add(pricepanel, BorderLayout.EAST);
 	}
-	private void updateTotal(BigDecimal amount) {
-        systemManager.addToRemainingBalance(amount);
+
+    private void updateTotal(BigDecimal amount) {
+        systemManager.insertCoin(new Coin(Currency.getInstance("CAD"), amount));
         updateTotalLabel();
     }
 
     private void updateTotalLabel() {
-        currentPrice.setText("current total:  $" + systemManager.getRemainingBalance());
+        JLabel currentPrice = new JLabel("current total:  $" + systemManager.getRemainingBalance());
+        pricepanel.removeAll(); // Remove existing label
+        pricepanel.add(currentPrice);
         paybyCashGui.invalidate();
         paybyCashGui.validate();
         paybyCashGui.repaint();
