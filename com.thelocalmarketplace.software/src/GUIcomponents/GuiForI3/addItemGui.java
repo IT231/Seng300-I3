@@ -43,7 +43,7 @@ public class addItemGui extends Simulation implements ActionListener {
 	public static final String ADD_VISUAL_CATALOGUE_ITEM = "visual";
 	private JFrame addItemGui;
 
-	addItemGui() {
+	public addItemGui() {
 		initialize();
 	}
 	

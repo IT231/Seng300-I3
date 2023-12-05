@@ -43,7 +43,7 @@ public class paybyCashGui extends Simulation {
 
 private JFrame paybyCashGui;
 	
-paybyCashGui() {
+public paybyCashGui() {
 		initialize();
 	}
 	

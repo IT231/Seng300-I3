@@ -41,7 +41,7 @@ public class PayGui extends Simulation {
 	
 	private JFrame payFrame;
 	
-	PayGui() {
+	public PayGui() {
 		initialize();
 	}
 	

@@ -57,7 +57,7 @@ public class Simulation {
 	public static ArrayList<JFrame> frameList = new ArrayList<JFrame>();
 	//public static Card card;
 	
-	static void start() {
+	public static void start() {
 		station = new SelfCheckoutStationGold();
 		cardIssuer = CardHelper.createCardIssuer();
 		systemManager = new SystemManager(cardIssuer, BigDecimal.ONE);

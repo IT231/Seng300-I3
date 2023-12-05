@@ -51,7 +51,7 @@ public class ReciptGui extends Simulation implements ActionListener {
 private JFrame startFrame;
 public static final String END_SESSION = "end";
 	
-	ReciptGui() {
+	public ReciptGui() {
 		initialize();
 	}
 	

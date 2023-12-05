@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 public class membershipnumbergui extends Simulation {
 private JFrame startFrame;
 	
-membershipnumbergui() {
+public membershipnumbergui() {
 		initialize();
 	}
 	

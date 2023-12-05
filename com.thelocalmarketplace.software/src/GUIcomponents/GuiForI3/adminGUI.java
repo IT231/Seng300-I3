@@ -37,7 +37,7 @@ import managers.enums.SessionStatus;
 public class adminGUI extends Simulation {
 private JFrame adminFrame;
 	
-	adminGUI() {
+	public adminGUI() {
 		initialize();
 	}
 	
