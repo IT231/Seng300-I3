@@ -76,7 +76,7 @@ public class TestInsertCard {
 	public void testSuccessfulNotifyCardInsert() throws IOException {
 		Card card = CardHelper.createCard(issuer, sm.getTotalPrice().doubleValue());
 		pm.notifyCardInsert(card.insert("1234"));
-		assertEquals(SessionStatus.PAID, sm.getSessionState());
+		assertEquals(SessionStatus.PAID, sm.getState());
 		assertEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
@@ -85,7 +85,7 @@ public class TestInsertCard {
 		Card card = CardHelper.createCard(issuer, 2);
 		CardInsertData data = card.insert("1234");
 		pm.notifyCardInsert(data);
-		assertEquals(SessionStatus.NORMAL, sm.getSessionState());
+		assertEquals(SessionStatus.NORMAL, sm.getState());
 		assertNotEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
@@ -93,7 +93,7 @@ public class TestInsertCard {
 	public void insertingInvalidCard() throws IOException {
 		Card card = CardHelper.createNonIssuedCard();
 		pm.insertCard(card, "1111");
-		assertEquals(SessionStatus.NORMAL, sm.getSessionState());
+		assertEquals(SessionStatus.NORMAL, sm.getState());
 		assertNotEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
