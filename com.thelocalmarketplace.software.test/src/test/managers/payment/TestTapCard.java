@@ -76,7 +76,7 @@ public class TestTapCard {
 	public void testSuccessfulNotifyCardTap() throws IOException {
 		Card card = CardHelper.createCard(issuer, sm.getTotalPrice().doubleValue());
 		pm.notifyCardTap(card.tap());
-		assertEquals(SessionStatus.PAID, sm.getState());
+		assertEquals(SessionStatus.PAID, sm.getSessionState());
 		assertEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
@@ -85,7 +85,7 @@ public class TestTapCard {
 		Card card = CardHelper.createCard(issuer, 2);
 		CardTapData data = card.tap();
 		pm.notifyCardTap(card.tap());
-		assertEquals(SessionStatus.NORMAL, sm.getState());
+		assertEquals(SessionStatus.NORMAL, sm.getSessionState());
 		assertNotEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
@@ -93,7 +93,7 @@ public class TestTapCard {
 	public void tappingInvalidCard() throws IOException {
 		Card card = CardHelper.createNonIssuedCard();
 		pm.tapCard(card);
-		assertEquals(SessionStatus.NORMAL, sm.getState());
+		assertEquals(SessionStatus.NORMAL, sm.getSessionState());
 		assertNotEquals(sm.getTotalPrice(), sm.getCustomerPayment());
 	}
 
