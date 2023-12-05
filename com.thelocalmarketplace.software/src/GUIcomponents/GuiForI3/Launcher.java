@@ -24,12 +24,13 @@
 package GUIcomponents.GuiForI3;
 
 import java.awt.event.WindowAdapter;
+import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 
 public class Launcher {
-
 	public static void main(String[] args) {
 		Simulation.start();
 		

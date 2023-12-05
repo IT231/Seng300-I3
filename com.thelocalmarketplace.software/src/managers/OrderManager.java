@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -41,6 +42,7 @@ import com.thelocalmarketplace.hardware.AbstractSelfCheckoutStation;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedItem;
 import com.thelocalmarketplace.hardware.PLUCodedProduct;
+import com.thelocalmarketplace.hardware.PriceLookUpCode;
 import com.thelocalmarketplace.hardware.Product;
 import com.thelocalmarketplace.hardware.SelfCheckoutStationGold;
 import com.thelocalmarketplace.hardware.external.ProductDatabases;
@@ -165,6 +167,10 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 			unblockSession();
 			notifyAttendant("a scale is out of overload");
 		}
+	}
+
+	public void setProductList(List<Product> products) {
+		this.products = products;
 	}
 
 	@Override
@@ -365,6 +371,34 @@ public class OrderManager implements IOrderManager, IOrderManagerNotify {
 				productsPricedByMass.put(prod, item.getMass());
 			}
 		}
+	}
+
+	protected boolean addItemByTextSearch(String itemName) {
+		if (itemName == null) {
+			throw new IllegalArgumentException("Item name cannot be a null value.");
+		}
+		
+		// looking through BarcodedProducts in database to see if it exists
+		for (Map.Entry<Barcode, BarcodedProduct> prod : ProductDatabases.BARCODED_PRODUCT_DATABASE.entrySet()) {
+			if (prod.getValue().getDescription().toLowerCase() == itemName.toLowerCase()) { // if item is found
+				blockSession();
+				products.add(prod.getValue());
+				sm.notifyAddToBaggingArea();
+				return true; // returns true if item was found
+			}
+		}
+		
+		// looking through PLUCodedProducts in database to see if it exists
+		for (Map.Entry<PriceLookUpCode, PLUCodedProduct> prod : ProductDatabases.PLU_PRODUCT_DATABASE.entrySet()) {
+			if (prod.getValue().getDescription().toLowerCase() == itemName.toLowerCase()) {
+				blockSession();
+				products.add(prod.getValue());
+				sm.notifyAddToBaggingArea();
+				return true; // returns true if item was found
+			}
+		}
+		
+		return false; // item was not found
 	}
 
 	/**

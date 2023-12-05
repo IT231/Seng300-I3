@@ -43,6 +43,7 @@ private JFrame adminFrame;
 	
 	public void initialize() {
 		adminFrame = new JFrame();
+		frameList.add(adminFrame);
 		adminFrame.setLayout(new BorderLayout(10, 5));
 		this.adminFrame.setTitle("adminPage");
 		this.adminFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

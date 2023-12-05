@@ -69,6 +69,7 @@ public class MainGui extends Simulation implements ActionListener {
 	
 	public void initialize() {
 		MainGui = new JFrame();
+		frameList.add(MainGui);
 		MainGui.setLayout(new BorderLayout(10, 5));
 		this.MainGui.setTitle("Pay by Cash page");
 		this.MainGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
