@@ -231,5 +231,16 @@ paybyCashGui() {
 		pricepanel.add(crurentprice);
 		paybyCashGui.add(pricepanel, BorderLayout.EAST);
 	}
+	private void updateTotal(BigDecimal amount) {
+        systemManager.addToRemainingBalance(amount);
+        updateTotalLabel();
+    }
+
+    private void updateTotalLabel() {
+        currentPrice.setText("current total:  $" + systemManager.getRemainingBalance());
+        paybyCashGui.invalidate();
+        paybyCashGui.validate();
+        paybyCashGui.repaint();
+    }
 
 }
