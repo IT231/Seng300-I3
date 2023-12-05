@@ -30,18 +30,26 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.jjjwelectronics.scanner.BarcodedItem;
 import com.thelocalmarketplace.hardware.BarcodedProduct;
 import com.thelocalmarketplace.hardware.PLUCodedProduct;
 import com.thelocalmarketplace.hardware.Product;
 
+import managers.SystemManager;
+
 // this one show recipt and take back to startwindow
-public class ReciptGui extends Simulation {
+public class ReciptGui extends Simulation implements ActionListener {
 private JFrame startFrame;
+public static final String END_SESSION = "end";
 	
 	ReciptGui() {
 		initialize();
@@ -61,9 +69,11 @@ private JFrame startFrame;
 		
 		panel.setBackground(Color.gray);
 		
-		Button endbutton = new Button("End checkout"); //needs to close all process on click and then start Launcher again
+		Button endButton = new Button("End checkout"); //needs to close all process on click and then start Launcher again
+		endButton.setActionCommand(END_SESSION);
+		endButton.addActionListener(this);
 		
-		panel.add(endbutton);
+		panel.add(endButton);
 		startFrame.add(panel, BorderLayout.CENTER);
 		
 		JPanel displayPanel = new JPanel();
@@ -115,5 +125,32 @@ private JFrame startFrame;
 		
     	
 		startFrame.add(displayPanel, BorderLayout.WEST);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+	
+		if (command.equals(END_SESSION)) {		
+			startFrame.dispose();
+			systemManager.stopSession();
+
+			for (int i = 0; i < frameList.size(); i++) {
+				frameList.get(i).dispose();
+				frameList.remove(frameList.get(i));
+				i--;
+			}
+
+			for (int i = 0; i < orderManager.getProducts().size(); i++) {
+				orderManager.getProducts().remove(orderManager.getProducts().get(i));
+				--i;
+			}
+
+			List<Product> products = new ArrayList<Product>();
+			systemManager.setProductListSM(products);
+
+			new adminGUI();
+			StartWindow startframe = new StartWindow();
+		}
 	}
 }
