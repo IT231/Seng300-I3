@@ -35,7 +35,7 @@ import javax.swing.JPanel;
 public class removeItemGUI extends Simulation {
 private JFrame removeItemFrame;
 	
-	removeItemGUI() {
+	public removeItemGUI() {
 		initialize();
 	}
 	

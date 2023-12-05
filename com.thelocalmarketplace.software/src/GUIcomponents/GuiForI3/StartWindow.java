@@ -37,7 +37,7 @@ public class StartWindow extends Simulation implements ActionListener {
 	
 	private JFrame startFrame;
 	
-	StartWindow() {
+	public StartWindow() {
 		initialize();
 	}
 	

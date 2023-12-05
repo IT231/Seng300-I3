@@ -63,7 +63,7 @@ public class MainGui extends Simulation implements ActionListener {
 	public List<Product> products;
 	int num = 0;
 	
-	MainGui() {
+	public MainGui() {
 		initialize();
 	}
 	
