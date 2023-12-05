@@ -1,14 +1,10 @@
 package test.gui;
 
 import static org.junit.Assert.*;
-import java.awt.event.ActionEvent;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import GUIcomponents.GuiForI3.adminGUI;
-import managers.enums.SessionStatus;
 
 public class TestAdminGUI {
 

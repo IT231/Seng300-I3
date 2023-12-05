@@ -5,7 +5,6 @@ import org.junit.After;
 import org.junit.Before; 
 import org.junit.Test;
 import GUIcomponents.GuiForI3.addItemGui;
-import java.awt.event.ActionEvent;
 
 public class TestAddItemGUI {
 

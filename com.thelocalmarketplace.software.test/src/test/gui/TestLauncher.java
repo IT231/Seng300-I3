@@ -1,6 +1,5 @@
 package test.gui;
 
-import static org.junit.Assert.*;
 import javax.swing.SwingUtilities;
 import org.junit.Test;
 import GUIcomponents.GuiForI3.Launcher;
