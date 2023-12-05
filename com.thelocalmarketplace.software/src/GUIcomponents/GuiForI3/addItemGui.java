@@ -50,7 +50,7 @@ public class addItemGui extends Simulation implements ActionListener {
 	public void initialize() {
 		addItemGui = new JFrame();
 		addItemGui.setLayout(new BorderLayout(10, 5));
-		this.addItemGui.setTitle("Pay by Cash page");
+		this.addItemGui.setTitle("add item");
 		this.addItemGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.addItemGui.setSize(500,400);
 		this.addItemGui.setLocationRelativeTo(null);
@@ -59,7 +59,7 @@ public class addItemGui extends Simulation implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		
-		panel.setBackground(Color.red);
+		panel.setBackground(Color.gray);
 		
 		Button addItembybarcodebutton = new Button("add item with Barcodescanner"); // got to add on click start sesion and switch to main window
 		addItembybarcodebutton.setActionCommand(SCAN_BARCODED_ITEM);
