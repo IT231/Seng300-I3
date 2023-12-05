@@ -48,7 +48,7 @@ private JFrame adminFrame;
 		this.adminFrame.setTitle("adminPage");
 		this.adminFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.adminFrame.setSize(500,400);
-		this.adminFrame.setLocationRelativeTo(null);
+		this.adminFrame.setLocation(450,450);
 		this.adminFrame.setVisible(true);
 		
 		JPanel panel = new JPanel();

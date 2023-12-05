@@ -55,6 +55,7 @@ public class Simulation {
 	public static PaymentManager payman;
 	public static ArrayList<SimulationItem> itemsToAdd = new ArrayList<SimulationItem>();
 	public static ArrayList<JFrame> frameList = new ArrayList<JFrame>();
+	public static String membership;
 	//public static Card card;
 	
 	public static void start() {
@@ -101,6 +102,10 @@ public class Simulation {
 		BarcodedProduct orangeJuiceProduct = new BarcodedProduct(orangeJuiceBarcode, "orange Juice.", 3, 255);
 		itemsToAdd.add(new SimulationItem(orangeJuiceItem, orangeJuiceProduct));
 	}
+	 public static void getmembership(String member) {
+		 membership =  member;
+	 }
+	 
 	
 	//public Card cardgetter() {
 	//	return card;

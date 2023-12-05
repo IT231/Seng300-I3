@@ -118,6 +118,10 @@ public static final String END_SESSION = "end";
 		
 		JLabel cartInfo = new JLabel("          Total Paid  $" + systemManager.getRemainingBalance()+"       ");
 		displayPanel.add(cartInfo);
+		if(Simulation.membership != null) {
+			JLabel membership = new JLabel("Membership#  " + Simulation.membership);
+			displayPanel.add(membership);
+		}
 		
 		///
 		///for loop in for loop

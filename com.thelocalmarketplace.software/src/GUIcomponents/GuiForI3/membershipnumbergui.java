@@ -65,7 +65,8 @@ public membershipnumbergui() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//if(systemManager.getSessionState() == SessionStatus.BLOCKED) {
-				membershipnum.getText();
+				Simulation.getmembership(membershipnum.getText());
+				startFrame.dispose();
 				}
 				//systemManager.unblockSession();
 		//	}

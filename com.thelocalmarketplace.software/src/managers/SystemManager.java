@@ -77,6 +77,8 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	protected CardIssuer issuer;
 	protected Map<String, List<Pair<Long, Double>>> records;
 
+	private BigDecimal getTotalPrice;
+
 	/**
 	 * This object is responsible for the needs of the customer. This is how the
 	 * customer is supposed to interact with the system.
@@ -442,6 +444,11 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		}if(lowInk) {
 			notifyAttendant("The printer is low on ink.");
 		}
+	}
+
+	public void notifyAddToBaggingArea() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
