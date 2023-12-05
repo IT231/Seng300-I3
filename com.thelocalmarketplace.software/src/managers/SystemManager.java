@@ -142,6 +142,16 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 		}
 		// Need to update GUI to say OUT OF ORDER instead of start session if station is disabled
 	}
+
+	public void stopSession() {
+		if (getSessionState() != SessionStatus.NORMAL) {
+			throw new IllegalStateException("Cannot stop a session that is already inactive.");
+		}
+
+		if (getStationState() == StationStatus.ENABLED) {
+			setSessionState(SessionStatus.NOT_STARTED);
+		}
+	}
 	
 	/**
 	 * Sets the stationState to enabled, allowing the session to be started
@@ -166,6 +176,10 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 	 */
 	public BigDecimal getRemainingBalance() {
 		return this.getTotalPrice().subtract(this.getCustomerPayment());
+	}
+
+	public void setRemainingBalanceZero() {
+		this.getTotalPrice = BigDecimal.ZERO;
 	}
 
 	@Override
@@ -280,6 +294,10 @@ public class SystemManager implements ISystemManager, IPaymentManager, IOrderMan
 
 		// notify the attendant
 		notifyAttendant("Session was blocked.");
+	}
+
+	public void setProductListSM(List<Product> products) {
+		om.setProductList(products);
 	}
 
 	@Override

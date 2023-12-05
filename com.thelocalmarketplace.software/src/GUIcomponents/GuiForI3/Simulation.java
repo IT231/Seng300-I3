@@ -26,7 +26,8 @@ package GUIcomponents.GuiForI3;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import com.jjjwelectronics.Mass;
 import com.jjjwelectronics.Numeral;
@@ -53,6 +54,7 @@ public class Simulation {
 	public static CardIssuer cardIssuer;
 	public static PaymentManager payman;
 	public static ArrayList<SimulationItem> itemsToAdd = new ArrayList<SimulationItem>();
+	public static ArrayList<JFrame> frameList = new ArrayList<JFrame>();
 	//public static Card card;
 	
 	static void start() {
